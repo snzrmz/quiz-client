@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">QuizClient</string>
+    <string name="btn_principal1">Iniciar sesión</string>
+    <string name="btn_principal2">regirstrarse</string>
+    <string name="e_mail">E-mail</string>
+    <string name="user">Username</string>
+    <string name="pwd">Password</string>
+    <string name="btn_registrarTXT">Continuar</string>
+    <string name="user_login">Username</string>
+    <string name="pwd_login">Password</string>
+    <string name="btn_loginTXT">Continuar</string>
 
 </resources>

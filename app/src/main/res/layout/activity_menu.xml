@@ -4,40 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Actividad_Principal">
+    tools:context=".Menu">
 
     <LinearLayout
-        android:layout_width="375dp"
-        android:layout_height="223dp"
+        android:layout_width="350dp"
+        android:layout_height="369dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
 
-        app:layout_constraintTop_toTopOf="parent">
-
-        <Button
-            android:id="@+id/BTN_Partida"
-            android:layout_width="match_parent"
-            android:layout_height="73dp"
-            android:text="iniciar partida"
-            />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.726">
 
 
         <Button
             android:id="@+id/BTN_MazosUsr"
             android:layout_width="match_parent"
             android:layout_height="73dp"
-            android:text="mis mazos "
-             />
+            android:text="mis mazos " />
+
+        <Button
+            android:id="@+id/BTN_Partida"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:text="iniciar partida" />
 
         <Button
             android:id="@+id/BTN_crearmazo"
             android:layout_width="match_parent"
             android:layout_height="73dp"
-            android:text="nuevo mazo"
-             />
+            android:text="nuevo mazo" />
 
 
     </LinearLayout>

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Actividad_Log_In">
+    tools:context=".Principal">
 
     <LinearLayout
         android:layout_width="313dp"
@@ -28,18 +28,15 @@
             android:id="@+id/BTN_iniciarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="Iniciar sesión" />
+
+            android:text="@string/btn_principal1" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BTN_Registro"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="regirstrarse" />
+            android:text="@string/btn_principal2" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
