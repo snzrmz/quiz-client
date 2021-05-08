@@ -8,8 +8,8 @@
     tools:context=".Principal">
 
     <LinearLayout
-        android:layout_width="313dp"
-        android:layout_height="172dp"
+        android:layout_width="312dp"
+        android:layout_height="198dp"
         android:layout_marginStart="60dp"
         android:layout_marginLeft="60dp"
         android:layout_marginTop="239dp"
@@ -19,16 +19,16 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.785"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.745">
+        app:layout_constraintVertical_bias="1.0">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BTN_iniciarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:onClick="InicioSesion"
             android:text="@string/btn_principal1" />
 
         <com.google.android.material.button.MaterialButton
@@ -36,7 +36,30 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="Registro"
             android:text="@string/btn_principal2" />
+
+        <br.com.bloder.magic.view.MagicButton
+            android:id="@+id/mgbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+
+            android:layout_marginTop="10dp"
+            app:button_icon="@drawable/google"
+            app:button_icon_height="35dp"
+            app:button_icon_width="35dp"
+            app:expandable_area_color="@color/black"
+            app:hide_text="      Continuar con Google"
+            app:hide_text_color="#FFFFFF"
+            app:hide_text_size="4sp"
+            app:icon_button_color="#2E2E2E"
+            app:magic_button_size="60dp"
+
+
+            />
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

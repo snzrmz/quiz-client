@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.quiz.quizclient.modelo.ObjetoPrueba;
+import com.quiz.quizclient.modelo.jugador;
 import com.quiz.quizclient.modelo.interfaz;
 
 import java.util.List;
@@ -33,12 +33,12 @@ TextView texto;
 
             interfaz interfz = retrofit.create(interfaz.class);
 
-        Call<List<ObjetoPrueba>> call = interfz.getPosts();
-        call.enqueue(new Callback<List<ObjetoPrueba>>() {
+        Call<List<jugador>> call = interfz.getPosts();
+        call.enqueue(new Callback<List<jugador>>() {
             @Override
-            public void onResponse(Call<List<ObjetoPrueba>> call, Response<List<ObjetoPrueba>> response) {
-                List<ObjetoPrueba> lista = response.body();
-                for(ObjetoPrueba obj: lista){
+            public void onResponse(Call<List<jugador>> call, Response<List<jugador>> response) {
+                List<jugador> lista = response.body();
+                for(jugador obj: lista){
                     String contenido = "";
                     contenido += "E-mail: "+ obj.getEmail()+"\n";
                     contenido += "Se registró el: "+ obj.getFechaCreacion()+"\n";
@@ -49,7 +49,7 @@ TextView texto;
             }
 
             @Override
-            public void onFailure(Call<List<ObjetoPrueba>> call, Throwable t) {
+            public void onFailure(Call<List<jugador>> call, Throwable t) {
                 texto = findViewById(R.id.texto1);
                 texto.setText(t.getMessage());
             }
