@@ -1,12 +1,24 @@
 package com.quiz.quizclient.modelo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
-public class jugador {
+public class Jugador {
+
+    @SerializedName("email")
     private String email;
+
+    @SerializedName("password")
     private String password;
+
+    @SerializedName("fechaCreacion")
     private Date fechaCreacion;
+
+    @SerializedName("idJugador")
     private int idJugador;
+
+    @SerializedName("usuario")
     private String usuario;
 
     public String getEmail() {

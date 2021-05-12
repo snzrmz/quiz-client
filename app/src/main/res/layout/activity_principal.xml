@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
 
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="40dp"
             app:button_icon="@drawable/google"
             app:button_icon_height="35dp"
             app:button_icon_width="35dp"

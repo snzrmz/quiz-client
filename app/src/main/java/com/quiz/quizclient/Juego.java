@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.quiz.quizclient.modelo.jugador;
-import com.quiz.quizclient.modelo.interfaz;
+import com.quiz.quizclient.modelo.Jugador;
+import com.quiz.quizclient.modelo.API;
 
 import java.util.List;
 
@@ -27,29 +27,29 @@ TextView texto;
     private void getPosts(){
         texto = findViewById(R.id.texto1);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.138:8080/quiz-server/api/")
+                .baseUrl("http://192.168.1.132:8080/quiz-server/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-            interfaz interfz = retrofit.create(interfaz.class);
+            API api = retrofit.create(API.class);
 
-        Call<List<jugador>> call = interfz.getPosts();
-        call.enqueue(new Callback<List<jugador>>() {
+        Call<List<Jugador>> call = api.getPosts();
+        call.enqueue(new Callback<List<Jugador>>() {
             @Override
-            public void onResponse(Call<List<jugador>> call, Response<List<jugador>> response) {
-                List<jugador> lista = response.body();
-                for(jugador obj: lista){
-                    String contenido = "";
-                    contenido += "E-mail: "+ obj.getEmail()+"\n";
-                    contenido += "Se registró el: "+ obj.getFechaCreacion()+"\n";
-                    contenido += "ID: "+ obj.getIdJugador()+"\n";
-                    contenido += "Usuario: "+ obj.getUsuario()+"\n\n";
-                    texto.append(contenido);
+            public void onResponse(Call<List<Jugador>> call, Response<List<Jugador>> response) {
+                List<Jugador> lista = response.body();
+                for(Jugador obj: lista){
+                        String contenido = "";
+                        contenido += "E-mail: " + obj.getEmail() + "\n";
+                        contenido += "Se registró el: " + obj.getFechaCreacion() + "\n";
+                        contenido += "ID: " + obj.getIdJugador() + "\n";
+                        contenido += "Usuario: " + obj.getUsuario() + "\n\n";
+                        texto.append(contenido);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<jugador>> call, Throwable t) {
+            public void onFailure(Call<List<Jugador>> call, Throwable t) {
                 texto = findViewById(R.id.texto1);
                 texto.setText(t.getMessage());
             }

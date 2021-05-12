@@ -1,7 +1,13 @@
 package com.quiz.quizclient.modelo;
 
-public class mazo {
+import com.google.gson.annotations.SerializedName;
+
+public class Mazo {
+
+    @SerializedName("nombre")
     private String nombre;
+
+    @SerializedName("idJugador")
     private int idJugador;
 
     public String getNombre() {

@@ -5,9 +5,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public interface interfaz {
+public interface API {
 
     @GET("jugadores")
-    Call<List<jugador>> getPosts();
+    Call<List<Jugador>> getPosts();
 
 }
