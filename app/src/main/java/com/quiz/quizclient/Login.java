@@ -3,7 +3,6 @@ package com.quiz.quizclient;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,21 +52,20 @@ public class Login extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Inicio sesión");
         setContentView(R.layout.activity_login);
-        //reconstruyendo actividad
-        if (savedInstanceState != null) {
-            esLoginCorrecto = savedInstanceState.getBoolean(STATE_LOGINSTATUS, false);
-            etEmail.setText(savedInstanceState.getString(STATE_email));
-            etContrasena.setText(savedInstanceState.getInt(STATE_contrasena));
-
-        }
         botonLogin = findViewById(R.id.BTN_registrar);
         etContrasena = findViewById(R.id.password_edit_text);
         etEmail = findViewById(R.id.Email_input);
-        obtenerPreferencias();
-        Log.println(Log.DEBUG, "DEBUG_STATE_CREATE", "login:" + esLoginCorrecto +
-                " id: " + idJugador + " email: " + email + " contraseña " + contrasena);
-        esJugador();
+        //reconstruyendo actividad
+        if (savedInstanceState != null) {
+            esLoginCorrecto = savedInstanceState.getBoolean(STATE_LOGINSTATUS, false);
+            email = savedInstanceState.getString(STATE_email);
+            contrasena = savedInstanceState.getString(STATE_contrasena);
 
+        }
+        obtenerPreferencias();
+        if (esLoginCorrecto) {
+            iniciarMenu();
+        }
     }
 
 
@@ -85,10 +83,10 @@ public class Login extends AppCompatActivity {
         editor.apply();
     }
 
-    private boolean loginCorrecto() {
+    private boolean loginCorrecto(OnLoginResponse callback) {
+        esLoginCorrecto = false;
         API api = Client.getClient().create(API.class);
         Call<Jugador> call = api.getJugadorByEmail(email);
-
         //si email y contrasena es igual a los proporcionados return true
         call.enqueue(new Callback<Jugador>() {
             @Override
@@ -98,15 +96,14 @@ public class Login extends AppCompatActivity {
                         if (response.body().getPassword().equals(contrasena)) {
                             esLoginCorrecto = true;
                             idJugador = response.body().getIdJugador();
-                            Toast.makeText(getApplicationContext(), "Login correcto " + idJugador, Toast.LENGTH_SHORT).show();
-                            //guardamos los valores necesarios del login
                             guardarPreferencias();
-                            return;
+                            callback.respuesta(esLoginCorrecto);
                         }
                     }
                 }
-                esLoginCorrecto = false;
-                Toast.makeText(getApplicationContext(), "Login incorrecto ", Toast.LENGTH_SHORT).show();
+                if (!esLoginCorrecto) {
+                    Toast.makeText(getApplicationContext(), "Login incorrecto ", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -119,21 +116,19 @@ public class Login extends AppCompatActivity {
 
 
     public void onComprobarLogin(View v) {
+
         email = etEmail.getText().toString();
         contrasena = etContrasena.getText().toString();
-        if (loginCorrecto()) {
-            esJugador();
-        }
+        loginCorrecto(esLoginCorrecto -> {
+            iniciarMenu();
+        });
+
     }
 
-    private void esJugador() {
-        Log.println(Log.DEBUG, "DEBUG", String.valueOf(esLoginCorrecto));
-        //recomprobamos que hay id correcto
-        if (esLoginCorrecto && idJugador != -1) {
-            Intent intent = new Intent(this, Menu.class);
-            //iniciando actividad
-            intent.putExtra(STATE_idjugador, idJugador);
-            startActivity(intent);
-        }
+    private void iniciarMenu() {
+        Intent intent = new Intent(this, Menu.class);
+        //iniciando actividad
+        intent.putExtra(STATE_idjugador, idJugador);
+        startActivity(intent);
     }
 }

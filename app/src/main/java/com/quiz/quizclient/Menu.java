@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 public class Menu extends AppCompatActivity {
-
+    int idJugador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,7 +17,7 @@ public class Menu extends AppCompatActivity {
         getSupportActionBar().setTitle("Menú Principal");
 
         //recibiendo valores del login idJugador
-        int idJugador = getIntent().getIntExtra("idJugador", -1);
+        idJugador = getIntent().getIntExtra("idJugador", -1);
 
     }
 
@@ -35,6 +35,7 @@ public class Menu extends AppCompatActivity {
 
             case R.id.app_bar_profile:
                 Intent i = new Intent(this, Perfil.class);
+                i.putExtra("idJugador", idJugador);
                 startActivity(i);
 
         }

@@ -28,7 +28,7 @@ public class Perfil extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
         getSupportActionBar().setTitle("Mi Perfil");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getJugador(1);
+        getJugador(getIntent().getIntExtra("idJugador", -1));
     }
 
     private void getJugador(int idJugador) {
