@@ -18,6 +18,7 @@ public class Menu extends AppCompatActivity {
 
         //recibiendo valores del login idJugador
         int idJugador = getIntent().getIntExtra("idJugador", -1);
+
     }
 
 

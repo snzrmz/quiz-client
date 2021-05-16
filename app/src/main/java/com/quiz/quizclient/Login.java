@@ -44,7 +44,6 @@ public class Login extends AppCompatActivity {
         outState.putBoolean(STATE_LOGINSTATUS, esLoginCorrecto);
         outState.putString(STATE_email, email);
         outState.putString(STATE_contrasena, contrasena);
-
     }
 
 
@@ -73,7 +72,7 @@ public class Login extends AppCompatActivity {
 
 
     private void obtenerPreferencias() {
-        preferencias = getPreferences(MODE_PRIVATE);
+        preferencias = getSharedPreferences("IDvalue", 0);
         esLoginCorrecto = preferencias.getBoolean(STATE_LOGINSTATUS, false);
         idJugador = preferencias.getInt(STATE_idjugador, -1);
     }
@@ -83,8 +82,6 @@ public class Login extends AppCompatActivity {
         SharedPreferences.Editor editor = preferencias.edit();
         editor.putBoolean(STATE_LOGINSTATUS, esLoginCorrecto);
         editor.putInt(STATE_idjugador, idJugador);
-        editor.putString(STATE_email, email);
-        editor.putString(STATE_contrasena, contrasena);
         editor.apply();
     }
 
@@ -130,6 +127,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void esJugador() {
+        Log.println(Log.DEBUG, "DEBUG", String.valueOf(esLoginCorrecto));
         //recomprobamos que hay id correcto
         if (esLoginCorrecto && idJugador != -1) {
             Intent intent = new Intent(this, Menu.class);

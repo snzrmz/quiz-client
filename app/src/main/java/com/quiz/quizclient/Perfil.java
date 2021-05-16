@@ -3,6 +3,7 @@ package com.quiz.quizclient;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Perfil extends AppCompatActivity {
+    private final static String STATE_LOGINSTATUS = "esLoginCorrecto";
     TextView jugador_info;
     API api;
 
@@ -61,9 +63,11 @@ public class Perfil extends AppCompatActivity {
         //obtenemos las preferencias de Login
         SharedPreferences preferencias = getSharedPreferences("IDvalue", 0);
         //editamos las preferencias y establecemos esLoginCorrecto a false
+        Log.println(Log.DEBUG, "DEBUG_STATE_CREATE", String.valueOf(preferencias.getBoolean(STATE_LOGINSTATUS, false)));
         SharedPreferences.Editor editor = preferencias.edit();
-        editor.putBoolean("esLoginCorrecto", false);
+        editor.putBoolean(STATE_LOGINSTATUS, false);
         editor.apply();
+
         //volvemos a la pantalla de login
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
