@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.quiz.quizclient">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,15 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizClient"
-        android:usesCleartextTraffic="true" >
-        <activity android:name=".Juego">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
-        <activity android:name=".login" android:parentActivityName=".Principal" />
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Perfil" android:parentActivityName=".Menu" />
+        <activity android:name=".Juego"/>
+        <activity android:name=".Login" android:parentActivityName=".Principal" />
         <activity android:name=".Registro" android:parentActivityName=".Principal" />
         <activity
             android:name=".Principal"
@@ -31,6 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Menu" />
+        <activity android:name=".Menu">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
+
 </manifest>

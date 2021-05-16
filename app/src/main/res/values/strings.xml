@@ -9,5 +9,8 @@
     <string name="user_login">Username</string>
     <string name="pwd_login">Password</string>
     <string name="btn_loginTXT">Continuar</string>
+    <string name="nuevo_repaso">Nuevo Repaso</string>
+    <string name="mis_mazos">Mis Mazos</string>
+    <string name="nuevo_mazo">Nuevo Mazo</string>
 
 </resources>

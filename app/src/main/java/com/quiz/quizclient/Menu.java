@@ -1,8 +1,15 @@
 package com.quiz.quizclient;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
 
 public class Menu extends AppCompatActivity {
 
@@ -10,6 +17,27 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        getSupportActionBar().setTitle("Menú Principal");
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater MI = getMenuInflater();
+        MI.inflate(R.menu.tb_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+
+            case R.id.app_bar_profile:
+                Intent i = new Intent(this, Perfil.class);
+                startActivity(i);
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

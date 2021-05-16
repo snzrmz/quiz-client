@@ -25,7 +25,7 @@ public class Principal extends AppCompatActivity {
 
     }
     public void InicioSesion(View view){
-        Intent i = new Intent(this, login.class);
+        Intent i = new Intent(this, Login.class);
         startActivity(i);
     }
     public void Registro(View view){

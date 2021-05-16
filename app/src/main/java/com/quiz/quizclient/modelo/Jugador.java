@@ -9,7 +9,7 @@ public class Jugador {
     @SerializedName("email")
     private String email;
 
-    @SerializedName("password")
+    @SerializedName("contrasena")
     private String password;
 
     @SerializedName("fechaCreacion")
