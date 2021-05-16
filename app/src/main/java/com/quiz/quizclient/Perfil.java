@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +20,8 @@ import retrofit2.Response;
 
 public class Perfil extends AppCompatActivity {
     private final static String STATE_LOGINSTATUS = "esLoginCorrecto";
-    TextView jugador_info;
+    TextView jugador_usuario, jugador_fechaCreacion;
+
     API api;
 
     @Override
@@ -29,10 +31,13 @@ public class Perfil extends AppCompatActivity {
         getSupportActionBar().setTitle("Mi Perfil");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getJugador(getIntent().getIntExtra("idJugador", -1));
+
+        jugador_usuario = findViewById(R.id.txtUsuario);
+        jugador_fechaCreacion = findViewById(R.id.txtFechaCreacion);
     }
 
     private void getJugador(int idJugador) {
-        jugador_info = findViewById(R.id.info_jugador);
+
 
         api = Client.getClient().create(API.class);
 
@@ -40,21 +45,16 @@ public class Perfil extends AppCompatActivity {
         call.enqueue(new Callback<Jugador>() {
             @Override
             public void onResponse(Call<Jugador> call, Response<Jugador> response) {
+                jugador_usuario.setText(response.body().getUsuario());
+                jugador_fechaCreacion.setText(response.body().getFechaCreacion());
 
-                String contenido = "";
-                contenido += "E-mail: " + response.body().getEmail() + "\n";
-                contenido += "ID: " + response.body().getIdJugador() + "\n";
-                contenido += "Usuario: " + response.body().getUsuario() + "\n";
-                contenido += "Contraseña: " + response.body().getPassword() + "\n";
-                // contenido += "Se registró el: " + response.body().getFechaCreacion()+ "\n\n";
-                jugador_info.append(contenido);
             }
 
 
             @Override
             public void onFailure(Call<Jugador> call, Throwable t) {
 
-                jugador_info.setText(t.getMessage());
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
             }
         });
     }

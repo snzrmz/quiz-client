@@ -2,8 +2,6 @@ package com.quiz.quizclient.modelo;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 public class Jugador {
 
     @SerializedName("email")
@@ -13,7 +11,7 @@ public class Jugador {
     private String password;
 
     @SerializedName("fechaCreacion")
-    private Date fechaCreacion;
+    private String fechaCreacion;
 
     @SerializedName("idJugador")
     private int idJugador;
@@ -27,7 +25,7 @@ public class Jugador {
 
     public String getPassword() { return password; }
 
-    public Date getFechaCreacion() {
+    public String getFechaCreacion() {
         return fechaCreacion;
     }
 
