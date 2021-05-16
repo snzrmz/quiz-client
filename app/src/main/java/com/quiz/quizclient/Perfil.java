@@ -1,6 +1,9 @@
 package com.quiz.quizclient;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,6 +55,18 @@ public class Perfil extends AppCompatActivity {
                 jugador_info.setText(t.getMessage());
             }
         });
+    }
+
+    public void onCerrarSesion(View v) {
+        //obtenemos las preferencias de Login
+        SharedPreferences preferencias = getSharedPreferences("IDvalue", 0);
+        //editamos las preferencias y establecemos esLoginCorrecto a false
+        SharedPreferences.Editor editor = preferencias.edit();
+        editor.putBoolean("esLoginCorrecto", false);
+        editor.apply();
+        //volvemos a la pantalla de login
+        Intent intent = new Intent(this, Login.class);
+        startActivity(intent);
     }
 
 }

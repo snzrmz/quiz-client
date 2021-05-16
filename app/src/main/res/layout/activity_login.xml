@@ -65,6 +65,7 @@
             android:layout_width="193dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:onClick="onComprobarLogin"
             android:text="@string/btn_loginTXT" />
 
     </LinearLayout>

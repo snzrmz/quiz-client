@@ -11,8 +11,8 @@ public interface API {
     @GET("jugadores/{id}")
     Call<Jugador> getJugadorById(@Path("id") int id);
 
-    @GET("jugadores/{email}")
-    Call<Jugador> getUserByEmail(@Path("email") String email);
+    @GET("login/{email}")
+    Call<Jugador> getJugadorByEmail(@Path("email") String email);
 
 
 }
