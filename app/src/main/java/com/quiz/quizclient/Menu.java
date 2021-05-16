@@ -1,14 +1,11 @@
 package com.quiz.quizclient;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class Menu extends AppCompatActivity {
@@ -18,6 +15,9 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         getSupportActionBar().setTitle("Menú Principal");
+
+        //recibiendo valores del login idJugador
+        int idJugador = getIntent().getIntExtra("idJugador", -1);
     }
 
 

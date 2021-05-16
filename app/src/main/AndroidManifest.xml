@@ -14,10 +14,9 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Perfil" android:parentActivityName=".Menu" />
         <activity android:name=".Juego"/>
-        <activity android:name=".Login" android:parentActivityName=".Principal" />
         <activity android:name=".Registro" android:parentActivityName=".Principal" />
         <activity
-            android:name=".Principal"
+            android:name=".Login"
             android:theme="@style/Theme.QuizClient">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

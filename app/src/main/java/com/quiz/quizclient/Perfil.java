@@ -1,13 +1,13 @@
 package com.quiz.quizclient;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.os.Bundle;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.quiz.quizclient.modelo.API;
 import com.quiz.quizclient.modelo.Jugador;
-import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +27,7 @@ TextView jugador_info;
     private void getJugador() {
         jugador_info = findViewById(R.id.info_jugador);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.135:8080/quiz-server/api/jugadores/")
+                .baseUrl("http://192.168.1.42:8080/quiz-server/api/jugadores/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -37,12 +37,13 @@ TextView jugador_info;
         call.enqueue(new Callback<Jugador>() {
             @Override
             public void onResponse(Call<Jugador> call, Response<Jugador> response) {
+
                     String contenido = "";
                     contenido += "E-mail: " + response.body().getEmail() + "\n";
                     contenido += "ID: " + response.body().getIdJugador() + "\n";
                     contenido += "Usuario: " + response.body().getUsuario() + "\n";
                     contenido += "Contraseña: " + response.body().getPassword() + "\n";
-                    contenido += "Se registró el: " + response.body().getFechaCreacion() + "\n\n";
+                // contenido += "Se registró el: " + response.body().getFechaCreacion()+ "\n\n";
                     jugador_info.append(contenido);
                 }
 
