@@ -3,8 +3,8 @@
 
 ### ACTIVITIES
 
-- [✓] Activity crear mazo
-- [✓] Activity crear tarjeta
+- [X] Activity crear mazo
+- [X] Activity crear tarjeta
 - [ ] Activity registro jugador
 - [ ] Activity repaso
 

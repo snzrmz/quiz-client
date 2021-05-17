@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,11 +35,8 @@ public class Perfil extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
         getSupportActionBar().setTitle("Mi Perfil");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //cogemos directamente el idJugador de sharedpreferences,
-        // no del intent, ya que al ir hacia atras
-        //puede retornar el valor por defecto (-1)
-        preferencias = getSharedPreferences("IDvalue", 0);
-        idJugador = preferencias.getInt(STATE_IDJUGADOR, -1);
+
+        idJugador = getIntent().getIntExtra("idJugador", -1);
         getJugador(idJugador);
         jugador_usuario = findViewById(R.id.txtUsuario);
         jugador_fechaCreacion = findViewById(R.id.txtFechaCreacion);
@@ -77,6 +75,18 @@ public class Perfil extends AppCompatActivity {
         //volvemos a la pantalla de login
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {// app icon in action bar clicked; go home
+            Intent intent = new Intent(this, Menu.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("idJugador", idJugador);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

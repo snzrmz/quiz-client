@@ -38,6 +38,7 @@ public class Menu extends AppCompatActivity {
         //recibiendo valores del login idJugador
         idJugador = getIntent().getIntExtra("idJugador", -1);
         recyclerView = findViewById(R.id.rv);
+
         cargarDatos();
 
     }
@@ -79,7 +80,7 @@ public class Menu extends AppCompatActivity {
 
             case R.id.app_bar_profile:
                 Intent i = new Intent(this, Perfil.class);
-                //no se envia putExtra de idJugador ya que se recoge por sharedPreferences
+                i.putExtra("idJugador", idJugador);
                 startActivity(i);
         }
 

@@ -41,18 +41,17 @@ public class AdaptadorMazos extends RecyclerView.Adapter<AdaptadorMazos.ViewHold
 
     public static class ViewHolderDatos extends RecyclerView.ViewHolder {
         TextView nombre;
-        TextView autor;
+        TextView contador;
 
         public ViewHolderDatos(@NonNull View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.txtNombreMazo);
-            //autor= itemView.findViewById(R.id.txtAutor);
+            contador = itemView.findViewById(R.id.txtContador);
         }
 
         public void asignarDatos(Mazo mazo) {
             nombre.setText(mazo.getNombre());
-            //TODO sacar autor
-            //autor.setText(mazo.getAutor());
+            contador.setText(String.valueOf(mazo.getContador()));
         }
     }
 }

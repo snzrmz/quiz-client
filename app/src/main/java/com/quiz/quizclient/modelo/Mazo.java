@@ -10,6 +10,12 @@ public class Mazo {
     @SerializedName("idJugador")
     private int idJugador;
 
+    private int contador;
+
+    public int getContador() {
+        return contador;
+    }
+
     public String getNombre() {
         return nombre;
     }
