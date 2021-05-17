@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:gravity="center">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardElevation="8dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="144dp"
+                android:background="@drawable/fondo_mazo"
+                android:contentDescription="imagen_por_defecto"
+                android:scaleType="centerCrop" /> Media -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <!-- Title, secondary and supporting text -->
+                <TextView
+                    android:id="@+id/txtNombreMazo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="txtNombreMazo"
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                <!--  <TextView
+                       android:id="@+id/txtAutor"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="8dp"
+                       android:text="autor"
+                       android:textAppearance="?attr/textAppearanceBody2"
+                       android:textColor="?android:attr/textColorSecondary" />-->
+
+                <!-- <TextView
+                     android:id="@+id/edCodigo"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="16dp"
+                     android:gravity="right"
+                     android:text="codigo"
+                     android:textAppearance="?attr/textAppearanceBody2"
+                     android:textColor="?android:attr/textColorSecondary" />-->
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</LinearLayout>

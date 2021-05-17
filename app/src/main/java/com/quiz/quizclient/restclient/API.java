@@ -1,6 +1,9 @@
 package com.quiz.quizclient.restclient;
 
 import com.quiz.quizclient.modelo.Jugador;
+import com.quiz.quizclient.modelo.Mazo;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -13,6 +16,9 @@ public interface API {
 
     @GET("login/{email}")
     Call<Jugador> getJugadorByEmail(@Path("email") String email);
+
+    @GET("jugadores/{id}/mazos")
+    Call<List<Mazo>> getMazosFrom(@Path("id") int id);
 
 
 }
