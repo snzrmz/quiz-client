@@ -20,8 +20,12 @@ import retrofit2.Response;
 
 public class Perfil extends AppCompatActivity {
     private final static String STATE_LOGINSTATUS = "esLoginCorrecto";
-    TextView jugador_usuario, jugador_fechaCreacion;
+    private final static String STATE_IDJUGADOR = "idJugador";
 
+    TextView jugador_usuario, jugador_fechaCreacion;
+    String usuario, fecha;
+    int idJugador;
+    SharedPreferences preferencias;
     API api;
 
     @Override
@@ -30,24 +34,27 @@ public class Perfil extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
         getSupportActionBar().setTitle("Mi Perfil");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getJugador(getIntent().getIntExtra("idJugador", -1));
-
+        //cogemos directamente el idJugador de sharedpreferences,
+        // no del intent, ya que al ir hacia atras
+        //puede retornar el valor por defecto (-1)
+        preferencias = getSharedPreferences("IDvalue", 0);
+        idJugador = preferencias.getInt(STATE_IDJUGADOR, -1);
+        getJugador(idJugador);
         jugador_usuario = findViewById(R.id.txtUsuario);
         jugador_fechaCreacion = findViewById(R.id.txtFechaCreacion);
+
     }
 
     private void getJugador(int idJugador) {
-
-
         api = Client.getClient().create(API.class);
-
         Call<Jugador> call = api.getJugadorById(idJugador);
         call.enqueue(new Callback<Jugador>() {
             @Override
             public void onResponse(Call<Jugador> call, Response<Jugador> response) {
-                jugador_usuario.setText(response.body().getUsuario());
-                jugador_fechaCreacion.setText(response.body().getFechaCreacion());
-
+                usuario = response.body().getUsuario();
+                fecha = response.body().getFechaCreacion();
+                jugador_usuario.setText(usuario);
+                jugador_fechaCreacion.setText(fecha);
             }
 
 

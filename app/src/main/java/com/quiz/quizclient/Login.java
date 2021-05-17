@@ -49,12 +49,6 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Inicio sesión");
-        setContentView(R.layout.activity_login);
-        botonLogin = findViewById(R.id.BTN_registrar);
-        etContrasena = findViewById(R.id.password_edit_text);
-        etEmail = findViewById(R.id.Email_input);
         //reconstruyendo actividad
         if (savedInstanceState != null) {
             esLoginCorrecto = savedInstanceState.getBoolean(STATE_LOGINSTATUS, false);
@@ -66,6 +60,13 @@ public class Login extends AppCompatActivity {
         if (esLoginCorrecto) {
             iniciarMenu();
         }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Inicio sesión");
+        setContentView(R.layout.activity_login);
+        botonLogin = findViewById(R.id.BTN_registrar);
+        etContrasena = findViewById(R.id.password_edit_text);
+        etEmail = findViewById(R.id.Email_input);
     }
 
 

@@ -88,13 +88,13 @@
             android:layout_height="wrap_content"
             android:text="Actualizar" />
 
-        <!-- <com.google.android.material.button.MaterialButton
-             android:id="@+id/btnCerrarSesion"
-             style="?attr/materialButtonOutlinedStyle"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:onClick="onCerrarSesion"
-             android:text="Cerrar Sesión" />-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCerrarSesion"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onCerrarSesion"
+            android:text="Cerrar Sesión" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
