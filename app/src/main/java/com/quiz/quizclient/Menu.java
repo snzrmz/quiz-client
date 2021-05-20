@@ -1,16 +1,20 @@
 package com.quiz.quizclient;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quiz.quizclient.modelo.Mazo;
 import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
@@ -28,6 +32,7 @@ public class Menu extends AppCompatActivity {
     AdaptadorMazos adapter;
     RecyclerView recyclerView;
     List<Mazo> mazos;
+    EditText inputtxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,7 @@ public class Menu extends AppCompatActivity {
 
         //recibiendo valores del login idJugador
         idJugador = getIntent().getIntExtra("idJugador", -1);
-        recyclerView = findViewById(R.id.rv);
+        recyclerView = findViewById(R.id.rv_mazos);
 
         cargarDatos();
 
@@ -86,4 +91,46 @@ public class Menu extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    public void add(View v) {
+
+                inputtxt = new EditText(Menu.this);
+                AlertDialog dialog = new AlertDialog.Builder(Menu.this)
+                        .setTitle("Nuevo Mazo")
+                        .setMessage("Titula tu nuevo mazo")
+                        .setView(inputtxt)
+                        .setPositiveButton("Crear", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                API api = Client.getClient().create(API.class);
+                                Mazo mazo = new Mazo();
+                                mazo.setNombre(inputtxt.getText().toString());
+                                mazo.setIdJugador(idJugador);
+
+                                Call<Mazo> call =  api.NewMazo(mazo);
+                                call.enqueue(new Callback<Mazo>() {
+                                    @Override
+                                    public void onResponse(Call<Mazo> call, Response<Mazo> response) {
+                                        if(response.isSuccessful()){
+                                            Toast.makeText(getApplicationContext(), "Mazo Creado "+response.code(), Toast.LENGTH_LONG).show();
+
+                                        }else {
+                                            Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Mazo> call, Throwable t) {
+                                        Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .create();
+                dialog.show();
+             }
+
+
 }

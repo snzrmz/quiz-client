@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.quiz.quizclient.modelo.Jugador;
 import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
@@ -35,6 +36,7 @@ public class Login extends AppCompatActivity {
 
     String email, contrasena;
     Button botonLogin;
+
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -103,13 +105,16 @@ public class Login extends AppCompatActivity {
                     }
                 }
                 if (!esLoginCorrecto) {
-                    Toast.makeText(getApplicationContext(), "Login incorrecto ", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Jugador> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Fallo " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
+                Snackbar.make(null, "Error: "+t.getMessage() , Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         return esLoginCorrecto;

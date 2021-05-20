@@ -6,7 +6,11 @@ import com.quiz.quizclient.modelo.Mazo;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface API {
@@ -21,4 +25,10 @@ public interface API {
     Call<List<Mazo>> getMazosFrom(@Path("id") int id);
 
 
+    @POST("jugadores/{id}/mazos")
+    Call<Mazo> NewMazo(@Body Mazo mazo);
+
 }
+
+
+

@@ -5,10 +5,12 @@
     tools:context="com.quiz.quizclient.menu">
 
 
+
     <item
         android:id="@+id/app_bar_profile"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="Perfil"
-        app:showAsAction="always" />
+        app:showAsAction="always|withText" />
+
 
 </menu>

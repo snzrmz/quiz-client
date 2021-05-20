@@ -12,9 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizClient"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Perfil" android:parentActivityName=".Menu" />
-        <activity android:name=".Juego"/>
-        <activity android:name=".Registro" android:parentActivityName=".Principal" />
+        <activity android:name=".CreaTarjeta"></activity>
+        <activity
+            android:name=".Perfil"
+            android:parentActivityName=".Menu" />
+        <activity android:name=".Juego" />
+        <activity
+            android:name=".Registro"
+            android:parentActivityName=".Principal" />
         <activity
             android:name=".Login"
             android:theme="@style/Theme.QuizClient">
@@ -24,7 +29,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Menu" />
+        <activity android:name=".Menu">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

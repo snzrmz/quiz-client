@@ -1,5 +1,6 @@
 package com.quiz.quizclient.modelo;
 
+import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.SerializedName;
 
 public class Mazo {
@@ -22,5 +23,29 @@ public class Mazo {
 
     public int getIdJugador() {
         return idJugador;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setIdJugador(int idJugador) {
+        this.idJugador = idJugador;
+    }
+
+    public Mazo(String nombre, int idJugador) {
+        this.nombre = nombre;
+        this.idJugador = idJugador;
+    }
+
+    public Mazo() {
+    }
+
+    @Override
+    public String toString() {
+        return "Mazo{" +
+                "nombre:'" + nombre +
+                "idJugador:" + idJugador +
+                '}';
     }
 }

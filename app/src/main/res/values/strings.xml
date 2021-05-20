@@ -12,5 +12,7 @@
     <string name="nuevo_repaso">Nuevo Repaso</string>
     <string name="mis_mazos">Mis Mazos</string>
     <string name="nuevo_mazo">Nuevo Mazo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
