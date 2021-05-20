@@ -13,6 +13,7 @@
         android:theme="@style/Theme.QuizClient"
         android:usesCleartextTraffic="true">
         <activity android:name=".CreaTarjeta"></activity>
+        <activity android:name=".Repaso"></activity>
         <activity
             android:name=".Perfil"
             android:parentActivityName=".Menu" />
@@ -29,13 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Menu">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Menu" />
     </application>
 
 </manifest>

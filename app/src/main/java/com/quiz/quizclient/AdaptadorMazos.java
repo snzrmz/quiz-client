@@ -14,11 +14,18 @@ import java.util.List;
 
 public class AdaptadorMazos extends RecyclerView.Adapter<AdaptadorMazos.ViewHolderDatos> {
 
-    private final List<Mazo> mazos;
-
-    public AdaptadorMazos(List<Mazo> mazos) {
-        this.mazos = mazos;
+    public interface OnItemClickListener {
+        void onItemClick(Mazo mazo);
     }
+
+    private final List<Mazo> mazos;
+    private final OnItemClickListener listener;
+
+    public AdaptadorMazos(List<Mazo> mazos, OnItemClickListener listener) {
+        this.mazos = mazos;
+        this.listener = listener;
+    }
+
 
     @NonNull
     @Override
@@ -31,7 +38,7 @@ public class AdaptadorMazos extends RecyclerView.Adapter<AdaptadorMazos.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
-        holder.asignarDatos(mazos.get(position));
+        holder.asignarDatos(mazos.get(position), listener);
     }
 
     @Override
@@ -49,9 +56,10 @@ public class AdaptadorMazos extends RecyclerView.Adapter<AdaptadorMazos.ViewHold
             contador = itemView.findViewById(R.id.txtContador);
         }
 
-        public void asignarDatos(Mazo mazo) {
+        public void asignarDatos(Mazo mazo, OnItemClickListener listener) {
             nombre.setText(mazo.getNombre());
             contador.setText(String.valueOf(mazo.getContador()));
+            itemView.setOnClickListener(view -> listener.onItemClick(mazo));
         }
     }
 }

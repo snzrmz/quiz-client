@@ -65,9 +65,10 @@ public class Perfil extends AppCompatActivity {
     }
 
     public void onCerrarSesion(View v) {
-
+        preferencias = getSharedPreferences("IDvalue", 0);
         //editamos las preferencias y establecemos esLoginCorrecto a false
         Log.println(Log.DEBUG, "DEBUG_STATE_CREATE", String.valueOf(preferencias.getBoolean(STATE_LOGINSTATUS, false)));
+
         SharedPreferences.Editor editor = preferencias.edit();
         editor.putBoolean(STATE_LOGINSTATUS, false);
         editor.apply();

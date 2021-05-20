@@ -22,6 +22,11 @@ import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
 
+    //interfaz usada como evento de llamada asíncrona de RetroFit loginCorrecto()
+    public interface OnLoginResponse {
+        void respuesta(boolean esLoginCorrecto);
+    }
+
     private static final String STATE_LOGINSTATUS = "esLoginCorrecto";
     private static final String STATE_email = "email";
     private static final String STATE_contrasena = "contrasena";
@@ -30,7 +35,6 @@ public class Login extends AppCompatActivity {
     public static boolean esLoginCorrecto;
     private int idJugador;
     private SharedPreferences preferencias;
-
 
     EditText etEmail, etContrasena;
 

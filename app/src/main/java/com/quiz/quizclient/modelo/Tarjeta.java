@@ -2,7 +2,9 @@ package com.quiz.quizclient.modelo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Tarjeta {
+import java.io.Serializable;
+
+public class Tarjeta implements Serializable {
 
     @SerializedName("idTarjeta")
     private int idTarjeta;
@@ -18,6 +20,7 @@ public class Tarjeta {
 
     @SerializedName("pregunta")
     private String pregunta;
+
 
     public int getIdTarjeta() {
         return idTarjeta;
