@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Mazo;
 import com.quiz.quizclient.modelo.Tarjeta;
@@ -33,12 +34,15 @@ import retrofit2.Response;
 
 public class Menu extends AppCompatActivity {
     int idJugador;
-
+    String nombreMazo;
     RecyclerView recyclerView;
     AdaptadorMazos adaptadorMazos;
     TextView txtContador;
     List<Mazo> mazos;
-    EditText inputText;
+
+    //iconos flotantes
+    boolean isFABOpen = false;
+    FloatingActionButton fab, fab1, fab2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +122,6 @@ public class Menu extends AppCompatActivity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         MenuInflater MI = getMenuInflater();
@@ -153,9 +156,13 @@ public class Menu extends AppCompatActivity {
 
     }
 
+
     public void add(View v) { //metodo encargado de agregar nuevo mazo
+
+
         View view = Menu.this.getLayoutInflater().inflate(R.layout.layout_crea_mazo, null);
         TextInputEditText txtNuevoMazo = view.findViewById(R.id.txtNuevoMazo);
+        nombreMazo=txtNuevoMazo.getText().toString();
         AlertDialog dialog = new AlertDialog.Builder(Menu.this)
                 .setTitle("Nuevo Mazo")
                 .setView(view)
@@ -163,6 +170,7 @@ public class Menu extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         API api = Client.getClient().create(API.class);
+
                         Mazo mazo = new Mazo();
                         mazo.setNombre(txtNuevoMazo.getText().toString());
                         mazo.setIdJugador(idJugador);
@@ -192,4 +200,50 @@ public class Menu extends AppCompatActivity {
                 .create();
         dialog.show();
     }
+
+    //abre actividad para crear tarjeta
+    public void nuevaTarjeta(View v){
+        Intent intent = new Intent(this, Menu.class);
+        //iniciando actividad
+        intent.putExtra("idJugador", idJugador);
+        intent.putExtra("nombreMazo", nombreMazo);
+        startActivity(intent);
+    }
+
+    //llamada menu flotante de botones
+    public void menu_btns(View v){
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) findViewById(R.id.add_mazo);
+        fab2 = (FloatingActionButton) findViewById(R.id.add_tarjeta);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen){
+                    showFABMenu();
+                    fab.animate().rotationBy(225);
+                }else{
+                    closeFABMenu();
+                    fab.animate().rotation(0);
+                }
+            }
+        });
+    }
+
+    //animaciones menu flotante
+    private void showFABMenu(){
+        isFABOpen=true;
+        fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+
+    }
+    //animaciones menu flotante
+    private void closeFABMenu(){
+        isFABOpen=false;
+        fab1.animate().translationY(0);
+        fab2.animate().translationY(0);
+
+    }
+
+
 }
