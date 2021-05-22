@@ -1,5 +1,7 @@
 package com.quiz.quizclient;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +16,18 @@ import java.util.List;
 
 public class AdaptadorMazos extends RecyclerView.Adapter<AdaptadorMazos.ViewHolderDatos> {
 
-    public interface OnItemClickListener {
-        void onItemClick(Mazo mazo);
-    }
+    List<Mazo> mazos;
+    Context context;
 
-    private final List<Mazo> mazos;
-    private final OnItemClickListener listener;
-
-    public AdaptadorMazos(List<Mazo> mazos, OnItemClickListener listener) {
+    public AdaptadorMazos(Context context, List<Mazo> mazos) {
+        this.context = context;
         this.mazos = mazos;
-        this.listener = listener;
     }
 
+    public void setMazoList(List<Mazo> mazos) {
+        this.mazos = mazos;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -38,12 +40,18 @@ public class AdaptadorMazos extends RecyclerView.Adapter<AdaptadorMazos.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
-        holder.asignarDatos(mazos.get(position), listener);
+        holder.nombre.setText(mazos.get(position).getNombre());
+        holder.contador.setText(String.valueOf(mazos.get(position).getContador()));
+        holder.itemView.setLongClickable(true);
+        Log.println(Log.DEBUG, "LOG_ADAPTER", mazos.get(position).getNombre());
     }
 
     @Override
     public int getItemCount() {
-        return mazos.size();
+        if (mazos != null) {
+            return mazos.size();
+        }
+        return 0;
     }
 
     public static class ViewHolderDatos extends RecyclerView.ViewHolder {
@@ -52,14 +60,8 @@ public class AdaptadorMazos extends RecyclerView.Adapter<AdaptadorMazos.ViewHold
 
         public ViewHolderDatos(@NonNull View itemView) {
             super(itemView);
-            nombre = itemView.findViewById(R.id.txtNombreMazo);
-            contador = itemView.findViewById(R.id.txtContador);
-        }
-
-        public void asignarDatos(Mazo mazo, OnItemClickListener listener) {
-            nombre.setText(mazo.getNombre());
-            contador.setText(String.valueOf(mazo.getContador()));
-            itemView.setOnClickListener(view -> listener.onItemClick(mazo));
+            nombre = (TextView) itemView.findViewById(R.id.txtNombreMazo);
+            contador = (TextView) itemView.findViewById(R.id.txtContador);
         }
     }
 }

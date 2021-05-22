@@ -35,6 +35,7 @@ public class Menu extends AppCompatActivity {
     int idJugador;
 
     RecyclerView recyclerView;
+    AdaptadorMazos adaptadorMazos;
     TextView txtContador;
     List<Mazo> mazos;
     EditText inputText;
@@ -48,13 +49,56 @@ public class Menu extends AppCompatActivity {
         //recibiendo valores del login idJugador
         idJugador = getIntent().getIntExtra("idJugador", -1);
         recyclerView = findViewById(R.id.rv);
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));
+        adaptadorMazos = new AdaptadorMazos(getApplicationContext(), mazos);
+        recyclerView.setAdapter(adaptadorMazos);
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        String mazoNombre = mazos.get(position).getNombre();
+                        int mazoContador = mazos.get(position).getContador();
+                        Dialog d = new AlertDialog.Builder(recyclerView.getContext(), AlertDialog.BUTTON_POSITIVE)
+                                .setTitle(mazoNombre)
+                                .setNegativeButton("Cancelar", null)
+                                .setItems(new String[]{"Repasar", "Ver tarjetas"}, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dlg, int position) {
+                                        if (position == 0) {
 
-        cargarDatos();
+                                            API api = Client.getClient().create(API.class);
+                                            Call<List<Tarjeta>> call = api.getFromMazo(idJugador, mazoNombre);
+                                            call.enqueue(new Callback<List<Tarjeta>>() {
+                                                @Override
+                                                public void onResponse(Call<List<Tarjeta>> call, Response<List<Tarjeta>> response) {
+                                                    if (response.isSuccessful()) {
+                                                        List<Tarjeta> tarjetas = response.body();
+                                                        iniciarActividad(Repaso.class, mazoNombre, mazoContador, tarjetas);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<List<Tarjeta>> call, Throwable t) {
+                                                    Toast.makeText(getBaseContext(), "Error al recuperar tarjetas", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                        }
+                                    }
+                                }).create();
+                        d.show();
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        //
+                    }
+                })
+        );
+        cargarMazos();
 
     }
 
-    private void cargarDatos() {
-
+    private void cargarMazos() {
         API api = Client.getClient().create(API.class);
         api.getMazosFrom(idJugador).enqueue(new Callback<List<Mazo>>() {
             @Override
@@ -63,41 +107,7 @@ public class Menu extends AppCompatActivity {
                     mazos = response.body();
                     //traza para el log, recorrer mazos
                     mazos.forEach(mazo -> Log.println(Log.DEBUG, "LOG", mazo.getNombre()));
-                    //establecemos el layout y el adaptador con el onclick
-                    recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));
-                    recyclerView.setAdapter(new AdaptadorMazos(mazos, mazo -> {
-                        Dialog d = new AlertDialog.Builder(recyclerView.getContext(), AlertDialog.BUTTON_POSITIVE)
-                                .setTitle(mazo.getNombre())
-                                .setNegativeButton("Cancelar", null)
-                                .setItems(new String[]{"Repasar", "Ver tarjetas"}, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dlg, int position) {
-                                        if (position == 0) {
-
-                                            API api = Client.getClient().create(API.class);
-                                            Call<List<Tarjeta>> call = api.getFromMazo(idJugador, mazo.getNombre());
-                                            call.enqueue(new Callback<List<Tarjeta>>() {
-                                                @Override
-                                                public void onResponse(Call<List<Tarjeta>> call, Response<List<Tarjeta>> response) {
-                                                    if (response.isSuccessful()) {
-                                                        List<Tarjeta> tarjetas = response.body();
-                                                        iniciarActividad(Repaso.class, mazo.getNombre(), mazo.getContador(), tarjetas);
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onFailure(Call<List<Tarjeta>> call1, Throwable t) {
-                                                    Toast.makeText(getBaseContext(), "Error al recuperar tarjetas", Toast.LENGTH_LONG).show();
-                                                }
-                                            });
-
-
-                                        }
-                                    }
-                                })
-                                .create();
-                        d.show();
-                    }));
+                    adaptadorMazos.setMazoList(mazos);
                 }
             }
 
@@ -107,6 +117,7 @@ public class Menu extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
@@ -142,19 +153,16 @@ public class Menu extends AppCompatActivity {
 
     }
 
-
     public void add(View v) { //metodo encargado de agregar nuevo mazo
         View view = Menu.this.getLayoutInflater().inflate(R.layout.layout_crea_mazo, null);
         TextInputEditText txtNuevoMazo = view.findViewById(R.id.txtNuevoMazo);
         AlertDialog dialog = new AlertDialog.Builder(Menu.this)
                 .setTitle("Nuevo Mazo")
-
                 .setView(view)
                 .setPositiveButton("Crear", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         API api = Client.getClient().create(API.class);
-
                         Mazo mazo = new Mazo();
                         mazo.setNombre(txtNuevoMazo.getText().toString());
                         mazo.setIdJugador(idJugador);
@@ -164,6 +172,9 @@ public class Menu extends AppCompatActivity {
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "¡Mazo Creado!", Toast.LENGTH_LONG).show();
+                                    //actualiza el recyclerView para mostrar el nuevo mazo
+                                    mazos.add(mazo);
+                                    adaptadorMazos.setMazoList(mazos);
 
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Error creando el mazo " + response.code(), Toast.LENGTH_LONG).show();
@@ -181,6 +192,4 @@ public class Menu extends AppCompatActivity {
                 .create();
         dialog.show();
     }
-
-
 }
