@@ -38,7 +38,7 @@
 
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Email_input"
+                android:id="@+id/txtNuevoMazo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"

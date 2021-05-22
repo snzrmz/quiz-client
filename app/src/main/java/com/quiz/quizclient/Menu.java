@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Mazo;
 import com.quiz.quizclient.modelo.Tarjeta;
 import com.quiz.quizclient.restclient.API;
@@ -73,9 +74,9 @@ public class Menu extends AppCompatActivity {
                                     public void onClick(DialogInterface dlg, int position) {
                                         if (position == 0) {
 
-                                            API api1 = Client.getClient().create(API.class);
-                                            Call<List<Tarjeta>> call1 = api1.getFromMazo(idJugador, mazo.getNombre());
-                                            call1.enqueue(new Callback<List<Tarjeta>>() {
+                                            API api = Client.getClient().create(API.class);
+                                            Call<List<Tarjeta>> call = api.getFromMazo(idJugador, mazo.getNombre());
+                                            call.enqueue(new Callback<List<Tarjeta>>() {
                                                 @Override
                                                 public void onResponse(Call<List<Tarjeta>> call, Response<List<Tarjeta>> response) {
                                                     if (response.isSuccessful()) {
@@ -143,9 +144,8 @@ public class Menu extends AppCompatActivity {
 
 
     public void add(View v) { //metodo encargado de agregar nuevo mazo
-
-        inputText = new EditText(Menu.this);
         View view = Menu.this.getLayoutInflater().inflate(R.layout.layout_crea_mazo, null);
+        TextInputEditText txtNuevoMazo = view.findViewById(R.id.txtNuevoMazo);
         AlertDialog dialog = new AlertDialog.Builder(Menu.this)
                 .setTitle("Nuevo Mazo")
 
@@ -156,23 +156,23 @@ public class Menu extends AppCompatActivity {
                         API api = Client.getClient().create(API.class);
 
                         Mazo mazo = new Mazo();
-                        mazo.setNombre(inputText.getText().toString());
+                        mazo.setNombre(txtNuevoMazo.getText().toString());
                         mazo.setIdJugador(idJugador);
-                        Call<Mazo> call = api.newMazo(mazo);
-                        call.enqueue(new Callback<Mazo>() {
+                        Call<Void> call = api.newMazo(mazo);
+                        call.enqueue(new Callback<Void>() {
                             @Override
-                            public void onResponse(Call<Mazo> call, Response<Mazo> response) {
+                            public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "¡Mazo Creado!" + response.code(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "¡Mazo Creado!", Toast.LENGTH_LONG).show();
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Error creando el mazo "+ response.code(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Error creando el mazo " + response.code(), Toast.LENGTH_LONG).show();
                                 }
                             }
 
                             @Override
-                            public void onFailure(Call<Mazo> call, Throwable t) {
-                                Toast.makeText(getApplicationContext(), "Error de conexión", Toast.LENGTH_LONG).show();
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Log.println(Log.DEBUG, "LOG", t.getMessage());
                             }
                         });
                     }

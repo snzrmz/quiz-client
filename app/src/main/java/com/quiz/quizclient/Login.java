@@ -71,7 +71,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         botonLogin = findViewById(R.id.BTN_registrar);
         etContrasena = findViewById(R.id.password_edit_text);
-        etEmail = findViewById(R.id.Email_input);
+        etEmail = findViewById(R.id.txtNuevoMazo);
     }
 
 
