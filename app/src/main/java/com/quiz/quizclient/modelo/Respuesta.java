@@ -3,6 +3,7 @@ package com.quiz.quizclient.modelo;
 import com.google.gson.annotations.SerializedName;
 
 public class Respuesta {
+
     @SerializedName("idRespuesta")
     private int idRespuesta;
     @SerializedName("valor")

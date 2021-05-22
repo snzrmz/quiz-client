@@ -18,10 +18,7 @@ import java.util.List;
 
 public class Repaso extends AppCompatActivity {
 
-
-    public interface OnRespuestaReponse {
-        void tarjetas(List<Respuesta> respuestas);
-    }
+    public interface OnRespuestaReponse { void tarjetas(List<Respuesta> respuestas); }
 
     int idJugador;
     String nombreMazo;

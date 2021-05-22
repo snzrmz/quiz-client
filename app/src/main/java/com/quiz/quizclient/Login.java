@@ -67,7 +67,6 @@ public class Login extends AppCompatActivity {
             iniciarMenu();
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Inicio sesión");
         setContentView(R.layout.activity_login);
         botonLogin = findViewById(R.id.BTN_registrar);
@@ -110,7 +109,7 @@ public class Login extends AppCompatActivity {
                 }
                 if (!esLoginCorrecto) {
 
-                    Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "¡Login incorrecto!", Toast.LENGTH_SHORT).show();
                 }
             }
 

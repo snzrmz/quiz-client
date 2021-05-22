@@ -142,36 +142,37 @@ public class Menu extends AppCompatActivity {
     }
 
 
-    public void add(View v) {
+    public void add(View v) { //metodo encargado de agregar nuevo mazo
 
         inputText = new EditText(Menu.this);
+        View view = Menu.this.getLayoutInflater().inflate(R.layout.layout_crea_mazo, null);
         AlertDialog dialog = new AlertDialog.Builder(Menu.this)
                 .setTitle("Nuevo Mazo")
-                .setMessage("Titula tu nuevo mazo")
-                .setView(inputText)
+
+                .setView(view)
                 .setPositiveButton("Crear", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         API api = Client.getClient().create(API.class);
+
                         Mazo mazo = new Mazo();
                         mazo.setNombre(inputText.getText().toString());
                         mazo.setIdJugador(idJugador);
-
-                        Call<Mazo> call = api.NewMazo(mazo);
+                        Call<Mazo> call = api.newMazo(mazo);
                         call.enqueue(new Callback<Mazo>() {
                             @Override
                             public void onResponse(Call<Mazo> call, Response<Mazo> response) {
                                 if (response.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Mazo Creado " + response.code(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "¡Mazo Creado!" + response.code(), Toast.LENGTH_LONG).show();
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Error creando el mazo "+ response.code(), Toast.LENGTH_LONG).show();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<Mazo> call, Throwable t) {
-                                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "Error de conexión", Toast.LENGTH_LONG).show();
                             }
                         });
                     }

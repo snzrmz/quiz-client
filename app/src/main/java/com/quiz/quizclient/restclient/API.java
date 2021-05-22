@@ -26,8 +26,8 @@ public interface API {
     @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
     Call<List<Tarjeta>> getFromMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
 
-    @POST("jugadores/{id}/mazos")
-    Call<Mazo> NewMazo(@Body Mazo mazo);
+    @POST("jugadores/{id}/mazos/")
+    Call<Mazo> newMazo(@Body Mazo mazo);
 
 }
 

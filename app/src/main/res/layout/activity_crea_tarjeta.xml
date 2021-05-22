@@ -6,4 +6,147 @@
     android:layout_height="match_parent"
     tools:context=".CreaTarjeta">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:text="Para crear una nueva pregunta completa los campos corectamente" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/ic_baseline_help_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pregunta_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Enunciado de tu pregunta"
+                android:maxLines="1"
+                app:counterEnabled="true"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="177dp"
+                android:layout_height="wrap_content"
+                android:text="Multirespuesta"/>
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monorespuesta" />
+        </RadioGroup>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BTN_Registro"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:textSize="10sp"
+            android:layout_gravity="center"
+            android:text="¿Cual elijo?" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/ic_baseline_help_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/respuesta_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Respuesta"
+                android:maxLines="1"
+                app:counterEnabled="true"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/ic_baseline_help_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/respuesta2_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Opción 2"
+                android:maxLines="1"
+                app:counterEnabled="true"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/ic_baseline_help_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/respuesta3_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Opción 3"
+                android:maxLines="1"
+                app:counterEnabled="true"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:startIconDrawable="@drawable/ic_baseline_help_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/respuesta4_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="Opción 4"
+                android:maxLines="1"
+                app:counterEnabled="true"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_nuevatarjeta"
+            android:layout_width="214dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp"
+            android:text="@string/btn_loginTXT" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
