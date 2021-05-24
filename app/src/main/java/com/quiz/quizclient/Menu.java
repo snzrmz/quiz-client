@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Mazo;
 import com.quiz.quizclient.modelo.Tarjeta;
+import com.quiz.quizclient.modelo.TarjetasConRespuestas;
 import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
 
@@ -33,11 +34,9 @@ import retrofit2.Response;
 
 
 public class Menu extends AppCompatActivity {
-
     int idJugador;
     RecyclerView recyclerView;
     AdaptadorMazos adaptadorMazos;
-    TextView txtContador;
     List<Mazo> mazos;
 
     //iconos flotantes
@@ -49,6 +48,11 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         getSupportActionBar().setTitle("Menú Principal");
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) findViewById(R.id.add_mazo);
+        fab2 = (FloatingActionButton) findViewById(R.id.add_tarjeta);
+
 
         //recibiendo valores del login idJugador
         idJugador = getIntent().getIntExtra("idJugador", -1);
@@ -69,6 +73,25 @@ public class Menu extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dlg, int position) {
                                         if (position == 0) {
+                                            API api = Client.getClient().create(API.class);
+                                            Call<List<TarjetasConRespuestas>> call = api.getTarjetasConRespuestas(idJugador, mazoNombre);
+                                            call.enqueue(new Callback<List<TarjetasConRespuestas>>() {
+                                                @Override
+                                                public void onResponse(Call<List<TarjetasConRespuestas>> call, Response<List<TarjetasConRespuestas>> response) {
+                                                    if (response.isSuccessful()) {
+                                                        List<TarjetasConRespuestas> tarjetasConRespuestas = response.body();
+                                                        iniciarActividad(Repaso.class, mazoNombre, mazoContador, tarjetasConRespuestas);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<List<TarjetasConRespuestas>> call, Throwable t) {
+
+                                                }
+                                            });
+
+                                        }
+                                        if (position == 1) {
 
                                             API api = Client.getClient().create(API.class);
                                             Call<List<Tarjeta>> call = api.getFromMazo(idJugador, mazoNombre);
@@ -142,13 +165,18 @@ public class Menu extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void iniciarActividad(Class<?> actividad, String nombreMazo, int contador, List<Tarjeta> tarjetas) {
+    private void iniciarActividad(Class<?> actividad, String nombreMazo, int contador, List<?> tarjetas) {
         if (contador != 0) {
             Intent intent = new Intent(this, actividad);
             //iniciando actividad
             intent.putExtra("idJugador", idJugador);
             intent.putExtra("nombreMazo", nombreMazo);
-            intent.putExtra("tarjetas", (Serializable) tarjetas);
+            //dependiendo si son Tarjetas o TarjetasConRespuestas se guarda para la siguiente actividad
+            if (tarjetas.get(0) instanceof Tarjeta) {
+                intent.putExtra("tarjetas", (Serializable) tarjetas);
+            } else {
+                intent.putExtra("tarjetasConRespuestas", (Serializable) tarjetas);
+            }
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), "Primero asigne tarjetas al mazo ", Toast.LENGTH_LONG).show();
@@ -159,8 +187,10 @@ public class Menu extends AppCompatActivity {
 
     public void add(View v) { //metodo encargado de agregar nuevo mazo
 
+
         View view = Menu.this.getLayoutInflater().inflate(R.layout.layout_crea_mazo, null);
         TextInputEditText txtNuevoMazo = view.findViewById(R.id.txtNuevoMazo);
+        nombreMazo=txtNuevoMazo.getText().toString();
         AlertDialog dialog = new AlertDialog.Builder(Menu.this)
                 .setTitle("Nuevo Mazo")
                 .setView(view)
@@ -168,10 +198,11 @@ public class Menu extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         API api = Client.getClient().create(API.class);
+
                         Mazo mazo = new Mazo();
                         mazo.setNombre(txtNuevoMazo.getText().toString());
                         mazo.setIdJugador(idJugador);
-                        Call<Void> call = api.newMazo(mazo);
+                        Call<Void> call = api.createMazo(mazo);
                         call.enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -218,6 +249,14 @@ public class Menu extends AppCompatActivity {
                 fab.animate().rotation(0);
             }
 
+    public void menu_btns(View v) {
+        if (!isFABOpen) {
+            showFABMenu();
+            fab.animate().rotationBy(225);
+        } else {
+            closeFABMenu();
+            fab.animate().rotation(0);
+        }
     }
 
     //animaciones menu flotante

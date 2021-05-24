@@ -27,11 +27,13 @@ public interface API {
     Call<List<Tarjeta>> getFromMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
 
     @POST("jugadores/{id}/mazos/")
-    Call<Void> newMazo(@Body Mazo mazo);
+    Call<Void> createMazo(@Body Mazo mazo);
 
     @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
     Call<Void> newTarjeta(@Body Tarjeta tarjeta);
 
+    @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
+    Call<List<TarjetasConRespuestas>> getTarjetasConRespuestas(@Path("id") int idJugador, @Path("nombreMazo") String mazoNombre);
 }
 
 

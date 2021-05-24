@@ -4,23 +4,21 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Tarjeta implements Serializable {
-
+public class TarjetasConRespuestas implements Serializable {
     @SerializedName("idTarjeta")
     private int idTarjeta;
-
     @SerializedName("tipoRespuesta")
     private String tipoRespuesta;
-
     @SerializedName("idJugador")
     private int idJugador;
-
-    @SerializedName("nombreMazo")
-    private String nombreMazo;
-
     @SerializedName("pregunta")
     private String pregunta;
-
+    @SerializedName("valor")
+    private String valor;
+    @SerializedName("correcta")
+    private int correcta;
+    @SerializedName("recursoRuta")
+    private String recursoRuta;
 
     public int getIdTarjeta() {
         return idTarjeta;
@@ -34,11 +32,19 @@ public class Tarjeta implements Serializable {
         return idJugador;
     }
 
-    public String getNombreMazo() {
-        return nombreMazo;
-    }
-
     public String getPregunta() {
         return pregunta;
+    }
+
+    public String getValor() {
+        return valor;
+    }
+
+    public int getCorrecta() {
+        return correcta;
+    }
+
+    public String getRecursoRuta() {
+        return recursoRuta;
     }
 }
