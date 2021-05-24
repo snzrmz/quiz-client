@@ -29,6 +29,9 @@ public interface API {
     @POST("jugadores/{id}/mazos/")
     Call<Void> newMazo(@Body Mazo mazo);
 
+    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
+    Call<Void> newTarjeta(@Body Tarjeta tarjeta);
+
 }
 
 

@@ -19,7 +19,6 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:text="A continuación escribe la respuesta" />
 
         <com.google.android.material.textfield.TextInputLayout

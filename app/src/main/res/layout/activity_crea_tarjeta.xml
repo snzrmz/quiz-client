@@ -94,12 +94,46 @@
             android:layout_height="45dp"
             android:text="Elegir imagen" />
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:Tint="@color/orange2"
+            tools:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"
+            android:text="¿A que mazo pertenece esta tarjeta?" />
+
+
+
+        <Spinner
+            android:id="@+id/spinnerMazos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+
+            android:backgroundTint="#F44336"
+            android:spinnerMode="dropdown" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_nuevatarjeta"
             android:layout_width="214dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginTop="36dp"
-            android:text="@string/btn_loginTXT" />
+            android:layout_marginTop="22dp"
+            android:onClick="addTarjeta"
+            android:text="crear" />
+
+
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

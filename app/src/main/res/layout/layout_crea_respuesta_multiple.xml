@@ -13,7 +13,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="6dp"
-        android:textColor="@color/black"
         android:text="A continuación escribe la respuesta correcta y las posibles opciones que se puedan elejir" />
 
     <LinearLayout
