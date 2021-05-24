@@ -39,6 +39,8 @@ public class Menu extends AppCompatActivity {
     AdaptadorMazos adaptadorMazos;
     List<Mazo> mazos;
 
+
+
     //iconos flotantes
     boolean botonesAbiertos = false;
     FloatingActionButton fab, fab1, fab2;
@@ -190,7 +192,6 @@ public class Menu extends AppCompatActivity {
 
         View view = Menu.this.getLayoutInflater().inflate(R.layout.layout_crea_mazo, null);
         TextInputEditText txtNuevoMazo = view.findViewById(R.id.txtNuevoMazo);
-        nombreMazo=txtNuevoMazo.getText().toString();
         AlertDialog dialog = new AlertDialog.Builder(Menu.this)
                 .setTitle("Nuevo Mazo")
                 .setView(view)
@@ -237,20 +238,11 @@ public class Menu extends AppCompatActivity {
     }
 
     //llamada menu flotante de botones
-    public void menu_btns(View v){
+    public void menu_btns(View v) {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.add_mazo);
         fab2 = (FloatingActionButton) findViewById(R.id.add_tarjeta);
-            if(!botonesAbiertos){
-                showFABMenu();
-                fab.animate().rotationBy(225);
-            }else{
-                closeFABMenu();
-                fab.animate().rotation(0);
-            }
-
-    public void menu_btns(View v) {
-        if (!isFABOpen) {
+        if (!botonesAbiertos) {
             showFABMenu();
             fab.animate().rotationBy(225);
         } else {
@@ -258,6 +250,7 @@ public class Menu extends AppCompatActivity {
             fab.animate().rotation(0);
         }
     }
+
 
     //animaciones menu flotante
     private void showFABMenu(){
