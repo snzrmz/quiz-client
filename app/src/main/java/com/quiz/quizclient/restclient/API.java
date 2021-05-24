@@ -3,6 +3,7 @@ package com.quiz.quizclient.restclient;
 import com.quiz.quizclient.modelo.Jugador;
 import com.quiz.quizclient.modelo.Mazo;
 import com.quiz.quizclient.modelo.Tarjeta;
+import com.quiz.quizclient.modelo.TarjetasConRespuestas;
 
 import java.util.List;
 

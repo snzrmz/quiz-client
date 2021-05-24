@@ -100,7 +100,7 @@
             android:layout_height="66dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:Tint="@color/orange2"
+            android:tint="@color/orange2"
             tools:srcCompat="@drawable/ic_baseline_add_a_photo_24" />
 
         <TextView

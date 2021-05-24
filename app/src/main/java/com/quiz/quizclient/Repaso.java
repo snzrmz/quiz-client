@@ -122,7 +122,6 @@ public class Repaso extends AppCompatActivity {
             establecerTarjetaSimple(keySiguientePregunta.get(0));
 
         } else {
-
             establecerTarjetaMultiple(keySiguientePregunta);
         }
     }
