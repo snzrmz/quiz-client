@@ -3,6 +3,7 @@ package com.quiz.quizclient.restclient;
 import com.quiz.quizclient.modelo.Jugador;
 import com.quiz.quizclient.modelo.Mazo;
 import com.quiz.quizclient.modelo.Tarjeta;
+import com.quiz.quizclient.modelo.TarjetasConRespuestas;
 
 import java.util.List;
 
@@ -27,8 +28,10 @@ public interface API {
     Call<List<Tarjeta>> getFromMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
 
     @POST("jugadores/{id}/mazos/")
-    Call<Void> newMazo(@Body Mazo mazo);
+    Call<Void> createMazo(@Body Mazo mazo);
 
+    @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
+    Call<List<TarjetasConRespuestas>> getTarjetasConRespuestas(@Path("id") int idJugador, @Path("nombreMazo") String mazoNombre);
 }
 
 

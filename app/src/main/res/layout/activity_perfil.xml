@@ -38,9 +38,9 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="104dp"
-                    android:contentDescription="string/content_description_media"
                     android:scaleType="centerInside"
-                    app:srcCompat="@drawable/ic_freesvgorg_user" />
+                    app:srcCompat="@drawable/ic_freesvgorg_user"
+                    android:contentDescription="" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

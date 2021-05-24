@@ -17,6 +17,8 @@ public class TarjetasConRespuestas implements Serializable {
     private String valor;
     @SerializedName("correcta")
     private int correcta;
+    @SerializedName("recursoRuta")
+    private String recursoRuta;
 
     public int getIdTarjeta() {
         return idTarjeta;
@@ -40,5 +42,9 @@ public class TarjetasConRespuestas implements Serializable {
 
     public int getCorrecta() {
         return correcta;
+    }
+
+    public String getRecursoRuta() {
+        return recursoRuta;
     }
 }
