@@ -100,7 +100,7 @@ public class Menu extends AppCompatActivity {
                                                 public void onResponse(Call<List<Tarjeta>> call, Response<List<Tarjeta>> response) {
                                                     if (response.isSuccessful()) {
                                                         List<Tarjeta> tarjetas = response.body();
-                                                        iniciarActividad(Repaso.class, mazoNombre, mazoContador, tarjetas);
+                                                        iniciarActividad(VerTarjetas.class, mazoNombre, mazoContador, tarjetas);
                                                     }
                                                 }
 

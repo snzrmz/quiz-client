@@ -40,7 +40,7 @@ public class Repaso extends AppCompatActivity {
         idJugador = getIntent().getIntExtra("idJugador", -1);
         nombreMazo = getIntent().getStringExtra("nombreMazo");
         getSupportActionBar().setTitle("Repasando " + nombreMazo);
-        txtPregunta = findViewById(R.id.txtPregunta);
+        txtPregunta = findViewById(R.id.txtRespuesta);
         lLRespuestas = findViewById(R.id.lLRespuestas);
         txtNumTarjeta = findViewById(R.id.txtNumTarjeta);
         etRespuesta = findViewById(R.id.etRespuesta);

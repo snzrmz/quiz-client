@@ -1,7 +1,5 @@
 package com.quiz.quizclient;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -9,11 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Mazo;
@@ -106,7 +103,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         tarjeta.setPregunta(pregunta.getText().toString());
         tarjeta.setNombreMazo(mazo_selecionado);
         tarjeta.setIdJugador(idJugador);
-        tarjeta.setRecurso(null);//null de momento
+        tarjeta.setRecursoRuta(null);//null de momento
         if (TipoMulti=true) {
             tarjeta.setTipoRespuesta("MULTIPLE");
         }else{
