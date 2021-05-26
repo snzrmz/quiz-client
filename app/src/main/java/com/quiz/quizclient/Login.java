@@ -1,14 +1,17 @@
 package com.quiz.quizclient;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -21,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Login extends AppCompatActivity {
+
 
     //interfaz usada como evento de llamada asíncrona de RetroFit loginCorrecto()
     public interface OnLoginResponse {
@@ -40,6 +44,24 @@ public class Login extends AppCompatActivity {
 
     String email, contrasena;
     Button botonLogin;
+    boolean nuevoUsuario;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //al venir de startActivityForResult se ejecutara lo siguiente
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                nuevoUsuario = data.getBooleanExtra("nuevoJugador", false);
+                idJugador = data.getIntExtra("idJugador", -1);
+                Log.d("LOG", "Resultado correcto, obtenido valores " + idJugador + " nuevo:" + nuevoUsuario);
+                iniciarMenu();
+            }
+        } else {
+            Log.d("LOG", "FALLO " + requestCode);
+
+        }
+    }
 
 
     @Override
@@ -142,7 +164,8 @@ public class Login extends AppCompatActivity {
     }
 
     public void iniciarRegistro(View v){
+        int LAUNCH_SECOND_ACTIVITY = 1;
         Intent intent = new Intent(this, Registro.class);
-        startActivity(intent);
+        startActivityForResult(intent, LAUNCH_SECOND_ACTIVITY);
     }
 }

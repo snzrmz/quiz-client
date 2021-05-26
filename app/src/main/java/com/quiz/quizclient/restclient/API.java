@@ -22,7 +22,7 @@ public interface API {
     Call<Jugador> getJugadorById(@Path("id") int id);
 
     @POST("jugadores/")
-    Call<Jugador> CreateJugador(@Body Jugador jugador);
+    Call<Void> createJugador(@Body Jugador jugador);
 
     @GET("login/{email}")
     Call<Jugador> getJugadorByEmail(@Path("email") String email);

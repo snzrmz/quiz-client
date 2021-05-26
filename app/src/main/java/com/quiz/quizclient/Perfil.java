@@ -52,7 +52,7 @@ public class Perfil extends AppCompatActivity {
                 usuario = response.body().getUsuario();
                 fecha = response.body().getFechaCreacion();
                 jugador_usuario.setText(usuario);
-                jugador_fechaCreacion.setText(fecha);
+                jugador_fechaCreacion.setText(fecha.toString());
             }
 
 

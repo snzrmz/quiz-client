@@ -67,4 +67,15 @@ public class Jugador {
         this.idJugador = idJugador;
         this.usuario = usuario;
     }
+
+    @Override
+    public String toString() {
+        return "Jugador{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", fechaCreacion='" + fechaCreacion + '\'' +
+                ", idJugador=" + idJugador +
+                ", usuario='" + usuario + '\'' +
+                '}';
+    }
 }
