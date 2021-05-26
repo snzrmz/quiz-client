@@ -57,7 +57,7 @@ public class Menu extends AppCompatActivity {
         //recibiendo valores del login idJugador
         idJugador = getIntent().getIntExtra("idJugador", -1);
         recyclerView = findViewById(R.id.rv);
-        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false));
         adaptadorMazos = new AdaptadorMazos(getApplicationContext(), mazos);
         recyclerView.setAdapter(adaptadorMazos);
         recyclerView.addOnItemTouchListener(

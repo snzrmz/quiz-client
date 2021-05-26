@@ -29,8 +29,11 @@
 
             <TextView
                 android:id="@+id/txtNombreMazo"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/candal"
+                android:gravity="center"
+                android:paddingTop="8dp"
                 android:text="txtNombreMazo"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
