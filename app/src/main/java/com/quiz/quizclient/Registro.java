@@ -14,8 +14,6 @@ public class Registro extends AppCompatActivity {
         setContentView(R.layout.activity_registro);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Registro");
-
-
     }
 
 }

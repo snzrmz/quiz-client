@@ -9,7 +9,7 @@ public class Respuesta {
     @SerializedName("valor")
     private String valor;
     @SerializedName("correcta")
-    private boolean correcta;
+    private int correcta;
     @SerializedName("idTarjeta")
     private int idTarjeta;
 
@@ -21,9 +21,7 @@ public class Respuesta {
         this.valor = valor;
     }
 
-    public void setCorrecta(boolean correcta) {
-        this.correcta = correcta;
-    }
+
 
     public void setIdTarjeta(int idTarjeta) {
         this.idTarjeta = idTarjeta;
@@ -37,12 +35,26 @@ public class Respuesta {
         return valor;
     }
 
-    public boolean isCorrecta() {
+    public int getCorrecta() {
         return correcta;
+    }
+
+    public void setCorrecta(int correcta) {
+        this.correcta = correcta;
     }
 
     public int getIdTarjeta() {
         return idTarjeta;
+    }
+
+    public Respuesta() {
+    }
+
+    public Respuesta(int idRespuesta, String valor, int correcta, int idTarjeta) {
+        this.idRespuesta = idRespuesta;
+        this.valor = valor;
+        this.correcta = correcta;
+        this.idTarjeta = idTarjeta;
     }
 }
 

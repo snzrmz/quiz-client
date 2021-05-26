@@ -2,7 +2,11 @@ package com.quiz.quizclient.restclient;
 
 import com.quiz.quizclient.modelo.Jugador;
 import com.quiz.quizclient.modelo.Mazo;
+import com.quiz.quizclient.modelo.Respuesta;
 import com.quiz.quizclient.modelo.Tarjeta;
+import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Multiple;
+import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Unica;
+import com.quiz.quizclient.modelo.TarjetasConRespuestas;
 
 import java.util.List;
 
@@ -17,6 +21,9 @@ public interface API {
     @GET("jugadores/{id}")
     Call<Jugador> getJugadorById(@Path("id") int id);
 
+    @POST("jugadores/")
+    Call<Jugador> CreateJugador(@Body Jugador jugador);
+
     @GET("login/{email}")
     Call<Jugador> getJugadorByEmail(@Path("email") String email);
 
@@ -30,10 +37,21 @@ public interface API {
     Call<Void> createMazo(@Body Mazo mazo);
 
     @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
-    Call<Void> newTarjeta(@Body Tarjeta tarjeta);
+    Call<Tarjeta> createTarjeta(@Body Tarjeta tarjeta);
 
     @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
     Call<List<TarjetasConRespuestas>> getTarjetasConRespuestas(@Path("id") int idJugador, @Path("nombreMazo") String mazoNombre);
+
+    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
+    Call<Respuesta> createRespuesta(@Body Respuesta respuesta);
+
+    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
+    Call<Tarjeta_Respuesta_Multiple> createTJM(@Body Tarjeta_Respuesta_Multiple tjm);
+
+    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
+    Call<Tarjeta_Respuesta_Unica> createTJU(@Body Tarjeta_Respuesta_Unica tju);
+
+
 }
 
 

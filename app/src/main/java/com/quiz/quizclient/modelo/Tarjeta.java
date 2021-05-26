@@ -21,15 +21,15 @@ public class Tarjeta implements Serializable {
     @SerializedName("pregunta")
     private String pregunta;
 
-    @SerializedName("recurso")
-    private String recurso;
+    @SerializedName("recursoRuta")
+    private String recursoRuta;
 
-    public String getRecurso() {
-        return recurso;
+    public String getRecursoRuta() {
+        return recursoRuta;
     }
 
-    public void setRecurso(String recurso) {
-        this.recurso = recurso;
+    public void setRecursoRuta(String recursoRuta) {
+        this.recursoRuta = recursoRuta;
     }
 
     public void setIdTarjeta(int idTarjeta) {
@@ -75,12 +75,12 @@ public class Tarjeta implements Serializable {
     public Tarjeta() {
     }
 
-    public Tarjeta(int idTarjeta, String tipoRespuesta, int idJugador, String nombreMazo, String pregunta, String recurso) {
+    public Tarjeta(int idTarjeta, String tipoRespuesta, int idJugador, String nombreMazo, String pregunta, String recursoRuta) {
         this.idTarjeta = idTarjeta;
         this.tipoRespuesta = tipoRespuesta;
         this.idJugador = idJugador;
         this.nombreMazo = nombreMazo;
         this.pregunta = pregunta;
-        this.recurso = recurso;
+        this.recursoRuta = recursoRuta;
     }
 }

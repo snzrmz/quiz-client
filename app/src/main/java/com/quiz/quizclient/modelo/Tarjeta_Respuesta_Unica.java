@@ -17,4 +17,20 @@ public class Tarjeta_Respuesta_Unica {
     public String getValor() {
         return valor;
     }
+
+    public void setIdTarjeta(int idTarjeta) {
+        this.idTarjeta = idTarjeta;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
+    public Tarjeta_Respuesta_Unica() {
+    }
+
+    public Tarjeta_Respuesta_Unica(int idTarjeta, String valor) {
+        this.idTarjeta = idTarjeta;
+        this.valor = valor;
+    }
 }
