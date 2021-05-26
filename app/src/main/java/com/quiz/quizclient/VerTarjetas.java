@@ -29,7 +29,7 @@ public class VerTarjetas extends AppCompatActivity {
         //establecemos el recycler y su adaptador
         recyclerView = findViewById(R.id.rv);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));
-        adaptadorTarjetas = new AdaptadorTarjetas(getApplicationContext(), tarjetas);
+        adaptadorTarjetas = new AdaptadorTarjetas(getApplicationContext(), tarjetas, false);
         recyclerView.setAdapter(adaptadorTarjetas);
     }
 }

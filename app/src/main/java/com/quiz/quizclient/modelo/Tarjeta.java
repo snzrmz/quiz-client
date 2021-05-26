@@ -24,6 +24,9 @@ public class Tarjeta implements Serializable {
     @SerializedName("recursoRuta")
     private String recursoRuta;
 
+    //atributo no serializado
+    private boolean correcta;
+
     public String getRecursoRuta() {
         return recursoRuta;
     }
@@ -82,5 +85,26 @@ public class Tarjeta implements Serializable {
         this.nombreMazo = nombreMazo;
         this.pregunta = pregunta;
         this.recursoRuta = recursoRuta;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Tarjeta{" +
+                "idTarjeta=" + idTarjeta +
+                ", tipoRespuesta='" + tipoRespuesta + '\'' +
+                ", idJugador=" + idJugador +
+                ", nombreMazo='" + nombreMazo + '\'' +
+                ", pregunta='" + pregunta + '\'' +
+                ", recursoRuta='" + recursoRuta + '\'' +
+                '}';
+    }
+
+    public boolean isCorrecta() {
+        return correcta;
+    }
+
+    public void setCorrecta(boolean correcta) {
+        this.correcta = correcta;
     }
 }

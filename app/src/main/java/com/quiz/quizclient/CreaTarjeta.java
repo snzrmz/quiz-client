@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,13 +30,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     int idJugador, idTar;
-    String  mazo_selecionado;
+    String mazo_selecionado;
     Spinner Spin;
     TextInputEditText pregunta, resp1, resp2, resp3, resp4, respuesta;
-    CheckBox cbx1,cbx2,cbx3,cbx4;
+    CheckBox cbx1, cbx2, cbx3, cbx4;
 
     boolean TipoMulti = false;
 
@@ -57,8 +55,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-
-    public void addRespuestasMulti(View v){
+    public void addRespuestasMulti(View v) {
         TipoMulti = true;
 
 
@@ -73,26 +70,26 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         cbx2 = view.findViewById(R.id.CB2);
         cbx3 = view.findViewById(R.id.CB3);
         cbx4 = view.findViewById(R.id.CB4);
-                    if(resp1.getText().equals(null)){
-                        cbx1.setEnabled(false);
-                    }else{
-                        cbx1.setEnabled(true);
-                    }
-                    if(resp2.getText().equals(null)){
-                        cbx2.setEnabled(false);
-                    }else{
-                        cbx2.setEnabled(true);
-                    }
-                    if(resp3.getText().equals(null)){
-                        cbx3.setEnabled(false);
-                    }else{
-                        cbx3.setEnabled(true);
-                    }
-                    if(resp4.getText().equals(null)){
-                        cbx4.setEnabled(false);
-                    }else{
-                        cbx4.setEnabled(true);
-                    }
+        if (resp1.getText().equals(null)) {
+            cbx1.setEnabled(false);
+        } else {
+            cbx1.setEnabled(true);
+        }
+        if (resp2.getText().equals(null)) {
+            cbx2.setEnabled(false);
+        } else {
+            cbx2.setEnabled(true);
+        }
+        if (resp3.getText().equals(null)) {
+            cbx3.setEnabled(false);
+        } else {
+            cbx3.setEnabled(true);
+        }
+        if (resp4.getText().equals(null)) {
+            cbx4.setEnabled(false);
+        } else {
+            cbx4.setEnabled(true);
+        }
 
         AlertDialog multires = new AlertDialog.Builder(this)
                 .setTitle("Respuesta Múltiple")
@@ -109,9 +106,9 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
-    public void addRespuestasMono(View v){
+    public void addRespuestasMono(View v) {
         View view = this.getLayoutInflater().inflate(R.layout.layout_crea_respuesta_unica, null);
-         respuesta = view.findViewById(R.id.respuesta_unica_input);
+        respuesta = view.findViewById(R.id.respuesta_unica_input);
         TipoMulti = false;
 
         AlertDialog monores = new AlertDialog.Builder(this)
@@ -130,8 +127,8 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
-    public void addTarjeta(View v){
-        Boolean esMultiple= false;
+    public void addTarjeta(View v) {
+        Boolean esMultiple = false;
 
         API api = Client.getClient().create(API.class);
 
@@ -140,10 +137,10 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         tarjeta.setNombreMazo(mazo_selecionado);
         tarjeta.setIdJugador(idJugador);
         tarjeta.setRecursoRuta(null);//null de momento
-        if (TipoMulti=true) {
+        if (TipoMulti = true) {
             tarjeta.setTipoRespuesta("MULTIPLE");
-            esMultiple=true;
-        }else{
+            esMultiple = true;
+        } else {
             tarjeta.setTipoRespuesta("UNICA");
         }
 
@@ -168,7 +165,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         });
 
 
-        if (!esMultiple){
+        if (!esMultiple) {
             Respuesta res = new Respuesta();
             res.setCorrecta(1);
             res.setValor(respuesta.getText().toString());
@@ -202,139 +199,142 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
                 }
             });
 
-        }else{
-                  Tarjeta_Respuesta_Multiple tjm = new Tarjeta_Respuesta_Multiple(); // crea la tarjeta respuesta multiple
-                  tjm.setIdTarjeta(idTar);
-                  Call<Tarjeta_Respuesta_Multiple> callTJM = api.createTJM(tjm);
-                  callTJM.enqueue(new Callback<Tarjeta_Respuesta_Multiple>() {
-                      @Override
-                      public void onResponse(Call<Tarjeta_Respuesta_Multiple> call, Response<Tarjeta_Respuesta_Multiple> response) {
+        } else {
+            Tarjeta_Respuesta_Multiple tjm = new Tarjeta_Respuesta_Multiple(); // crea la tarjeta respuesta multiple
+            tjm.setIdTarjeta(idTar);
+            Call<Tarjeta_Respuesta_Multiple> callTJM = api.createTJM(tjm);
+            callTJM.enqueue(new Callback<Tarjeta_Respuesta_Multiple>() {
+                @Override
+                public void onResponse(Call<Tarjeta_Respuesta_Multiple> call, Response<Tarjeta_Respuesta_Multiple> response) {
 
-                      }
-
-                      @Override
-                      public void onFailure(Call<Tarjeta_Respuesta_Multiple> call, Throwable t) {
-
-                      }
-                  });
-
-               if(cbx1.isEnabled()){    //si los checkbox estan activados(no confundir con checkeados) entonces crea la respuesta
-                   Respuesta res = new Respuesta();
-                   res.setValor(resp1.getText().toString());
-                   res.setIdTarjeta(idTar);
-                       if(cbx1.isChecked()){
-                           res.setCorrecta(1);
-                       }else{
-                           res.setCorrecta(0);
-                       }
-                   Call<Respuesta> callres = api.createRespuesta(res);
-                   callres.enqueue(new Callback<Respuesta>() {
-                       @Override
-                       public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                           Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
-                       }
-
-                       @Override
-                       public void onFailure(Call<Respuesta> call, Throwable t) {
-
-                       }
-                   });
-
-               }else{ return; }
-
-               if(cbx2.isEnabled()){
-                    Respuesta res = new Respuesta();
-                    res.setValor(resp2.getText().toString());
-                    res.setIdTarjeta(idTar);
-                        if(cbx2.isChecked()){
-                            res.setCorrecta(1);
-                        }else{
-                            res.setCorrecta(0);
-                        }
-                   Call<Respuesta> callres = api.createRespuesta(res);
-                   callres.enqueue(new Callback<Respuesta>() {
-                       @Override
-                       public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                           Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
-                       }
-
-                       @Override
-                       public void onFailure(Call<Respuesta> call, Throwable t) {
-
-                       }
-                   });
-                }else{
-                    return;
                 }
-                if(cbx3.isEnabled()){
-                    Respuesta res = new Respuesta();
-                    res.setValor(resp3.getText().toString());
-                    res.setIdTarjeta(idTar);
-                        if(cbx3.isChecked()){
-                            res.setCorrecta(1);
-                        }else{
-                            res.setCorrecta(0);
-                        }
-                    Call<Respuesta> callres = api.createRespuesta(res);
-                    callres.enqueue(new Callback<Respuesta>() {
-                        @Override
-                        public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                            Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
-                        }
 
-                        @Override
-                        public void onFailure(Call<Respuesta> call, Throwable t) {
+                @Override
+                public void onFailure(Call<Tarjeta_Respuesta_Multiple> call, Throwable t) {
 
-                        }
-                    });
-                }else{
-                    return;
                 }
-                if(cbx4.isEnabled()){
-                    Respuesta res = new Respuesta();
-                    res.setValor(resp4.getText().toString());
-                    res.setIdTarjeta(idTar);
-                        if(cbx4.isChecked()){
-                            res.setCorrecta(1);
-                        }else{
-                            res.setCorrecta(0);
-                        }
-                    Call<Respuesta> callres = api.createRespuesta(res);
-                    callres.enqueue(new Callback<Respuesta>() {
-                        @Override
-                        public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+            });
 
-                        }
-
-                        @Override
-                        public void onFailure(Call<Respuesta> call, Throwable t) {
-
-                        }
-                    });
-                }else{
-                    return;
+            if (cbx1.isEnabled()) {    //si los checkbox estan activados(no confundir con checkeados) entonces crea la respuesta
+                Respuesta res = new Respuesta();
+                res.setValor(resp1.getText().toString());
+                res.setIdTarjeta(idTar);
+                if (cbx1.isChecked()) {
+                    res.setCorrecta(1);
+                } else {
+                    res.setCorrecta(0);
                 }
+                Call<Respuesta> callres = api.createRespuesta(res);
+                callres.enqueue(new Callback<Respuesta>() {
+                    @Override
+                    public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                        Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Respuesta> call, Throwable t) {
+
+                    }
+                });
+
+            } else {
+                return;
+            }
+
+            if (cbx2.isEnabled()) {
+                Respuesta res = new Respuesta();
+                res.setValor(resp2.getText().toString());
+                res.setIdTarjeta(idTar);
+                if (cbx2.isChecked()) {
+                    res.setCorrecta(1);
+                } else {
+                    res.setCorrecta(0);
+                }
+                Call<Respuesta> callres = api.createRespuesta(res);
+                callres.enqueue(new Callback<Respuesta>() {
+                    @Override
+                    public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                        Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Respuesta> call, Throwable t) {
+
+                    }
+                });
+            } else {
+                return;
+            }
+            if (cbx3.isEnabled()) {
+                Respuesta res = new Respuesta();
+                res.setValor(resp3.getText().toString());
+                res.setIdTarjeta(idTar);
+                if (cbx3.isChecked()) {
+                    res.setCorrecta(1);
+                } else {
+                    res.setCorrecta(0);
+                }
+                Call<Respuesta> callres = api.createRespuesta(res);
+                callres.enqueue(new Callback<Respuesta>() {
+                    @Override
+                    public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                        Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Respuesta> call, Throwable t) {
+
+                    }
+                });
+            } else {
+                return;
+            }
+            if (cbx4.isEnabled()) {
+                Respuesta res = new Respuesta();
+                res.setValor(resp4.getText().toString());
+                res.setIdTarjeta(idTar);
+                if (cbx4.isChecked()) {
+                    res.setCorrecta(1);
+                } else {
+                    res.setCorrecta(0);
+                }
+                Call<Respuesta> callres = api.createRespuesta(res);
+                callres.enqueue(new Callback<Respuesta>() {
+                    @Override
+                    public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Respuesta> call, Throwable t) {
+
+                    }
+                });
+            } else {
+                return;
+            }
         }
 
 
     }
-    public void info(View v){
+
+    public void info(View v) {
         AlertDialog ayuda = new AlertDialog.Builder(this)
                 .setTitle("Ayuda")
                 .setMessage("Monorespuesta: El jugador tendrá que escribir la respuesta.\n\nMultirespuesta: El jugador tendrá que elegir la respuesta entre varias opciones.")
-                .setPositiveButton("Entendido",null)
+                .setPositiveButton("Entendido", null)
                 .create();
-            ayuda.show();
+        ayuda.show();
     }
 
-    private void llenarSpinner(){
+    private void llenarSpinner() {
         API api = Client.getClient().create(API.class);
         api.getMazosFrom(idJugador).enqueue(new Callback<List<Mazo>>() {
             @Override
             public void onResponse(Call<List<Mazo>> call, Response<List<Mazo>> response) {
                 if (response.isSuccessful()) {
                     List<Mazo> mismazos = response.body();
-                    for (Mazo mz: mismazos ){
+                    for (Mazo mz : mismazos) {
                         mazosSp.add(mz.getNombre());
                     }
                     //despliega los mazos al hacer click en el spinner
@@ -356,8 +356,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        switch (adapterView.getId())
-        {
+        switch (adapterView.getId()) {
             case R.id.spinnerMazos:
                 mazo_selecionado = adapterView.getSelectedItem().toString(); //se queda el mazo selecionado
                 break;
