@@ -19,7 +19,7 @@ import retrofit2.Response;
 
 public class Registro extends AppCompatActivity {
 
-    EditText email,name,pass;
+    TextInputEditText email,name,pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
