@@ -70,22 +70,22 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         cbx2 = view.findViewById(R.id.CB2);
         cbx3 = view.findViewById(R.id.CB3);
         cbx4 = view.findViewById(R.id.CB4);
-        if (resp1.getText().equals(null)) {
+        if (resp1.getText().equals("")) {
             cbx1.setEnabled(false);
         } else {
             cbx1.setEnabled(true);
         }
-        if (resp2.getText().equals(null)) {
+        if (resp2.getText().equals("")) {
             cbx2.setEnabled(false);
         } else {
             cbx2.setEnabled(true);
         }
-        if (resp3.getText().equals(null)) {
+        if (resp3.getText().equals("")) {
             cbx3.setEnabled(false);
         } else {
             cbx3.setEnabled(true);
         }
-        if (resp4.getText().equals(null)) {
+        if (resp4.getText().equals("")) {
             cbx4.setEnabled(false);
         } else {
             cbx4.setEnabled(true);

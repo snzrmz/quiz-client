@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lyrm"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="6dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
         android:text="A continuación escribe las opciónes y marca aquellas que sean correctas." />
 
     <LinearLayout
@@ -47,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:text="Correcta"/>
+            android:text="Correcta" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -65,12 +66,13 @@
                 android:maxLines="1"
                 app:counterEnabled="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <CheckBox
             android:id="@+id/CB2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:text="Correcta"/>
+            android:text="Correcta" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -88,12 +90,13 @@
                 android:maxLines="1"
                 app:counterEnabled="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <CheckBox
             android:id="@+id/CB3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:text="Correcta"/>
+            android:text="Correcta" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -111,12 +114,13 @@
                 android:maxLines="1"
                 app:counterEnabled="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <CheckBox
             android:id="@+id/CB4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:text="Correcta"/>
+            android:text="Correcta" />
 
     </LinearLayout>
 </LinearLayout>

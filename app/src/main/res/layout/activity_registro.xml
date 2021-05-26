@@ -32,7 +32,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtNuevoMazo"
+                android:id="@+id/inputemail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
@@ -79,6 +79,7 @@
             android:layout_width="193dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/btn_registrarTXT" />
+            android:text="@string/btn_registrarTXT"
+            android:onClick="addJugador"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

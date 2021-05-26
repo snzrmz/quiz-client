@@ -70,7 +70,7 @@ public class Login extends AppCompatActivity {
         getSupportActionBar().setTitle("Inicio sesión");
         setContentView(R.layout.activity_login);
         botonLogin = findViewById(R.id.BTN_registrar);
-        etContrasena = findViewById(R.id.password_edit_text);
+        etContrasena = findViewById(R.id.password_text);
         etEmail = findViewById(R.id.txtNuevoMazo);
     }
 
@@ -138,6 +138,11 @@ public class Login extends AppCompatActivity {
         Intent intent = new Intent(this, Menu.class);
         //iniciando actividad
         intent.putExtra(STATE_idjugador, idJugador);
+        startActivity(intent);
+    }
+
+    public void iniciarRegistro(View v){
+        Intent intent = new Intent(this, Registro.class);
         startActivity(intent);
     }
 }

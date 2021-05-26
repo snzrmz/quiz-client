@@ -36,4 +36,35 @@ public class Jugador {
     public String getUsuario() {
         return usuario;
     }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setFechaCreacion(String fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public void setIdJugador(int idJugador) {
+        this.idJugador = idJugador;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public Jugador() {
+    }
+
+    public Jugador(String email, String password, String fechaCreacion, int idJugador, String usuario) {
+        this.email = email;
+        this.password = password;
+        this.fechaCreacion = fechaCreacion;
+        this.idJugador = idJugador;
+        this.usuario = usuario;
+    }
 }
