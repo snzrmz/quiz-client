@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.quiz.quizclient">
 
-    <uses-permission android:name="android.permission.INTERNET" /><!--permiso a internet-->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/><!--leer las imagenes guardadas en la galeria -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- permiso a internet -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,8 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizClient"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CreaTarjeta" android:parentActivityName=".Menu"></activity>
-        <activity android:name=".Repaso"></activity>
+        <activity android:name=".VerTarjetas"></activity>
+        <activity
+            android:name=".CreaTarjeta"
+            android:parentActivityName=".Menu" />
+        <activity android:name=".Repaso" />
         <activity
             android:name=".Perfil"
             android:parentActivityName=".Menu" />

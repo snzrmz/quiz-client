@@ -9,8 +9,6 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,10 +33,10 @@ import retrofit2.Response;
 
 public class Menu extends AppCompatActivity {
     int idJugador;
+    String nombreMazo;
     RecyclerView recyclerView;
     AdaptadorMazos adaptadorMazos;
     List<Mazo> mazos;
-
 
 
     //iconos flotantes
@@ -102,7 +100,7 @@ public class Menu extends AppCompatActivity {
                                                 public void onResponse(Call<List<Tarjeta>> call, Response<List<Tarjeta>> response) {
                                                     if (response.isSuccessful()) {
                                                         List<Tarjeta> tarjetas = response.body();
-                                                        iniciarActividad(Repaso.class, mazoNombre, mazoContador, tarjetas);
+                                                        iniciarActividad(VerTarjetas.class, mazoNombre, mazoContador, tarjetas);
                                                     }
                                                 }
 
@@ -192,6 +190,7 @@ public class Menu extends AppCompatActivity {
 
         View view = Menu.this.getLayoutInflater().inflate(R.layout.layout_crea_mazo, null);
         TextInputEditText txtNuevoMazo = view.findViewById(R.id.txtNuevoMazo);
+        nombreMazo = txtNuevoMazo.getText().toString();
         AlertDialog dialog = new AlertDialog.Builder(Menu.this)
                 .setTitle("Nuevo Mazo")
                 .setView(view)
@@ -239,9 +238,6 @@ public class Menu extends AppCompatActivity {
 
     //llamada menu flotante de botones
     public void menu_btns(View v) {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab1 = (FloatingActionButton) findViewById(R.id.add_mazo);
-        fab2 = (FloatingActionButton) findViewById(R.id.add_tarjeta);
         if (!botonesAbiertos) {
             showFABMenu();
             fab.animate().rotationBy(225);
@@ -251,17 +247,17 @@ public class Menu extends AppCompatActivity {
         }
     }
 
-
     //animaciones menu flotante
-    private void showFABMenu(){
-        botonesAbiertos=true;
+    private void showFABMenu() {
+        botonesAbiertos = true;
         fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
         fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
 
     }
+
     //animaciones menu flotante
-    private void closeFABMenu(){
-        botonesAbiertos=false;
+    private void closeFABMenu() {
+        botonesAbiertos = false;
         fab1.animate().translationY(0);
         fab2.animate().translationY(0);
 

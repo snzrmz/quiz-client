@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:elevation="12dp"
     android:gravity="center">
 
 
@@ -18,31 +17,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp">
-            <!--
+            android:padding="2dp">
+
             <ImageView
+                android:id="@+id/iVTarjeta"
                 android:layout_width="match_parent"
-                android:layout_height="144dp"
-                android:background="@drawable/fondo_mazo"
-                android:contentDescription="imagen_por_defecto"
-                android:scaleType="centerCrop" /> Media -->
+                android:layout_height="100dp"
+                android:adjustViewBounds="true"
+                android:contentDescription=""
+                android:scaleType="centerCrop"
+                android:src="@drawable/imageprueba" />
 
             <TextView
-                android:id="@+id/txtNombreMazo"
+                android:id="@+id/txtPreguntaTarjeta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="txtNombreMazo"
-                android:textAppearance="?attr/textAppearanceHeadline6" />
+                android:padding="4dp"
+                android:text="txtPreguntaTarjeta"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/txtContador"
+            <!--<TextView
+                android:id="@+id/txtRespuesta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:gravity="right"
-                android:text="contador"
+                android:text="respuesta"
+                android:textAlignment="center"
                 android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:textColor="?android:attr/textColorSecondary" />-->
 
         </LinearLayout>
 

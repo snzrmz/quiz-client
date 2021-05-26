@@ -36,7 +36,7 @@
                 android:textAlignment="textEnd" />
 
             <TextView
-                android:id="@+id/txtPregunta"
+                android:id="@+id/txtRespuesta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -44,9 +44,10 @@
 
             <ImageView
                 android:id="@+id/iVRecurso"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_launcher_foreground" />
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/imageprueba" />
 
             <LinearLayout
                 android:id="@+id/lLRespuestas"
