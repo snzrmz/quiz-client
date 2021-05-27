@@ -54,6 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:enabled="false"
+                        android:layout_gravity="center"
                         android:text="string/usuario"
                         android:textAppearance="?attr/textAppearanceHeadline6"
                         android:textColor="#757575" />

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Mazo;
 import com.quiz.quizclient.modelo.Tarjeta;
@@ -227,6 +228,7 @@ public class Menu extends AppCompatActivity {
                 .setNegativeButton("Cancelar", null)
                 .create();
         dialog.show();
+
     }
 
     //abre actividad para crear tarjeta
