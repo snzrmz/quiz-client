@@ -138,7 +138,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onFailure(Call<Jugador> call, Throwable t) {
 
-                Snackbar.make(null, "Error: "+t.getMessage() , Snackbar.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.BTN_registrar), "Error: " + t.getMessage(), Snackbar.LENGTH_LONG).show();
                 //Toast.makeText(getApplicationContext(), "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

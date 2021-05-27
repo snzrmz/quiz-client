@@ -1,6 +1,5 @@
 package com.quiz.quizclient;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -29,12 +28,9 @@ import com.quiz.quizclient.restclient.Client;
 import java.io.Serializable;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-
 
 
 public class Menu extends AppCompatActivity {
@@ -126,33 +122,34 @@ public class Menu extends AppCompatActivity {
 
 
                         String mazoNombre = mazos.get(position).getNombre();
+                        //guardamos la position porque cambiará tras el onResponse
+                        int posicionActual = position;
 
                         Dialog borrar = new AlertDialog.Builder(recyclerView.getContext(), AlertDialog.BUTTON_POSITIVE)
                                 .setTitle(mazoNombre)
                                 .setNegativeButton("Cancelar", null)
-                                .setItems(new String[]{"borrar"}, new DialogInterface.OnClickListener() {
+                                .setItems(new String[]{"Borrar"}, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dlg, int position) {
 
-                                           API api = Client.getClient().create(API.class);
-                                            Call<Void> call = api.deleteMazo(idJugador,mazoNombre);
-                                            call.enqueue(new Callback<Void>() {
+                                        API api = Client.getClient().create(API.class);
+                                        Call<Void> call = api.deleteMazo(idJugador, mazoNombre);
+                                        call.enqueue(new Callback<Void>() {
                                             @Override
                                             public void onResponse(Call<Void> call, Response<Void> response) {
-                                                if (response.isSuccessful()){
-                                                   Snackbar.make(view, "¡Mazo borrado!" , Snackbar.LENGTH_LONG).show();
-                                                    cargarMazos();
+                                                if (response.isSuccessful()) {
+                                                    Snackbar.make(view, "¡Mazo borrado!", Snackbar.LENGTH_LONG).show();
+                                                    mazos.remove(mazos.get(posicionActual));
+                                                    adaptadorMazos.setMazoList(mazos);
                                                 }
                                             }
 
                                             @Override
                                             public void onFailure(Call<Void> call, Throwable t) {
-                                                Snackbar.make(view, "Error al borrar el mazo" , Snackbar.LENGTH_LONG).show();
+                                                Snackbar.make(view, "Error al borrar el mazo", Snackbar.LENGTH_LONG).show();
 
                                             }
                                         });
-
-
 
                                     }
                                 }).create();
@@ -265,11 +262,11 @@ public class Menu extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancelar", null)
                 .create();
-                dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 
-                    @Override
-                    public void onShow(DialogInterface arg0) {
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#00B300"));
+            @Override
+            public void onShow(DialogInterface arg0) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#00B300"));
             }
         });
         dialog.show();
@@ -277,7 +274,7 @@ public class Menu extends AppCompatActivity {
     }
 
     //abre actividad para crear tarjeta
-    public void nuevaTarjeta(View v){
+    public void nuevaTarjeta(View v) {
         Intent intent = new Intent(this, CreaTarjeta.class);
         intent.putExtra("idJugador", idJugador);
         startActivity(intent);

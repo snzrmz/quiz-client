@@ -61,13 +61,18 @@ public class Registro extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     String[] location = response.headers().get("Location").split("/");
                     idJugador = Integer.parseInt(location[location.length - 1]);
+                    //Snackbar.make(v, "¡Registrado Correctamente! ", Snackbar.LENGTH_SHORT).show();
+
+                    /*https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android*/
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    intent.putExtra("nuevoJugador", true);
+                    intent.putExtra("idJugador", idJugador);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } else {
+
                 }
-                /*https://stackoverflow.com/questions/10407159/how-to-manage-startactivityforresult-on-android*/
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                intent.putExtra("nuevoJugador", true);
-                intent.putExtra("idJugador", idJugador);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+
             }
 
 

@@ -1,13 +1,19 @@
 package com.quiz.quizclient;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,11 +43,51 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     Spinner Spin;
     TextInputEditText pregunta, resp1, resp2, resp3, resp4, respuesta;
     CheckBox cbx1, cbx2, cbx3, cbx4;
+    ImageView iV;
 
     boolean TipoMulti = false;
 
     public ArrayList<String> mazosSp = new ArrayList<String>(); // lista para alojar mazos en el spinner
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode == 2
+                && resultCode == Activity.RESULT_OK) {
+            // resultData contiene la uri del documento seleccionado
+            Uri uri = null;
+            if (resultData != null) {
+                uri = resultData.getData();
+                iV.setImageURI(uri);
+
+            }
+        }
+    }
+
+    //Para que pueda compararse si los TextInputEditText están vacíos y desmarcar así los CheckBoxes
+    TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            cbx1.setEnabled(!resp1.getText().toString().isEmpty());
+            cbx2.setEnabled(!resp2.getText().toString().isEmpty());
+            cbx3.setEnabled(!resp3.getText().toString().isEmpty());
+            cbx4.setEnabled(!resp4.getText().toString().isEmpty());
+            cbx1.setChecked(cbx1.isChecked() && !resp1.getText().toString().isEmpty());
+            cbx2.setChecked(cbx2.isChecked() && !resp2.getText().toString().isEmpty());
+            cbx3.setChecked(cbx3.isChecked() && !resp3.getText().toString().isEmpty());
+            cbx4.setChecked(cbx4.isChecked() && !resp4.getText().toString().isEmpty());
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +97,13 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         getSupportActionBar().setTitle("Nueva Tarjeta");
         idJugador = getIntent().getIntExtra("idJugador", -1);
         Spin = findViewById(R.id.spinnerMazos);
+        iV = findViewById(R.id.imageView);
         llenarSpinner();
     }
 
 
     public void addRespuestasMulti(View v) {
         TipoMulti = true;
-
 
         View view = this.getLayoutInflater().inflate(R.layout.layout_crea_respuesta_multiple, null);
 
@@ -70,26 +116,13 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         cbx2 = view.findViewById(R.id.CB2);
         cbx3 = view.findViewById(R.id.CB3);
         cbx4 = view.findViewById(R.id.CB4);
-        if (resp1.getText().equals("")) {
-            cbx1.setEnabled(false);
-        } else {
-            cbx1.setEnabled(true);
-        }
-        if (resp2.getText().equals("")) {
-            cbx2.setEnabled(false);
-        } else {
-            cbx2.setEnabled(true);
-        }
-        if (resp3.getText().equals("")) {
-            cbx3.setEnabled(false);
-        } else {
-            cbx3.setEnabled(true);
-        }
-        if (resp4.getText().equals("")) {
-            cbx4.setEnabled(false);
-        } else {
-            cbx4.setEnabled(true);
-        }
+
+        //TextWatcher
+        resp1.addTextChangedListener(watcher);
+        resp2.addTextChangedListener(watcher);
+        resp3.addTextChangedListener(watcher);
+        resp4.addTextChangedListener(watcher);
+
 
         AlertDialog multires = new AlertDialog.Builder(this)
                 .setTitle("Respuesta Múltiple")
@@ -124,11 +157,10 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
                 .create();
         monores.show();
 
-
     }
 
     public void addTarjeta(View v) {
-        Boolean esMultiple = false;
+        boolean esMultiple = false;
 
         API api = Client.getClient().create(API.class);
 
@@ -342,7 +374,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(CreaTarjeta.this, android.R.layout.simple_list_item_1, mazosSp);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     Spin.setAdapter(adapter);
-                }else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Sin conexión", Toast.LENGTH_LONG).show();
                 }
             }
@@ -369,5 +401,17 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         //no hacer nada
+    }
+
+    public void elegirImagen(View v) {
+        final int PICK_IMAGE = 2;
+
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+
+
+        startActivityForResult(intent, PICK_IMAGE);
     }
 }

@@ -86,12 +86,14 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="center"
             android:text="¿Quieres añadir una imagen como recurso?" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_selectimg"
             style="?attr/materialButtonOutlinedStyle"
-            android:layout_gravity="center"
             android:layout_width="214dp"
             android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:onClick="elegirImagen"
             android:text="Elegir imagen" />
 
         <ImageView
