@@ -23,8 +23,8 @@ public class Perfil extends AppCompatActivity {
     private final static String STATE_LOGINSTATUS = "esLoginCorrecto";
     private final static String STATE_IDJUGADOR = "idJugador";
 
-    TextView jugador_usuario, jugador_fechaCreacion;
-    String usuario, fecha;
+    TextView jugador_usuario, jugador_fechaCreacion,jugador_email;
+    String usuario, fecha, email;
     int idJugador;
     SharedPreferences preferencias;
     API api;
@@ -40,6 +40,7 @@ public class Perfil extends AppCompatActivity {
         getJugador(idJugador);
         jugador_usuario = findViewById(R.id.txtUsuario);
         jugador_fechaCreacion = findViewById(R.id.txtFechaCreacion);
+        jugador_email = findViewById(R.id.txtEmail);
 
     }
 
@@ -51,8 +52,10 @@ public class Perfil extends AppCompatActivity {
             public void onResponse(Call<Jugador> call, Response<Jugador> response) {
                 usuario = response.body().getUsuario();
                 fecha = response.body().getFechaCreacion();
+                email = response.body().getEmail();
                 jugador_usuario.setText(usuario);
-                jugador_fechaCreacion.setText(fecha.toString());
+                jugador_fechaCreacion.setText("Primer inicio de sesión el "+fecha.toString());
+                jugador_email.setText(email);
             }
 
 

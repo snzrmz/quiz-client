@@ -10,8 +10,11 @@ import com.quiz.quizclient.modelo.TarjetasConRespuestas;
 
 import java.util.List;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -35,6 +38,9 @@ public interface API {
 
     @POST("jugadores/{id}/mazos/")
     Call<Void> createMazo(@Body Mazo mazo);
+
+    @DELETE("jugadores/{id}/mazos/{nombreMazo}")
+    Call<Void> deleteMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
 
     @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
     Call<Tarjeta> createTarjeta(@Body Tarjeta tarjeta);
