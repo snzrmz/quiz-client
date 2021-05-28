@@ -60,7 +60,6 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
             if (resultData != null) {
                 uri = resultData.getData();
                 iV.setImageURI(uri);
-
             }
         }
     }

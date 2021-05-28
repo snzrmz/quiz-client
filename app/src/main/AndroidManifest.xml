@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizClient"
         android:usesCleartextTraffic="true">
-        <activity android:name=".VerTarjetas"></activity>
+        <activity android:name=".VerRepasos"></activity>
+        <activity android:name=".VerTarjetas" />
         <activity
             android:name=".CreaTarjeta"
             android:parentActivityName=".Menu" />

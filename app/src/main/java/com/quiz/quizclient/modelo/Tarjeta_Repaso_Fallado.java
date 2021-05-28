@@ -2,35 +2,14 @@ package com.quiz.quizclient.modelo;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class Tarjeta_Repaso_Fallado {
+public class Tarjeta_Repaso_Fallado implements Serializable {
 
-    @SerializedName("idTarjeta")
+    @SerializedName("tarjeta_idTarjeta")
     private int idTarjeta;
 
-    @SerializedName("idJugador")
-    private int idJugador;
+    @SerializedName("repaso_idRepaso")
+    private int idRepaso;
 
-    @SerializedName("nombreMazo")
-    private String nombreMazo;
-
-    @SerializedName("fechaHoraInicio")
-    private Date fechaHoraInicio;
-
-    public int getIdTarjeta() {
-        return idTarjeta;
-    }
-
-    public int getIdJugador() {
-        return idJugador;
-    }
-
-    public String getNombreMazo() {
-        return nombreMazo;
-    }
-
-    public Date getFechaHoraInicio() {
-        return fechaHoraInicio;
-    }
 }

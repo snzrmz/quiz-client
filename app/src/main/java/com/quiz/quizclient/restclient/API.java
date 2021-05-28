@@ -2,6 +2,7 @@ package com.quiz.quizclient.restclient;
 
 import com.quiz.quizclient.modelo.Jugador;
 import com.quiz.quizclient.modelo.Mazo;
+import com.quiz.quizclient.modelo.Repaso;
 import com.quiz.quizclient.modelo.Respuesta;
 import com.quiz.quizclient.modelo.Tarjeta;
 import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Multiple;
@@ -10,8 +11,6 @@ import com.quiz.quizclient.modelo.TarjetasConRespuestas;
 
 import java.util.List;
 
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -57,6 +56,9 @@ public interface API {
     @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
     Call<Tarjeta_Respuesta_Unica> createTJU(@Body Tarjeta_Respuesta_Unica tju);
 
+
+    @GET("jugadores/{id}/mazos/{nombreMazo}/repasos")
+    Call<List<Repaso>> getRepasosFrom(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
 
 }
 

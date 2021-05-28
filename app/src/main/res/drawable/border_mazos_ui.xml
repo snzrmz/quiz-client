@@ -11,12 +11,12 @@
         android:topLeftRadius="20dp"
         android:bottomRightRadius="20dp" />
 
-    <!-- android:angle solo multiplos de 45º-->
+    <!-- android:angle solo multiplos de 45º (arreglar)
     <gradient
             android:angle="225"
             android:startColor="@color/orange1"
             android:endColor="#0000FF00"
              />
-
+-->
 
 </shape>
