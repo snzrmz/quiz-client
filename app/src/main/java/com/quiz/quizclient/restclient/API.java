@@ -16,10 +16,13 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface API {
 
+
+    //Jugadores----------------------------------
     @GET("jugadores/{id}")
     Call<Jugador> getJugadorById(@Path("id") int id);
 
@@ -29,6 +32,10 @@ public interface API {
     @GET("login/{email}")
     Call<Jugador> getJugadorByEmail(@Path("email") String email);
 
+    @PUT("jugadores/")
+    Call<Void> updateJugador(@Body Jugador jugador);
+
+    //Mazos--------------------------------------
     @GET("jugadores/{id}/mazos")
     Call<List<Mazo>> getMazosFrom(@Path("id") int id);
 
@@ -41,9 +48,11 @@ public interface API {
     @DELETE("jugadores/{id}/mazos/{nombreMazo}")
     Call<Void> deleteMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
 
+    //Tarjetas-------------------------------------
     @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
     Call<Tarjeta> createTarjeta(@Body Tarjeta tarjeta);
 
+    //Respuestas--------------------------------------------
     @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
     Call<List<TarjetasConRespuestas>> getTarjetasConRespuestas(@Path("id") int idJugador, @Path("nombreMazo") String mazoNombre);
 
@@ -56,7 +65,7 @@ public interface API {
     @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
     Call<Tarjeta_Respuesta_Unica> createTJU(@Body Tarjeta_Respuesta_Unica tju);
 
-
+    //Respasos----------------------------------------------
     @GET("jugadores/{id}/mazos/{nombreMazo}/repasos")
     Call<List<Repaso>> getRepasosFrom(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
 

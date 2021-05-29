@@ -327,5 +327,23 @@ public class Menu extends AppCompatActivity {
 
     }
 
+    //confirmacion para salir
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_baseline_exit_to_app_24)
+                .setTitle("¿Salir?")
+                .setMessage("Estas apunto de cerrar la aplicación. ¿Deseas continuar?")
+                .setPositiveButton("Salir", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
+                    }
 
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
 }

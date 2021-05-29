@@ -246,7 +246,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
                 }
             });
 
-            if (cbx1.isEnabled()) {    //si los checkbox estan activados(no confundir con checkeados) entonces crea la respuesta
+            if (cbx1.isEnabled()) {    //si los checkbox estan activados(no checkeados) entonces crea la respuesta
                 Respuesta res = new Respuesta();
                 res.setValor(resp1.getText().toString());
                 res.setIdTarjeta(idTar);
