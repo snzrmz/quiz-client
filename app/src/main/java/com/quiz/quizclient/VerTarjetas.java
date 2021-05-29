@@ -16,6 +16,7 @@ public class VerTarjetas extends AppCompatActivity {
     RecyclerView recyclerView;
     String nombreMazo;
     AdaptadorTarjetas adaptadorTarjetas;
+    boolean verResultados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +26,13 @@ public class VerTarjetas extends AppCompatActivity {
         idJugador = getIntent().getIntExtra("idJugador", -1);
         nombreMazo = getIntent().getStringExtra("nombreMazo");
         tarjetas = (List<Tarjeta>) getIntent().getSerializableExtra("tarjetas");
+        verResultados = getIntent().getBooleanExtra("verResultados", false);
+
         getSupportActionBar().setTitle("Tarjetas de " + nombreMazo);
         //establecemos el recycler y su adaptador
         recyclerView = findViewById(R.id.rv);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));
-        adaptadorTarjetas = new AdaptadorTarjetas(getApplicationContext(), tarjetas, false);
+        adaptadorTarjetas = new AdaptadorTarjetas(getApplicationContext(), tarjetas, verResultados);
         recyclerView.setAdapter(adaptadorTarjetas);
     }
 }

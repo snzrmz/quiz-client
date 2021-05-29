@@ -2,7 +2,6 @@ package com.quiz.quizclient;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,9 +46,9 @@ public class AdaptadorRepasos extends RecyclerView.Adapter<AdaptadorRepasos.View
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
         holder.acertadas.setText(String.valueOf(repasos.get(position).getTarjetaRepasoAcertado().size()));
         holder.falladas.setText(String.valueOf(repasos.get(position).getTarjetaRepasoFallado().size()));
-        holder.fechaHoraInicio.setText(String.valueOf(repasos.get(position).getFechaHoraInicio()));
+        holder.fechaHoraInicio.setText(repasos.get(position).getFechaDiferencia());
         holder.itemView.setClickable(true);
-        Log.d("LOG_ADAPTER", repasos.get(position).getFechaHoraInicio().toString());
+        // Log.d("LOG_ADAPTER", repasos.get(position).getFechaHoraInicio().toString());
     }
 
     @Override
