@@ -19,7 +19,6 @@ import com.quiz.quizclient.modelo.Jugador;
 import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -28,14 +27,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Perfil extends AppCompatActivity {
+    //evento que se lanza al obtener jugador de Retrofit
+    public interface OnJugadorConseguido {
+
+        void establecerDatos(Jugador jugador);
+    }
+
     private final static String STATE_LOGINSTATUS = "esLoginCorrecto";
     private final static String STATE_IDJUGADOR = "idJugador";
-
-    TextView jugador_usuario, jugador_fechaCreacion,jugador_email;
-    String usuario, fecha, email, contrasena;
+    TextView jugador_usuario, jugador_fechaCreacion, jugador_email;
     int idJugador;
     SharedPreferences preferencias;
     API api;
+    OnJugadorConseguido onJugadorConseguido;
+    Jugador jugador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,29 +49,34 @@ public class Perfil extends AppCompatActivity {
         getSupportActionBar().setTitle("Mi Perfil");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        idJugador = getIntent().getIntExtra("idJugador", -1);
-        getJugador(idJugador);
+        idJugador = getIntent().getIntExtra(STATE_IDJUGADOR, -1);
         jugador_usuario = findViewById(R.id.txtUsuario);
         jugador_fechaCreacion = findViewById(R.id.txtFechaCreacion);
         jugador_email = findViewById(R.id.txtEmail);
 
+        onJugadorConseguido = new OnJugadorConseguido() {
+            @Override
+            public void establecerDatos(Jugador jugador) {
+                jugador_usuario.setText(jugador.getUsuario());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("EEE d MMMM yyyy");
+                jugador_fechaCreacion.setText("Miembro desde " + LocalDate.parse(jugador.getFechaCreacion(), formatter).format(formatter2));
+                jugador_email.setText(jugador.getEmail());
+            }
+        };
+        getJugador(idJugador, onJugadorConseguido);
+
     }
 
-    private void getJugador(int idJugador) {
+    private void getJugador(int idJugador, OnJugadorConseguido callback) {
         api = Client.getClient().create(API.class);
         Call<Jugador> call = api.getJugadorById(idJugador);
         call.enqueue(new Callback<Jugador>() {
             @Override
             public void onResponse(Call<Jugador> call, Response<Jugador> response) {
-                usuario = response.body().getUsuario();
-                fecha = response.body().getFechaCreacion();
-                email = response.body().getEmail();
-                contrasena = response.body().getPassword();
-                jugador_usuario.setText(usuario);
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("EEE d MMMM yyyy");
-                jugador_fechaCreacion.setText("Miembro desde "+ LocalDate.parse(fecha, formatter).format(formatter2));
-                jugador_email.setText(email);
+                jugador = response.body();
+                //callback que será ejecutado al recibir el jugador
+                callback.establecerDatos(jugador);
             }
 
 
@@ -91,6 +101,7 @@ public class Perfil extends AppCompatActivity {
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
+
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         MenuInflater MI = getMenuInflater();
@@ -104,8 +115,11 @@ public class Perfil extends AppCompatActivity {
 
             case R.id.app_bar_edit_player:
                 View view = Perfil.this.getLayoutInflater().inflate(R.layout.layout_actualizar_jug, null);
-                TextInputEditText newuser = findViewById(R.id.user_refactor);
-                TextInputEditText newemail = findViewById(R.id.email_refactor);
+                TextInputEditText newuser = view.findViewById(R.id.user_refactor);
+                TextInputEditText newemail = view.findViewById(R.id.email_refactor);
+                newuser.setText(jugador.getUsuario());
+                newemail.setText(jugador.getEmail());
+                //  newuser.setText(jugador.getEmail());
                 AlertDialog dialog = new AlertDialog.Builder(Perfil.this)
                         .setTitle("Editar mis datos")
                         .setView(view)
@@ -113,31 +127,21 @@ public class Perfil extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 api = Client.getClient().create(API.class);
-
-                                Jugador jugador = new Jugador();
-                                jugador.setIdJugador(idJugador);
-                                jugador.setPassword(contrasena);
-                                if (newuser.getText().toString().isEmpty()){
-                                    jugador.setUsuario(usuario);
-                                }else{
-                                    jugador.setUsuario(newuser.toString());
-                                }
-                                if (newemail.getText().toString().isEmpty()){
-                                    jugador.setUsuario(email);
-                                }else{
-                                    jugador.setUsuario(newemail.toString());
-                                }
-
+                                jugador.setUsuario(newuser.getText().toString());
+                                jugador.setEmail(newemail.getText().toString());
                                 Call<Void> call = api.updateJugador(jugador);
                                 call.enqueue(new Callback<Void>() {
                                     @Override
                                     public void onResponse(Call<Void> call, Response<Void> response) {
-
+                                        if (response.isSuccessful()) {
+                                            //reutilizamos el callback para actualizar el perfil
+                                            onJugadorConseguido.establecerDatos(jugador);
+                                        }
                                     }
 
                                     @Override
                                     public void onFailure(Call<Void> call, Throwable t) {
-
+                                        Log.d("LOG", t.getMessage());
                                     }
                                 });
 
@@ -146,7 +150,6 @@ public class Perfil extends AppCompatActivity {
                         .setNegativeButton("Cancelar", null)
                         .create();
                 dialog.show();
-
 
 
         }
@@ -160,7 +163,5 @@ public class Perfil extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 }

@@ -33,20 +33,6 @@ public class VerRepasos extends AppCompatActivity {
     boolean cambiado;
 
     @Override
-    public void onBackPressed() {
-        //la finalidad de onBackPressed es retornar el adaptador si este estaba mostrando
-        //las tarjetas en vez de los repasos.
-        if (cambiado) {
-            recyclerView.setAdapter(adaptadorRepasos);
-            recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false));
-            cambiado = false;
-        } else {
-            super.onBackPressed();
-        }
-
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_repasos);
@@ -93,7 +79,6 @@ public class VerRepasos extends AppCompatActivity {
                                     intent.putExtra("nombreMazo", nombreMazo);
                                     intent.putExtra("verResultados", true);
                                     startActivity(intent);
-                                    cambiado = true;
                                 }
                             }
 

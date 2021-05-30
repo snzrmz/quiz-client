@@ -44,7 +44,7 @@ public class Repaso implements Serializable {
             resultado = "menos de 1 día";
         } else if (numDias == 1) {
             resultado = "hace 1 día";
-        } else if (numDias > 2 && numDias < 365) {
+        } else if (numDias >= 2 && numDias < 365) {
             resultado = "hace " + numDias + " días";
         } else if (numDias == 365) {
             resultado = "hace 1 año";
