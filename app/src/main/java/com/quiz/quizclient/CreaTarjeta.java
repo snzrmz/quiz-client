@@ -19,12 +19,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Mazo;
-import com.quiz.quizclient.modelo.Respuesta;
 import com.quiz.quizclient.modelo.Tarjeta;
-import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Multiple;
-import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Unica;
 import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
 
@@ -45,6 +43,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     CheckBox cbx1, cbx2, cbx3, cbx4;
     ImageView iV;
 
+
     boolean TipoMulti = false;
 
     public ArrayList<String> mazosSp = new ArrayList<String>(); // lista para alojar mazos en el spinner
@@ -60,6 +59,10 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
             if (resultData != null) {
                 uri = resultData.getData();
                 iV.setImageURI(uri);
+                iV.setMaxHeight(600);
+            } else {
+                iV.setBackgroundResource(R.drawable.ic_baseline_add_a_photo_24);
+                iV.setMaxHeight(300);
             }
         }
     }
@@ -97,6 +100,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         idJugador = getIntent().getIntExtra("idJugador", -1);
         Spin = findViewById(R.id.spinnerMazos);
         iV = findViewById(R.id.imageView);
+        pregunta = findViewById(R.id.pregunta_input);
         llenarSpinner();
     }
 
@@ -139,9 +143,9 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     }
 
     public void addRespuestasMono(View v) {
+        TipoMulti = false;
         View view = this.getLayoutInflater().inflate(R.layout.layout_crea_respuesta_unica, null);
         respuesta = view.findViewById(R.id.respuesta_unica_input);
-        TipoMulti = false;
 
         AlertDialog monores = new AlertDialog.Builder(this)
                 .setTitle("Respuesta Única")
@@ -159,194 +163,42 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     }
 
     public void addTarjeta(View v) {
-        boolean esMultiple = false;
 
-        API api = Client.getClient().create(API.class);
 
         Tarjeta tarjeta = new Tarjeta();
         tarjeta.setPregunta(pregunta.getText().toString());
         tarjeta.setNombreMazo(mazo_selecionado);
         tarjeta.setIdJugador(idJugador);
         tarjeta.setRecursoRuta(null);//null de momento
-        if (TipoMulti = true) {
+        if (TipoMulti) {
             tarjeta.setTipoRespuesta("MULTIPLE");
-            esMultiple = true;
+
         } else {
             tarjeta.setTipoRespuesta("UNICA");
         }
 
+        persistirTarjeta(tarjeta);
+    }
+
+    private void persistirTarjeta(Tarjeta tarjeta) {
+        API api = Client.getClient().create(API.class);
         Call<Tarjeta> call = api.createTarjeta(tarjeta);
         call.enqueue(new Callback<Tarjeta>() {
             @Override
             public void onResponse(Call<Tarjeta> call, Response<Tarjeta> response) {
                 if (response.isSuccessful()) {
-                    idTar = response.body().getIdTarjeta();
-                    Toast.makeText(getApplicationContext(), "¡Tarjeta Creada!", Toast.LENGTH_LONG).show();
-
-
+                    Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "¡Tarjeta creada! ", Snackbar.LENGTH_LONG).show();
+                    Log.d("LOG", String.valueOf(response.body()));
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error creando la tarjeta " + response.code(), Toast.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "Error " + response.code(), Snackbar.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Tarjeta> call, Throwable t) {
-                Log.println(Log.DEBUG, "LOG", t.getMessage());
+                Snackbar.make(findViewById(R.id.BTN_registrar), "Error: " + t.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
-
-
-        if (!esMultiple) {
-            Respuesta res = new Respuesta();
-            res.setCorrecta(1);
-            res.setValor(respuesta.getText().toString());
-            res.setIdTarjeta(idTar);
-            Call<Respuesta> callres = api.createRespuesta(res);
-            callres.enqueue(new Callback<Respuesta>() {
-                @Override
-                public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                    Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onFailure(Call<Respuesta> call, Throwable t) {
-
-                }
-            });
-
-            Tarjeta_Respuesta_Unica tju = new Tarjeta_Respuesta_Unica(); //crea la tarjeta respuesta unica
-            tju.setIdTarjeta(idTar);
-            tju.setValor(respuesta.getText().toString());
-            Call<Tarjeta_Respuesta_Unica> callTJU = api.createTJU(tju);
-            callTJU.enqueue(new Callback<Tarjeta_Respuesta_Unica>() {
-                @Override
-                public void onResponse(Call<Tarjeta_Respuesta_Unica> call, Response<Tarjeta_Respuesta_Unica> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<Tarjeta_Respuesta_Unica> call, Throwable t) {
-
-                }
-            });
-
-        } else {
-            Tarjeta_Respuesta_Multiple tjm = new Tarjeta_Respuesta_Multiple(); // crea la tarjeta respuesta multiple
-            tjm.setIdTarjeta(idTar);
-            Call<Tarjeta_Respuesta_Multiple> callTJM = api.createTJM(tjm);
-            callTJM.enqueue(new Callback<Tarjeta_Respuesta_Multiple>() {
-                @Override
-                public void onResponse(Call<Tarjeta_Respuesta_Multiple> call, Response<Tarjeta_Respuesta_Multiple> response) {
-
-                }
-
-                @Override
-                public void onFailure(Call<Tarjeta_Respuesta_Multiple> call, Throwable t) {
-
-                }
-            });
-
-            if (cbx1.isEnabled()) {    //si los checkbox estan activados(no checkeados) entonces crea la respuesta
-                Respuesta res = new Respuesta();
-                res.setValor(resp1.getText().toString());
-                res.setIdTarjeta(idTar);
-                if (cbx1.isChecked()) {
-                    res.setCorrecta(1);
-                } else {
-                    res.setCorrecta(0);
-                }
-                Call<Respuesta> callres = api.createRespuesta(res);
-                callres.enqueue(new Callback<Respuesta>() {
-                    @Override
-                    public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                        Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Respuesta> call, Throwable t) {
-
-                    }
-                });
-
-            } else {
-                return;
-            }
-
-            if (cbx2.isEnabled()) {
-                Respuesta res = new Respuesta();
-                res.setValor(resp2.getText().toString());
-                res.setIdTarjeta(idTar);
-                if (cbx2.isChecked()) {
-                    res.setCorrecta(1);
-                } else {
-                    res.setCorrecta(0);
-                }
-                Call<Respuesta> callres = api.createRespuesta(res);
-                callres.enqueue(new Callback<Respuesta>() {
-                    @Override
-                    public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                        Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Respuesta> call, Throwable t) {
-
-                    }
-                });
-            } else {
-                return;
-            }
-            if (cbx3.isEnabled()) {
-                Respuesta res = new Respuesta();
-                res.setValor(resp3.getText().toString());
-                res.setIdTarjeta(idTar);
-                if (cbx3.isChecked()) {
-                    res.setCorrecta(1);
-                } else {
-                    res.setCorrecta(0);
-                }
-                Call<Respuesta> callres = api.createRespuesta(res);
-                callres.enqueue(new Callback<Respuesta>() {
-                    @Override
-                    public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                        Toast.makeText(getBaseContext(), "¡Respuesta guardada!", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onFailure(Call<Respuesta> call, Throwable t) {
-
-                    }
-                });
-            } else {
-                return;
-            }
-            if (cbx4.isEnabled()) {
-                Respuesta res = new Respuesta();
-                res.setValor(resp4.getText().toString());
-                res.setIdTarjeta(idTar);
-                if (cbx4.isChecked()) {
-                    res.setCorrecta(1);
-                } else {
-                    res.setCorrecta(0);
-                }
-                Call<Respuesta> callres = api.createRespuesta(res);
-                callres.enqueue(new Callback<Respuesta>() {
-                    @Override
-                    public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Respuesta> call, Throwable t) {
-
-                    }
-                });
-            } else {
-                return;
-            }
-        }
-
-
     }
 
     public void info(View v) {
@@ -391,7 +243,6 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
             case R.id.spinnerMazos:
                 mazo_selecionado = adapterView.getSelectedItem().toString(); //se queda el mazo selecionado
                 break;
-
             default:
                 break;
         }
@@ -404,13 +255,9 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
 
     public void elegirImagen(View v) {
         final int PICK_IMAGE = 2;
-
-
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
-
-
         startActivityForResult(intent, PICK_IMAGE);
     }
 }
