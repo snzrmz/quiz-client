@@ -3,23 +3,23 @@ package com.quiz.quizclient.modelo;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Repaso implements Serializable {
 
     @SerializedName("idJugador")
     private int idJugador;
-
+    @SerializedName("idRepaso")
+    private int idRepaso;
     @SerializedName("nombreMazo")
     private String nombreMazo;
 
     @SerializedName("fechaHoraInicio")
-    private Date fechaHoraInicio;
+    private String fechaHoraInicio;
 
     @SerializedName("fin")
     private boolean fin;
@@ -30,15 +30,39 @@ public class Repaso implements Serializable {
     @SerializedName("tarjetaRepasoFallado")
     private List<Tarjeta_Repaso_Fallado> tarjetaRepasoFallado;
 
+    public void setIdJugador(int idJugador) {
+        this.idJugador = idJugador;
+    }
+
+    public void setNombreMazo(String nombreMazo) {
+        this.nombreMazo = nombreMazo;
+    }
+
+    public String getFechaHoraInicio() {
+        return fechaHoraInicio;
+    }
+
+    public void setFechaHoraInicio(String fechaHoraInicio) {
+        this.fechaHoraInicio = fechaHoraInicio;
+    }
+
+    public boolean isFin() {
+        return fin;
+    }
+
+    public void setFin(boolean fin) {
+        this.fin = fin;
+    }
+
     public String getFechaDiferencia() {
         String resultado = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date hoy = new Date();
-        sdf.format(hoy);
-        Date repasado = this.fechaHoraInicio;
-        long diffMilisegundos = (hoy.getTime() - repasado.getTime());
-        long diffDias = TimeUnit.DAYS.convert(diffMilisegundos, TimeUnit.MILLISECONDS);
-        int numDias = (int) diffDias;
+        String formato = "yyyy-MM-dd'T'HH:mm:ss";
+
+        LocalDateTime hoy = LocalDateTime.now();
+        LocalDateTime repasado =
+                LocalDateTime.parse(this.fechaHoraInicio, DateTimeFormatter.ofPattern(formato));
+
+        int numDias = (int) ChronoUnit.DAYS.between(repasado, hoy);
 
         if (numDias == 0) {
             resultado = "menos de 1 día";
@@ -55,7 +79,7 @@ public class Repaso implements Serializable {
 
     }
 
-    public Repaso(int idJugador, String nombreMazo, Date fechaHoraInicio, boolean fin, List tarjetaRepasoAcertado, List tarjetaRepasoFallado) {
+    public Repaso(int idJugador, String nombreMazo, String fechaHoraInicio, boolean fin, List tarjetaRepasoAcertado, List tarjetaRepasoFallado) {
         this.idJugador = idJugador;
         this.nombreMazo = nombreMazo;
         this.fechaHoraInicio = fechaHoraInicio;
@@ -78,20 +102,6 @@ public class Repaso implements Serializable {
         return nombreMazo;
     }
 
-    public Date getFechaHoraInicio() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date date = null;
-        try {
-            date = simpleDateFormat.parse(fechaHoraInicio.toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        if (date == null) {
-            return new Date();
-        }
-        return date;
-    }
 
     public boolean getFin() {
         return fin;
@@ -111,5 +121,26 @@ public class Repaso implements Serializable {
 
     public void setTarjetaRepasoFallado(List<Tarjeta_Repaso_Fallado> tarjetaRepasoFallado) {
         this.tarjetaRepasoFallado = tarjetaRepasoFallado;
+    }
+
+    public int getIdRepaso() {
+        return idRepaso;
+    }
+
+    public void setIdRepaso(int idRepaso) {
+        this.idRepaso = idRepaso;
+    }
+
+    @Override
+    public String toString() {
+        return "Repaso{" +
+                "idJugador=" + idJugador +
+                ", idRepaso=" + idRepaso +
+                ", nombreMazo='" + nombreMazo + '\'' +
+                ", fechaHoraInicio='" + fechaHoraInicio + '\'' +
+                ", fin=" + fin +
+                ", tarjetaRepasoAcertado=" + tarjetaRepasoAcertado +
+                ", tarjetaRepasoFallado=" + tarjetaRepasoFallado +
+                '}';
     }
 }

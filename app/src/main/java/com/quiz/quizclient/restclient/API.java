@@ -5,6 +5,7 @@ import com.quiz.quizclient.modelo.Mazo;
 import com.quiz.quizclient.modelo.Repaso;
 import com.quiz.quizclient.modelo.Respuesta;
 import com.quiz.quizclient.modelo.Tarjeta;
+import com.quiz.quizclient.modelo.Tarjeta_Repaso_Acertado;
 import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Multiple;
 import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Unica;
 import com.quiz.quizclient.modelo.TarjetasConRespuestas;
@@ -68,6 +69,13 @@ public interface API {
     //Respasos----------------------------------------------
     @GET("jugadores/{id}/mazos/{nombreMazo}/repasos")
     Call<List<Repaso>> getRepasosFrom(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
+
+    @POST("jugadores/{id}/mazos/{nombreMazo}/repasos")
+    Call<Void> createRepaso(@Body Repaso repaso);
+
+    //TarjetasAcertdas
+    @POST("jugadores/{id}/mazos/{nombreMazo}/acertadas")
+    Call<Void> createTarjetasRepasoAcertadas(@Body List<Tarjeta_Repaso_Acertado> tra);
 
 }
 

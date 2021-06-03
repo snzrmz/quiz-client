@@ -18,7 +18,7 @@
         <activity
             android:name=".CreaTarjeta"
             android:parentActivityName=".Menu" />
-        <activity android:name=".Repaso" />
+        <activity android:name=".Repasar" />
         <activity
             android:name=".Perfil"
             android:parentActivityName=".Menu" />

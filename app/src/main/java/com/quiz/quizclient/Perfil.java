@@ -21,6 +21,7 @@ import com.quiz.quizclient.restclient.Client;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,14 +59,15 @@ public class Perfil extends AppCompatActivity {
             @Override
             public void establecerDatos(Jugador jugador) {
                 jugador_usuario.setText(jugador.getUsuario());
+                Locale locale = new Locale("es", "ES");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("EEE d MMMM yyyy");
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMMM 'de' yyyy", locale);
                 jugador_fechaCreacion.setText("Miembro desde " + LocalDate.parse(jugador.getFechaCreacion(), formatter).format(formatter2));
                 jugador_email.setText(jugador.getEmail());
             }
         };
-        getJugador(idJugador, onJugadorConseguido);
 
+        getJugador(idJugador, onJugadorConseguido);
     }
 
     private void getJugador(int idJugador, OnJugadorConseguido callback) {
@@ -150,8 +152,6 @@ public class Perfil extends AppCompatActivity {
                         .setNegativeButton("Cancelar", null)
                         .create();
                 dialog.show();
-
-
         }
         if (item.getItemId() == android.R.id.home) {// app icon in action bar clicked; go home
             Intent intent = new Intent(this, Menu.class);

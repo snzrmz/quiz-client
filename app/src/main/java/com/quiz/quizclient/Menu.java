@@ -83,7 +83,7 @@ public class Menu extends AppCompatActivity {
                                                 public void onResponse(Call<List<TarjetasConRespuestas>> call, Response<List<TarjetasConRespuestas>> response) {
                                                     if (response.isSuccessful()) {
                                                         List<TarjetasConRespuestas> tarjetasConRespuestas = response.body();
-                                                        iniciarActividad(com.quiz.quizclient.Repaso.class, mazoNombre, mazoContador, tarjetasConRespuestas);
+                                                        iniciarActividad(Repasar.class, mazoNombre, mazoContador, tarjetasConRespuestas);
                                                     }
                                                 }
 
@@ -161,6 +161,7 @@ public class Menu extends AppCompatActivity {
                                                     mazos.remove(mazos.get(posicionActual));
                                                     adaptadorMazos.setMazoList(mazos);
                                                 }
+
                                             }
 
                                             @Override

@@ -3,7 +3,6 @@ package com.quiz.quizclient;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,18 +14,28 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.quiz.quizclient.modelo.Repaso;
 import com.quiz.quizclient.modelo.Tarjeta;
 import com.quiz.quizclient.modelo.Tarjeta_Repaso_Acertado;
 import com.quiz.quizclient.modelo.Tarjeta_Repaso_Fallado;
 import com.quiz.quizclient.modelo.TarjetasConRespuestas;
+import com.quiz.quizclient.modelo.traID;
+import com.quiz.quizclient.restclient.API;
+import com.quiz.quizclient.restclient.Client;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public class Repaso extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class Repasar extends AppCompatActivity {
 
     String nombreMazo;
     TextView txtPregunta, txtRespuesta, txtNumTarjeta;
@@ -47,6 +56,7 @@ public class Repaso extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repaso);
+        //recibiendo valores de mazos
         idJugador = getIntent().getIntExtra("idJugador", -1);
         nombreMazo = getIntent().getStringExtra("nombreMazo");
         getSupportActionBar().setTitle("Repasando " + nombreMazo);
@@ -56,10 +66,9 @@ public class Repaso extends AppCompatActivity {
         etRespuesta = findViewById(R.id.etRespuesta);
         iVRecurso = findViewById(R.id.iVRecurso);
         cL = findViewById(R.id.cLayout);
-        Button btnAceptar = findViewById(R.id.btnAceptar);
+
+
         List<String> respuestasUsuario = new ArrayList<>();
-        //recibiendo valores de mazos
-        idJugador = getIntent().getIntExtra("idJugador", -1);
         List<TarjetasConRespuestas> tarjetasConRespuestas = (List<TarjetasConRespuestas>) getIntent().getSerializableExtra("tarjetasConRespuestas");
         tarjetas = new ArrayList<>();
         //HashMap para deshacernos de repetidos
@@ -180,26 +189,72 @@ public class Repaso extends AppCompatActivity {
             }
         } else { //persistir repaso y mostrar resultados
 
-            cL.removeView(findViewById(R.id.cvTarjeta));
-
-
-            RecyclerView rv = new RecyclerView(this);
-            rv.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT));
-            for (Tarjeta tarjeta : tarjetas) {
-                Log.println(Log.DEBUG, "LOG", tarjeta.toString());
-            }
-
-            cL.addView(rv);
-            rv.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));
-            AdaptadorTarjetas adaptadorTarjetas = new AdaptadorTarjetas(getApplicationContext(), tarjetas, true);
-            rv.setAdapter(adaptadorTarjetas);
-
+            mostrarResultados(tarjetas);
+            persistirRepaso(tarjetas);
         }
 
 
     }
 
+    private void mostrarResultados(List<Tarjeta> tarjetas) {
+        cL.removeView(findViewById(R.id.cvTarjeta));
+
+        RecyclerView rv = new RecyclerView(this);
+        rv.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
+
+        cL.addView(rv);
+        rv.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));
+        AdaptadorTarjetas adaptadorTarjetas = new AdaptadorTarjetas(getApplicationContext(), tarjetas, true);
+        rv.setAdapter(adaptadorTarjetas);
+    }
+
+    private void persistirRepaso(List<Tarjeta> tarjetas) {
+        Repaso repaso = new Repaso();
+        repaso.setFechaHoraInicio(LocalDateTime.now().toString());
+        repaso.setFin(true);
+        repaso.setIdJugador(idJugador);
+        repaso.setNombreMazo(nombreMazo);
+        //quiza necesitemos persistir un repaso para obtener el id
+
+        List<Tarjeta> acertadas = tarjetas.stream().filter(Tarjeta::isCorrecta).collect(Collectors.toList());
+        List<Tarjeta> falladas = tarjetas.stream().filter(tarjeta -> !tarjeta.isCorrecta()).collect(Collectors.toList());
+        List<Tarjeta_Repaso_Acertado> tras = new ArrayList<>();
+        List<Tarjeta_Repaso_Fallado> trfs = new ArrayList<>();
+        for (Tarjeta acertada : acertadas) {
+            Tarjeta_Repaso_Acertado tra = new Tarjeta_Repaso_Acertado();
+            traID traid = new traID();
+            traid.setTarjeta_idTarjeta(acertada.getIdTarjeta());
+            tra.setTraID(traid);
+            tras.add(tra);
+            Log.d("LOG", "TARJETA ACERTADA " + acertada.getIdTarjeta());
+        }
+        for (Tarjeta fallada : falladas) {
+            Tarjeta_Repaso_Fallado trf = new Tarjeta_Repaso_Fallado();
+            traID traid = new traID();
+            traid.setTarjeta_idTarjeta(fallada.getIdTarjeta());
+            trf.setTraID(traid);
+            trfs.add(trf);
+        }
+        repaso.setTarjetaRepasoAcertado(tras);
+        repaso.setTarjetaRepasoFallado(trfs);
+        API api = Client.getClient().create(API.class);
+        Call<Void> call = api.createRepaso(repaso);
+        Log.d("LOG", String.valueOf(repaso));
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("LOG", "GUARDADO");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("LOG", t.getMessage());
+            }
+        });
+    }
 }
 

@@ -63,7 +63,7 @@ public class VerRepasos extends AppCompatActivity {
                                     List<Tarjeta_Repaso_Acertado> tarjetasAcertadas = repasos.get(position).getTarjetaRepasoAcertado();
                                     for (int i = 0; i < Objects.requireNonNull(tarjetas).size(); i++) {
                                         for (int j = 0; j < tarjetasAcertadas.size(); j++) {
-                                            if (tarjetas.get(i).getIdTarjeta() == tarjetasAcertadas.get(j).getIdTarjeta()) {
+                                            if (tarjetas.get(i).getIdTarjeta() == tarjetasAcertadas.get(j).getTarjeta_idTarjeta()) {
                                                 tarjetas.get(i).setCorrecta(true);
                                                 break;
                                             }
