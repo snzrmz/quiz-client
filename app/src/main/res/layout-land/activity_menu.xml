@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="nuevaTarjeta"
-            android:src="@drawable/ic_card_icon"
+            android:src="@drawable/ic_baseline_create_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.901"
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="add"
-            android:src="@drawable/ic_cards_icon_138799"
+            android:src="@drawable/ic_baseline_library_books_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.901"
@@ -38,7 +38,6 @@
             app:fabSize="mini"
             android:layout_marginBottom="10dp"
             app:tint="@android:color/white" />
-
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -57,6 +56,11 @@
             />
 
 
+
+
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
@@ -67,39 +71,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/infofab1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_flotante_label"
-        android:text="Nuevo Mazo"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.857"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.779" />
-
-    <TextView
-        android:id="@+id/infofab2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/btn_flotante_label"
-        android:text="Nueva Tarjeta"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.854"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.712" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

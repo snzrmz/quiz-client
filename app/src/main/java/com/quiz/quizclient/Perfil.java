@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Jugador;
 import com.quiz.quizclient.restclient.API;
@@ -61,13 +62,13 @@ public class Perfil extends AppCompatActivity {
                 jugador_usuario.setText(jugador.getUsuario());
                 Locale locale = new Locale("es", "ES");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMMM 'de' yyyy", locale);
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MMMM 'de' yyyy");
                 jugador_fechaCreacion.setText("Miembro desde " + LocalDate.parse(jugador.getFechaCreacion(), formatter).format(formatter2));
                 jugador_email.setText(jugador.getEmail());
             }
         };
-
         getJugador(idJugador, onJugadorConseguido);
+
     }
 
     private void getJugador(int idJugador, OnJugadorConseguido callback) {
@@ -152,6 +153,8 @@ public class Perfil extends AppCompatActivity {
                         .setNegativeButton("Cancelar", null)
                         .create();
                 dialog.show();
+
+
         }
         if (item.getItemId() == android.R.id.home) {// app icon in action bar clicked; go home
             Intent intent = new Intent(this, Menu.class);

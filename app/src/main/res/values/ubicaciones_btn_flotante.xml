@@ -3,5 +3,6 @@
     <dimen name="standard_55">55dp</dimen>
     <dimen name="standard_105">105dp</dimen>
     <dimen name="standard_155">155dp</dimen>
+    <dimen name="standartH_20">40dp</dimen>
 
 </resources>

@@ -40,9 +40,6 @@ public interface API {
     @GET("jugadores/{id}/mazos")
     Call<List<Mazo>> getMazosFrom(@Path("id") int id);
 
-    @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
-    Call<List<Tarjeta>> getFromMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
-
     @POST("jugadores/{id}/mazos/")
     Call<Void> createMazo(@Body Mazo mazo);
 
@@ -52,6 +49,9 @@ public interface API {
     //Tarjetas-------------------------------------
     @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
     Call<Tarjeta> createTarjeta(@Body Tarjeta tarjeta);
+
+    @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
+    Call<List<Tarjeta>> getFromMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
 
     //Respuestas--------------------------------------------
     @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")

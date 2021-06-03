@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class TarjetasConRespuestas implements Serializable {
+
     @SerializedName("idTarjeta")
     private int idTarjeta;
     @SerializedName("tipoRespuesta")

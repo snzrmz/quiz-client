@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,6 +47,8 @@ public class Menu extends AppCompatActivity {
     //iconos flotantes
     boolean botonesAbiertos = false;
     FloatingActionButton fab, fab1, fab2;
+    TextView t1,t2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,10 @@ public class Menu extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab1 = (FloatingActionButton) findViewById(R.id.add_mazo);
         fab2 = (FloatingActionButton) findViewById(R.id.add_tarjeta);
-
+        t1= findViewById(R.id.infofab1);
+        t2 = findViewById(R.id.infofab2);
+        t1.setVisibility(View.INVISIBLE);
+        t2.setVisibility(View.INVISIBLE);
 
         //recibiendo valores del login idJugador
         idJugador = getIntent().getIntExtra("idJugador", -1);
@@ -70,9 +77,9 @@ public class Menu extends AppCompatActivity {
                         String mazoNombre = mazos.get(position).getNombre();
                         int mazoContador = mazos.get(position).getContador();
                         Dialog d = new AlertDialog.Builder(recyclerView.getContext(), AlertDialog.BUTTON_POSITIVE)
-                                .setTitle(mazoNombre)
+                                .setTitle(mazoNombre.toUpperCase())
                                 .setNegativeButton("Cancelar", null)
-                                .setItems(new String[]{"Repasar", "Ver tarjetas", "Ver repasos"}, new DialogInterface.OnClickListener() {
+                                .setItems(new String[]{"➦ Repasar", "➦ Ver tarjetas", "➦ Ver repasos"}, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dlg, int position) {
                                         if (position == 0) {
@@ -145,9 +152,9 @@ public class Menu extends AppCompatActivity {
                         int posicionActual = position;
 
                         Dialog borrar = new AlertDialog.Builder(recyclerView.getContext(), AlertDialog.BUTTON_POSITIVE)
-                                .setTitle(mazoNombre)
+                                .setTitle(mazoNombre.toUpperCase())
                                 .setNegativeButton("Cancelar", null)
-                                .setItems(new String[]{"Borrar"}, new DialogInterface.OnClickListener() {
+                                .setItems(new String[]{"➦ Borrar"}, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dlg, int position) {
 
@@ -254,31 +261,35 @@ public class Menu extends AppCompatActivity {
                 .setPositiveButton("Crear", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        API api = Client.getClient().create(API.class);
+                        if (!txtNuevoMazo.getText().toString().isEmpty()) {
+                            API api = Client.getClient().create(API.class);
 
-                        Mazo mazo = new Mazo();
-                        mazo.setNombre(txtNuevoMazo.getText().toString());
-                        mazo.setIdJugador(idJugador);
-                        Call<Void> call = api.createMazo(mazo);
-                        call.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if (response.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "¡Mazo Creado!", Toast.LENGTH_LONG).show();
-                                    //actualiza el recyclerView para mostrar el nuevo mazo
-                                    mazos.add(mazo);
-                                    adaptadorMazos.setMazoList(mazos);
+                            Mazo mazo = new Mazo();
+                            mazo.setNombre(txtNuevoMazo.getText().toString());
+                            mazo.setIdJugador(idJugador);
+                            Call<Void> call = api.createMazo(mazo);
+                            call.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        Snackbar.make(v, "¡Mazo creado!", Snackbar.LENGTH_SHORT).show();
+                                        //actualiza el recyclerView para mostrar el nuevo mazo
+                                        mazos.add(mazo);
+                                        adaptadorMazos.setMazoList(mazos);
 
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "Error creando el mazo " + response.code(), Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Error creando el mazo " + response.code(), Toast.LENGTH_LONG).show();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Log.println(Log.DEBUG, "LOG", t.getMessage());
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    Log.println(Log.DEBUG, "LOG", t.getMessage());
+                                }
+                            });
+                        }else{
+                            Snackbar.make(v, "¡No se puede crear un mazo sin nombre!", Snackbar.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton("Cancelar", null)
@@ -317,7 +328,10 @@ public class Menu extends AppCompatActivity {
         botonesAbiertos = true;
         fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
         fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
-
+        t1.setVisibility(View.VISIBLE);
+        t2.setVisibility(View.VISIBLE);
+        t1.animate().translationX(-getResources().getDimension(R.dimen.standartH_20));
+        t2.animate().translationX(-getResources().getDimension(R.dimen.standartH_20)).setDuration(400);
     }
 
     //animaciones menu flotante
@@ -325,6 +339,10 @@ public class Menu extends AppCompatActivity {
         botonesAbiertos = false;
         fab1.animate().translationY(0);
         fab2.animate().translationY(0);
+        t1.animate().translationX(0);
+        t2.animate().translationX(0);
+        t1.setVisibility(View.INVISIBLE);
+        t2.setVisibility(View.INVISIBLE);
 
     }
 
