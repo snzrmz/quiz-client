@@ -13,22 +13,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuizClient"
         android:usesCleartextTraffic="true">
-        <activity android:name=".VerRepasos" android:screenOrientation="portrait"></activity>
-        <activity android:name=".VerTarjetas" android:screenOrientation="portrait" />
+        <activity
+            android:name=".VerRepasos"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".VerTarjetas"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CreaTarjeta"
             android:parentActivityName=".Menu"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Repasar" android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Repasar"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Perfil"
             android:parentActivityName=".Menu"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Juego" android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Juego"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Registro"
             android:parentActivityName=".Login"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Login"
             android:theme="@style/Theme.QuizClient" android:screenOrientation="portrait">
@@ -39,6 +48,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Menu" android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

@@ -30,6 +30,7 @@ import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -263,8 +264,10 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.d("LOG", "Tarjeta de respuesta múltiple creada satisfactoriamente");
+                    Log.d("LOG", "Tarjeta de respuesta múltiple creada");
                     Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "¡Tarjeta creada! ", Snackbar.LENGTH_LONG).show();
+                    ArrayList<TextInputEditText> cajas = new ArrayList<>();
+                    restablecerTrasPersistir(Arrays.asList(new TextInputEditText[]{pregunta, resp1, resp2, resp3, resp4}));
                 }
             }
 
@@ -274,6 +277,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
             }
         });
     }
+
 
     private void persistirTarjetaRespuestaMulitple(int idTarjeta, OnTarjetaRespuestaMultiple callback) {
         Tarjeta_Respuesta_Multiple trm = new Tarjeta_Respuesta_Multiple();
@@ -286,7 +290,6 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.d("LOG", "idTarjeta de trm " + idTarjeta);
                 callback.respuesta(idTarjeta);
-
             }
 
             @Override
@@ -309,6 +312,8 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "¡Tarjeta creada! ", Snackbar.LENGTH_LONG).show();
+                    List<TextInputEditText> cajas = new ArrayList<>();
+                    restablecerTrasPersistir(Arrays.asList(new TextInputEditText[]{pregunta, respuesta}));
                 }
             }
 
@@ -317,6 +322,18 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
 
             }
         });
+    }
+
+    //Una vez que se ha creado una tarjeta limpiar los datos para no crear datos corrompidos posteriormente
+    private void restablecerTrasPersistir(List<TextInputEditText> cajas) {
+        //limpiar cajas de texto
+        cajas.forEach(caja -> {
+            if (caja != null) caja.getText().clear();
+        });
+        //restablecer otros datos
+        iV.setMaxHeight(300);
+        iV.setImageURI(null);
+        iV.setImageResource(R.drawable.ic_baseline_add_a_photo_24);
     }
 
     private void persistirTarjeta(Tarjeta tarjeta, OnTarjetaPersistida callback) {

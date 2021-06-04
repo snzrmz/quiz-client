@@ -103,12 +103,14 @@ public class Repasar extends AppCompatActivity {
     }
 
     void establecerTarjetaSimple(TarjetasConRespuestas tjr) {
+        lLRespuestas.removeAllViews();
         iVRecurso.setVisibility(tjr.getRecursoRuta() != null ? View.VISIBLE : View.GONE);
         esMultiple = false;
         txtPregunta.setText(tjr.getPregunta());
         lLRespuestas.setOrientation(LinearLayout.HORIZONTAL);
         //Si se han eliminado todas las vistas agregar la necesaria
-        Log.println(Log.DEBUG, "LOG", String.valueOf(tjr.getRecursoRuta() != null));
+        Log.println(Log.DEBUG, "LOG", "Recurso: " + String.valueOf(tjr.getRecursoRuta() != null));
+        Log.println(Log.DEBUG, "LOG", "Nº de vistas?: " + lLRespuestas.getChildCount());
         if (lLRespuestas.getChildCount() == 0) {
             lLRespuestas.addView(etRespuesta);
         }
@@ -125,6 +127,9 @@ public class Repasar extends AppCompatActivity {
         for (int i = 0; i < ltjr.size(); i++) {
             CheckBox checkBox = new CheckBox(getApplicationContext());
             checkBox.setText(ltjr.get(i).getValor());
+            checkBox.setTextColor(txtPregunta.getCurrentTextColor());
+            //https://stackoverflow.com/a/56068003
+            checkBox.setButtonTintList(getColorStateList(R.color.orange1));
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 //Actualizamos el estado de los checkboxes
