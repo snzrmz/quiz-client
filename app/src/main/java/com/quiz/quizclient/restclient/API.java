@@ -45,6 +45,9 @@ public interface API {
     @DELETE("jugadores/{id}/mazos/{nombreMazo}")
     Call<Void> deleteMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
 
+    @PUT("jugadores/{id}/mazos/{nombreMazo}")
+    Call<Void> updateMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo, @Body Mazo mazo);
+
     //Tarjetas-------------------------------------
     @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
     Call<Void> createTarjeta(@Body Tarjeta tarjeta);
