@@ -5,7 +5,6 @@ import com.quiz.quizclient.modelo.Mazo;
 import com.quiz.quizclient.modelo.Repaso;
 import com.quiz.quizclient.modelo.Respuesta;
 import com.quiz.quizclient.modelo.Tarjeta;
-import com.quiz.quizclient.modelo.Tarjeta_Repaso_Acertado;
 import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Multiple;
 import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Unica;
 import com.quiz.quizclient.modelo.TarjetasConRespuestas;
@@ -48,7 +47,7 @@ public interface API {
 
     //Tarjetas-------------------------------------
     @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
-    Call<Tarjeta> createTarjeta(@Body Tarjeta tarjeta);
+    Call<Void> createTarjeta(@Body Tarjeta tarjeta);
 
     @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas")
     Call<List<Tarjeta>> getFromMazo(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
@@ -57,15 +56,6 @@ public interface API {
     @GET("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
     Call<List<TarjetasConRespuestas>> getTarjetasConRespuestas(@Path("id") int idJugador, @Path("nombreMazo") String mazoNombre);
 
-    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
-    Call<Respuesta> createRespuesta(@Body Respuesta respuesta);
-
-    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
-    Call<Tarjeta_Respuesta_Multiple> createTJM(@Body Tarjeta_Respuesta_Multiple tjm);
-
-    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/respuestas")
-    Call<Tarjeta_Respuesta_Unica> createTJU(@Body Tarjeta_Respuesta_Unica tju);
-
     //Respasos----------------------------------------------
     @GET("jugadores/{id}/mazos/{nombreMazo}/repasos")
     Call<List<Repaso>> getRepasosFrom(@Path("id") int id, @Path("nombreMazo") String nombreMazo);
@@ -73,10 +63,16 @@ public interface API {
     @POST("jugadores/{id}/mazos/{nombreMazo}/repasos")
     Call<Void> createRepaso(@Body Repaso repaso);
 
-    //TarjetasAcertdas
-    @POST("jugadores/{id}/mazos/{nombreMazo}/acertadas")
-    Call<Void> createTarjetasRepasoAcertadas(@Body List<Tarjeta_Repaso_Acertado> tra);
 
+    //TarjetaRespuestaUnica
+    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/unica")
+    Call<Void> createRespuestaOfTarjetaUnica(@Body Tarjeta_Respuesta_Unica tru);
+
+    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/multiple")
+    Call<Void> createRespuestaTarjetaMultiple(@Body Tarjeta_Respuesta_Multiple trm);
+
+    @POST("jugadores/{id}/mazos/{nombreMazo}/tarjetas/multiple/respuestas")
+    Call<Void> createRespuesta(@Body List<Respuesta> respuestas);
 }
 
 

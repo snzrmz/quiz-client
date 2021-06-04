@@ -22,12 +22,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Mazo;
+import com.quiz.quizclient.modelo.Respuesta;
 import com.quiz.quizclient.modelo.Tarjeta;
+import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Multiple;
+import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Unica;
 import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +52,13 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
 
     public ArrayList<String> mazosSp = new ArrayList<String>(); // lista para alojar mazos en el spinner
 
+    public interface OnTarjetaPersistida {
+        void respuesta(int idTarjeta);
+    }
+
+    public interface OnTarjetaRespuestaMultiple {
+        void respuesta(int idTarjeta);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
@@ -163,8 +174,10 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     }
 
     public void addTarjeta(View v) {
-
-
+        if (pregunta.getText().toString().equals("") || !TipoMulti && respuesta == null) {
+            Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "Rellene los datos obligatorios", Snackbar.LENGTH_LONG).show();
+            return;
+        }
         Tarjeta tarjeta = new Tarjeta();
         tarjeta.setPregunta(pregunta.getText().toString());
         tarjeta.setNombreMazo(mazo_selecionado);
@@ -173,30 +186,158 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         if (TipoMulti) {
             tarjeta.setTipoRespuesta("MULTIPLE");
 
+            if (resp1.getText().toString().equals("") &&
+                    resp2.getText().toString().equals("") &&
+                    resp3.getText().toString().equals("") &&
+                    resp4.getText().toString().equals("")) {
+
+                Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "No ha introducido respuestas", Snackbar.LENGTH_LONG).show();
+                return;
+            }
         } else {
             tarjeta.setTipoRespuesta("UNICA");
+            if (respuesta.getText().toString().equals("")) {
+                Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "Introduce una respuesta", Snackbar.LENGTH_LONG).show();
+                return;
+            }
         }
 
-        persistirTarjeta(tarjeta);
+        OnTarjetaPersistida onTarjetaPersistida = new OnTarjetaPersistida() {
+            @Override
+            public void respuesta(int idTarjeta) {
+                if (TipoMulti) {
+                    OnTarjetaRespuestaMultiple onTarjetaRespuestaMultiple = new OnTarjetaRespuestaMultiple() {
+                        @Override
+                        public void respuesta(int idTarjeta) {
+                            //persistir tabla Respuesta (respuestas multiples, si es correcta, etc)
+                            List<Respuesta> respuestas = new ArrayList<>();
+                            Respuesta respuesta = null;
+                            if (!resp1.getText().toString().equals("")) {
+                                respuesta = new Respuesta();
+                                respuesta.setIdTarjeta(idTarjeta);
+                                respuesta.setValor(resp1.getText().toString());
+                                respuesta.setCorrecta(cbx1.isChecked() ? 1 : 0);
+                                respuestas.add(respuesta);
+                            }
+                            if (!resp2.getText().toString().equals("")) {
+                                respuesta = new Respuesta();
+                                respuesta.setIdTarjeta(idTarjeta);
+                                respuesta.setValor(resp2.getText().toString());
+                                respuesta.setCorrecta(cbx2.isChecked() ? 1 : 0);
+                                respuestas.add(respuesta);
+                            }
+                            if (!resp3.getText().toString().equals("")) {
+                                respuesta = new Respuesta();
+                                respuesta.setIdTarjeta(idTarjeta);
+                                respuesta.setValor(resp3.getText().toString());
+                                respuesta.setCorrecta(cbx3.isChecked() ? 1 : 0);
+                                respuestas.add(respuesta);
+                            }
+                            if (!resp4.getText().toString().equals("")) {
+                                respuesta = new Respuesta();
+                                respuesta.setIdTarjeta(idTarjeta);
+                                respuesta.setValor(resp4.getText().toString());
+                                respuesta.setCorrecta(cbx4.isChecked() ? 1 : 0);
+                                respuestas.add(respuesta);
+                            }
+                            persistirRespuestas(respuestas);
+                        }
+                    };
+                    persistirTarjetaRespuestaMulitple(idTarjeta, onTarjetaRespuestaMultiple);
+                } else {
+                    persistirTarjetaRespuestaUnica(idTarjeta);
+                }
+            }
+        };
+
+        persistirTarjeta(tarjeta, onTarjetaPersistida);
+
     }
 
-    private void persistirTarjeta(Tarjeta tarjeta) {
+    //Tabla Respuesta
+    private void persistirRespuestas(List<Respuesta> respuestas) {
+        Log.d("LOG", "persistiendo respuestas: " + respuestas);
         API api = Client.getClient().create(API.class);
-        Call<Tarjeta> call = api.createTarjeta(tarjeta);
-        call.enqueue(new Callback<Tarjeta>() {
+        Call<Void> call = api.createRespuesta(respuestas);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Tarjeta> call, Response<Tarjeta> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.d("LOG", "Tarjeta de respuesta múltiple creada satisfactoriamente");
+                    Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "¡Tarjeta creada! ", Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("LOG", "Tarjeta de respuesta múltiple falló " + t.getMessage());
+            }
+        });
+    }
+
+    private void persistirTarjetaRespuestaMulitple(int idTarjeta, OnTarjetaRespuestaMultiple callback) {
+        Tarjeta_Respuesta_Multiple trm = new Tarjeta_Respuesta_Multiple();
+        trm.setIdTarjeta(idTarjeta);
+        Log.d("LOG", String.valueOf(trm.getIdTarjeta()));
+        API api = Client.getClient().create(API.class);
+        Call<Void> call = api.createRespuestaTarjetaMultiple(trm);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("LOG", "idTarjeta de trm " + idTarjeta);
+                callback.respuesta(idTarjeta);
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void persistirTarjetaRespuestaUnica(int idTarjeta) {
+        Tarjeta_Respuesta_Unica tru = new Tarjeta_Respuesta_Unica();
+        tru.setIdTarjeta(idTarjeta);
+        tru.setValor(Objects.requireNonNull(respuesta.getText()).toString());
+        Log.d("LOG", tru.getValor() + " " + tru.getIdTarjeta());
+        API api = Client.getClient().create(API.class);
+        Call<Void> call = api.createRespuestaOfTarjetaUnica(tru);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "¡Tarjeta creada! ", Snackbar.LENGTH_LONG).show();
-                    Log.d("LOG", String.valueOf(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void persistirTarjeta(Tarjeta tarjeta, OnTarjetaPersistida callback) {
+        API api = Client.getClient().create(API.class);
+        Call<Void> call = api.createTarjeta(tarjeta);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    String[] location = response.headers().get("Location").split("/");
+                    int idTarjeta = Integer.parseInt(location[location.length - 1]);
+                    Log.d("LOG", "Tarjeta creada, procediendo a persisitir respuesta/s");
+                    callback.respuesta(idTarjeta);
                 } else {
                     Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "Error " + response.code(), Snackbar.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Tarjeta> call, Throwable t) {
-                Snackbar.make(findViewById(R.id.BTN_registrar), "Error: " + t.getMessage(), Snackbar.LENGTH_LONG).show();
+            public void onFailure(Call<Void> call, Throwable t) {
+                Snackbar.make(findViewById(R.id.btn_nuevatarjeta), "Error: " + t.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
     }

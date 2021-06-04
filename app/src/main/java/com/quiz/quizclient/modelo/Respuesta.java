@@ -56,5 +56,15 @@ public class Respuesta {
         this.correcta = correcta;
         this.idTarjeta = idTarjeta;
     }
+
+    @Override
+    public String toString() {
+        return "Respuesta{" +
+                "idRespuesta=" + idRespuesta +
+                ", valor='" + valor + '\'' +
+                ", correcta=" + correcta +
+                ", idTarjeta=" + idTarjeta +
+                '}';
+    }
 }
 
