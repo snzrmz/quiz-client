@@ -38,7 +38,7 @@ import retrofit2.Response;
 
 public class Menu extends AppCompatActivity {
     int idJugador;
-    String nombreMazo;
+    //String nombreMazo;
     RecyclerView recyclerView;
     AdaptadorMazos adaptadorMazos;
     List<Mazo> mazos;
@@ -154,30 +154,87 @@ public class Menu extends AppCompatActivity {
                         Dialog borrar = new AlertDialog.Builder(recyclerView.getContext(), AlertDialog.BUTTON_POSITIVE)
                                 .setTitle(mazoNombre.toUpperCase())
                                 .setNegativeButton("Cancelar", null)
-                                .setItems(new String[]{"➦ Borrar"}, new DialogInterface.OnClickListener() {
+                                .setItems(new String[]{"➦ Borrar","➦ Editar"}, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dlg, int position) {
+                                        if (position == 0) {
+                                            API api = Client.getClient().create(API.class);
+                                            Call<Void> call = api.deleteMazo(idJugador, mazoNombre);
+                                            call.enqueue(new Callback<Void>() {
+                                                @Override
+                                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                                    if (response.isSuccessful()) {
+                                                        Snackbar.make(view, "¡Mazo borrado!", Snackbar.LENGTH_LONG).show();
+                                                        mazos.remove(mazos.get(posicionActual));
+                                                        adaptadorMazos.setMazoList(mazos);
+                                                    }
 
-                                        API api = Client.getClient().create(API.class);
-                                        Call<Void> call = api.deleteMazo(idJugador, mazoNombre);
-                                        call.enqueue(new Callback<Void>() {
-                                            @Override
-                                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                                if (response.isSuccessful()) {
-                                                    Snackbar.make(view, "¡Mazo borrado!", Snackbar.LENGTH_LONG).show();
-                                                    mazos.remove(mazos.get(posicionActual));
-                                                    adaptadorMazos.setMazoList(mazos);
                                                 }
 
-                                            }
+                                                @Override
+                                                public void onFailure(Call<Void> call, Throwable t) {
+                                                    Snackbar.make(view, "Error al borrar el mazo", Snackbar.LENGTH_LONG).show();
 
-                                            @Override
-                                            public void onFailure(Call<Void> call, Throwable t) {
-                                                Snackbar.make(view, "Error al borrar el mazo", Snackbar.LENGTH_LONG).show();
+                                                }
+                                            });
+                                        }
+                                        if (position == 1) {
+                                            View view = Menu.this.getLayoutInflater().inflate(R.layout.layout_crea_mazo, null);
+                                            TextInputEditText txtNuevoMazo = view.findViewById(R.id.txtNuevoMazo);
 
-                                            }
-                                        });
+                                            AlertDialog dialog = new AlertDialog.Builder(Menu.this)
+                                                    .setTitle("Actualizar "+ mazoNombre)
+                                                    .setView(view)
+                                                    .setPositiveButton("Guardar Cambios", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            if (!txtNuevoMazo.getText().toString().isEmpty()) {
+                                                                API api = Client.getClient().create(API.class);
 
+                                                                Mazo mazo = new Mazo();
+                                                                mazo.setNombre(txtNuevoMazo.getText().toString());
+                                                                mazo.setIdJugador(idJugador);
+                                                                Call<Void> call = api.updateMazo(idJugador,mazoNombre,mazo);
+                                                                call.enqueue(new Callback<Void>() {
+                                                                    @Override
+                                                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                                                        if (response.isSuccessful()) {
+
+                                                                            //actualiza el recyclerView para mostrar el nuevo mazo
+                                                                            mazos.remove(mazos.get(posicionActual));
+                                                                            mazos.add(mazo);
+                                                                            adaptadorMazos.setMazoList(mazos);
+
+                                                                        } else {
+                                                                            Toast.makeText(getApplicationContext(), "Error creando el mazo " + response.code(), Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onFailure(Call<Void> call, Throwable t) {
+                                                                        Log.println(Log.DEBUG, "LOG", t.getMessage());
+                                                                    }
+                                                                });
+                                                            }else{
+                                                                Snackbar.make(view, "¡No se puede crear un mazo sin nombre!", Snackbar.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    })
+                                                    .setNegativeButton("Cancelar", null)
+                                                    .create();
+                                            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                                                @Override
+                                                public void onShow(DialogInterface arg0) {
+                                                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#00B300"));
+                                                }
+                                            });
+                                            dialog.show();
+
+
+
+
+                                        }
                                     }
                                 }).create();
                         borrar.show();
@@ -254,7 +311,7 @@ public class Menu extends AppCompatActivity {
 
         View view = Menu.this.getLayoutInflater().inflate(R.layout.layout_crea_mazo, null);
         TextInputEditText txtNuevoMazo = view.findViewById(R.id.txtNuevoMazo);
-        nombreMazo = txtNuevoMazo.getText().toString();
+        //nombreMazo = txtNuevoMazo.getText().toString();
         AlertDialog dialog = new AlertDialog.Builder(Menu.this)
                 .setTitle("Nuevo Mazo")
                 .setView(view)

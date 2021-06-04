@@ -3,6 +3,7 @@ package com.quiz.quizclient;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -152,9 +153,14 @@ public class Perfil extends AppCompatActivity {
                         })
                         .setNegativeButton("Cancelar", null)
                         .create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                    @Override
+                    public void onShow(DialogInterface arg0) {
+                        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#00B300"));
+                    }
+                });
                 dialog.show();
-
-
         }
         if (item.getItemId() == android.R.id.home) {// app icon in action bar clicked; go home
             Intent intent = new Intent(this, Menu.class);

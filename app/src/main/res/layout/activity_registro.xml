@@ -27,6 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="45"
             android:hint="@string/e_mail"
             app:startIconDrawable="@drawable/ic_baseline_email_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -43,6 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="25"
             android:hint="@string/user"
             app:startIconDrawable="@drawable/ic_baseline_person_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">

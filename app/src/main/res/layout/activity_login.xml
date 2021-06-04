@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="346dp"
-        android:layout_height="252dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
         android:layout_marginTop="209dp"
@@ -25,20 +25,24 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_text_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="45"
+            app:errorEnabled="true"
+            app:helperTextEnabled="true"
+            app:errorIconDrawable="@drawable/ic_baseline_error_outline_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconDrawable="@drawable/ic_baseline_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtNuevoMazo"
+                android:id="@+id/txtemail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:maxLength="45"
                 android:inputType="text"
                 android:hint="@string/e_mail"
-                android:maxLines="1"
-                app:counterEnabled="true"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -50,6 +54,7 @@
             app:startIconDrawable="@drawable/ic_baseline_key_24"
             app:endIconMode="password_toggle"
             app:errorEnabled="true"
+            app:errorIconDrawable="@drawable/ic_baseline_error_outline_24"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -62,10 +67,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BTN_registrar"
-            android:layout_width="250dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:onClick="onComprobarLogin"
+            android:drawableLeft="@drawable/ic_baseline_exit_to_app_24"
+            android:drawableTint="@color/white"
             android:text="@string/btn_loginTXT" />
 
         <LinearLayout

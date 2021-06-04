@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.quiz.quizclient.modelo.Jugador;
 import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
@@ -40,7 +42,8 @@ public class Login extends AppCompatActivity {
     private int idJugador;
     private SharedPreferences preferencias;
 
-    EditText etEmail, etContrasena;
+    TextInputEditText etEmail, etContrasena;
+    TextInputLayout TIpass,TIemail;
 
     String email, contrasena;
     Button botonLogin;
@@ -93,7 +96,9 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         botonLogin = findViewById(R.id.BTN_registrar);
         etContrasena = findViewById(R.id.password_text);
-        etEmail = findViewById(R.id.txtNuevoMazo);
+        etEmail = findViewById(R.id.txtemail);
+        TIemail = findViewById(R.id.email_text_input);
+        TIpass = findViewById(R.id.password_text_input);
     }
 
 
@@ -110,9 +115,25 @@ public class Login extends AppCompatActivity {
         editor.putInt(STATE_idjugador, idJugador);
         editor.apply();
     }
+/*
+    public void s(View v){
+        etEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etEmail.getBackground().clearColorFilter();
+            }
+        });
+        etContrasena.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etContrasena.getBackground().clearColorFilter();
+            }
+        });
+    }*/
 
     private boolean loginCorrecto(OnLoginResponse callback) {
         esLoginCorrecto = false;
+
         API api = Client.getClient().create(API.class);
         Call<Jugador> call = api.getJugadorByEmail(email);
         //si email y contrasena es igual a los proporcionados return true
@@ -130,8 +151,9 @@ public class Login extends AppCompatActivity {
                     }
                 }
                 if (!esLoginCorrecto) {
-
-                    Toast.makeText(getApplicationContext(), "¡Login incorrecto!", Toast.LENGTH_SHORT).show();
+                    TIemail.setError("Comprobar E-mail");
+                    TIpass.setError("Comprobar Password");
+                    Snackbar.make(findViewById(android.R.id.content),"¡Login incorrecto!", Snackbar.LENGTH_LONG).show();
                 }
             }
 
