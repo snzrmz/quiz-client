@@ -13,10 +13,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,6 +42,7 @@ public class Menu extends AppCompatActivity {
     RecyclerView recyclerView;
     AdaptadorMazos adaptadorMazos;
     List<Mazo> mazos;
+    SwipeRefreshLayout swipeRefreshLayout;
 
 
     //iconos flotantes
@@ -56,13 +57,20 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         getSupportActionBar().setTitle("Mazos");
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab1 = (FloatingActionButton) findViewById(R.id.add_mazo);
-        fab2 = (FloatingActionButton) findViewById(R.id.add_tarjeta);
-        t1= findViewById(R.id.infofab1);
+        fab = findViewById(R.id.fab);
+        fab1 = findViewById(R.id.add_mazo);
+        fab2 = findViewById(R.id.add_tarjeta);
+        t1 = findViewById(R.id.infofab1);
         t2 = findViewById(R.id.infofab2);
         t1.setVisibility(View.INVISIBLE);
         t2.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                cargarMazos();
+            }
+        });
 
         //recibiendo valores del login idJugador
         idJugador = getIntent().getIntExtra("idJugador", -1);
@@ -75,6 +83,8 @@ public class Menu extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         String mazoNombre = mazos.get(position).getNombre();
+
+                        //Log.d("LOG", String.valueOf(adaptadorMazos.getColor());
                         int mazoContador = mazos.get(position).getContador();
                         Dialog d = new AlertDialog.Builder(recyclerView.getContext(), AlertDialog.BUTTON_POSITIVE)
                                 .setTitle(mazoNombre.toUpperCase())
@@ -102,23 +112,28 @@ public class Menu extends AppCompatActivity {
 
                                         }
                                         if (position == 1) {
+                                            if (mazoContador > 0) {
+                                                API api = Client.getClient().create(API.class);
+                                                Call<List<Tarjeta>> call = api.getFromMazo(idJugador, mazoNombre);
+                                                call.enqueue(new Callback<List<Tarjeta>>() {
+                                                    @Override
+                                                    public void onResponse(Call<List<Tarjeta>> call, Response<List<Tarjeta>> response) {
+                                                        if (response.isSuccessful()) {
+                                                            List<Tarjeta> tarjetas = response.body();
 
-                                            API api = Client.getClient().create(API.class);
-                                            Call<List<Tarjeta>> call = api.getFromMazo(idJugador, mazoNombre);
-                                            call.enqueue(new Callback<List<Tarjeta>>() {
-                                                @Override
-                                                public void onResponse(Call<List<Tarjeta>> call, Response<List<Tarjeta>> response) {
-                                                    if (response.isSuccessful()) {
-                                                        List<Tarjeta> tarjetas = response.body();
-                                                        iniciarActividad(VerTarjetas.class, mazoNombre, mazoContador, tarjetas);
+                                                            iniciarActividad(VerTarjetas.class, mazoNombre, mazoContador, tarjetas);
+                                                        }
                                                     }
-                                                }
 
-                                                @Override
-                                                public void onFailure(Call<List<Tarjeta>> call, Throwable t) {
-                                                    Toast.makeText(getBaseContext(), "Error al recuperar tarjetas", Toast.LENGTH_LONG).show();
-                                                }
-                                            });
+                                                    @Override
+                                                    public void onFailure(Call<List<Tarjeta>> call, Throwable t) {
+                                                        Toast.makeText(getBaseContext(), "Error al recuperar tarjetas", Toast.LENGTH_LONG).show();
+                                                    }
+                                                });
+                                            } else {
+                                                Snackbar.make(recyclerView, "No hay tarjetas", Snackbar.LENGTH_LONG).show();
+                                            }
+
                                         }
                                         if (position == 2) {
                                             API api = Client.getClient().create(API.class);
@@ -128,7 +143,12 @@ public class Menu extends AppCompatActivity {
                                                 public void onResponse(Call<List<Repaso>> call, Response<List<Repaso>> response) {
                                                     if (response.isSuccessful()) {
                                                         List<Repaso> repasos = response.body();
-                                                        iniciarActividad(VerRepasos.class, mazoNombre, mazoContador, repasos);
+                                                        if (repasos != null && repasos.size() > 0) {
+                                                            iniciarActividad(VerRepasos.class, mazoNombre, mazoContador, repasos);
+                                                        } else {
+                                                            Snackbar.make(recyclerView, "No hay repasos", Snackbar.LENGTH_LONG).show();
+                                                        }
+
                                                     }
                                                 }
 
@@ -255,6 +275,7 @@ public class Menu extends AppCompatActivity {
                     //traza para el log, recorrer mazos
                     mazos.forEach(mazo -> Log.println(Log.DEBUG, "LOG", mazo.getNombre()));
                     adaptadorMazos.setMazoList(mazos);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
@@ -286,12 +307,13 @@ public class Menu extends AppCompatActivity {
     }
 
     private void iniciarActividad(Class<?> actividad, String nombreMazo, int contador, List<?> lista) {
-        if (contador != 0) {
+        if (contador != 0 && (lista.size() != 0)) {
             Intent intent = new Intent(this, actividad);
             //iniciando actividad
             intent.putExtra("idJugador", idJugador);
             intent.putExtra("nombreMazo", nombreMazo);
             //dependiendo si son Tarjetas o TarjetasConRespuestas se guarda para la siguiente actividad
+
             if (lista.get(0) instanceof Tarjeta) {
                 intent.putExtra("tarjetas", (Serializable) lista);
             } else if (lista.get(0) instanceof TarjetasConRespuestas) {
@@ -300,9 +322,16 @@ public class Menu extends AppCompatActivity {
                 intent.putExtra("repasos", (Serializable) lista);
             }
             startActivity(intent);
-        } else {
-            Toast.makeText(getApplicationContext(), "Primero asigne tarjetas al mazo ", Toast.LENGTH_LONG).show();
-        }
+        } /*else {
+            if(contador==0 && lista.size()>0){
+
+                Snackbar.make(recyclerView,"No hay tarjetas", Snackbar.LENGTH_LONG).show();
+            }else if(contador == 0){
+                Snackbar.make(recyclerView,"No hay repasos", Snackbar.LENGTH_LONG).show();
+            }
+
+
+        }*/
 
     }
 
@@ -411,8 +440,7 @@ public class Menu extends AppCompatActivity {
                 .setIcon(R.drawable.ic_baseline_exit_to_app_24)
                 .setTitle("¿Salir?")
                 .setMessage("Estas apunto de cerrar la aplicación. ¿Deseas continuar?")
-                .setPositiveButton("Salir", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Salir", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finishAffinity();

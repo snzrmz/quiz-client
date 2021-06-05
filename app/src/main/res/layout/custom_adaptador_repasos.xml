@@ -15,6 +15,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#FFFFFF"
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
@@ -69,7 +70,7 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/orange1"
             android:padding="0.5dp" />
 
@@ -80,7 +81,7 @@
 
             <TextView
                 android:id="@+id/txtFechaHoraInicio"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="txtFechaHoraInicio"
