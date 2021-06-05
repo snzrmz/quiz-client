@@ -23,7 +23,7 @@ public class AdaptadorMazos extends RecyclerView.Adapter<AdaptadorMazos.ViewHold
 
     //Set de colores y diseño basado en:
     //https://stackoverflow.com/questions/51244866/set-recyclerview-item-background-color-repeatedly
-    public String[] mColors = {"#3F51B5", "#FF9800", "#009688", "#673AB7"};
+    private final String[] mColors = {"#3F51B5", "#FF9800", "#009688", "#673AB7"};
 
     public AdaptadorMazos(Context context, List<Mazo> mazos) {
         this.context = context;

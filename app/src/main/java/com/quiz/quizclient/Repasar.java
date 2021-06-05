@@ -64,6 +64,7 @@ public class Repasar extends AppCompatActivity {
         lLRespuestas = findViewById(R.id.lLRespuestas);
         txtNumTarjeta = findViewById(R.id.txtNumTarjeta);
         etRespuesta = findViewById(R.id.etRespuesta);
+
         iVRecurso = findViewById(R.id.iVRecurso);
         cL = findViewById(R.id.cLayout);
 
