@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Jugador;
 import com.quiz.quizclient.restclient.API;
@@ -60,6 +59,10 @@ public class Perfil extends AppCompatActivity {
         onJugadorConseguido = new OnJugadorConseguido() {
             @Override
             public void establecerDatos(Jugador jugador) {
+                if (jugador == null) {
+                    Log.d("LOG", "jugador null, tratar condición");
+                    return;
+                }
                 jugador_usuario.setText(jugador.getUsuario());
                 Locale locale = new Locale("es", "ES");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -116,7 +119,6 @@ public class Perfil extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case R.id.app_bar_edit_player:
                 View view = Perfil.this.getLayoutInflater().inflate(R.layout.layout_actualizar_jug, null);
                 TextInputEditText newuser = view.findViewById(R.id.user_refactor);
@@ -161,6 +163,10 @@ public class Perfil extends AppCompatActivity {
                     }
                 });
                 dialog.show();
+                break;
+            case android.R.id.home: //necesario para que al pulsar la flecha de volver no se resetee la actividad
+                finish();
+                return true;
         }
         if (item.getItemId() == android.R.id.home) {// app icon in action bar clicked; go home
             Intent intent = new Intent(this, Menu.class);
