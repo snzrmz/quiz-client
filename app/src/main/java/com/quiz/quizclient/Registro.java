@@ -26,6 +26,7 @@ public class Registro extends AppCompatActivity {
     TextInputEditText email, name, pass;
     int idJugador;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,11 +1,16 @@
 package com.quiz.quizclient;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -92,7 +97,7 @@ public class Login extends AppCompatActivity {
             iniciarMenu();
         }
 
-        getSupportActionBar().setTitle("Inicio sesión");
+        getSupportActionBar().setTitle("QuizLand");
         setContentView(R.layout.activity_login);
         botonLogin = findViewById(R.id.BTN_registrar);
         etContrasena = findViewById(R.id.password_text);
@@ -115,21 +120,16 @@ public class Login extends AppCompatActivity {
         editor.putInt(STATE_idjugador, idJugador);
         editor.apply();
     }
-/*
-    public void s(View v){
-        etEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                etEmail.getBackground().clearColorFilter();
-            }
-        });
-        etContrasena.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                etContrasena.getBackground().clearColorFilter();
-            }
-        });
-    }*/
+
+    public void clearError(View v){
+        TIemail.setError(null);
+        TIpass.setError(null);
+    }
+
+
+
+
+
 
     private boolean loginCorrecto(OnLoginResponse callback) {
         esLoginCorrecto = false;
@@ -151,8 +151,11 @@ public class Login extends AppCompatActivity {
                     }
                 }
                 if (!esLoginCorrecto) {
-                    TIemail.setError("Comprobar E-mail");
-                    TIpass.setError("Comprobar Password");
+                    TIemail.setError("Comprueba E-mail");
+                    TIpass.setError("Comprueba Password");
+                    Animation error = AnimationUtils.loadAnimation(Login.this,R.anim.errorshake);
+                    etEmail.startAnimation(error);
+                    etContrasena.startAnimation(error);
                     Snackbar.make(findViewById(android.R.id.content),"¡Login incorrecto!", Snackbar.LENGTH_LONG).show();
                 }
             }
