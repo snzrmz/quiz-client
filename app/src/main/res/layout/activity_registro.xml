@@ -36,6 +36,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputemail"
                 android:layout_width="match_parent"
+                android:digits="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@._-"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:maxLines="1" />
@@ -53,9 +54,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/user_input"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,6 +67,7 @@
             android:layout_marginTop="10dp"
             android:hint="@string/pwd"
             app:errorEnabled="true"
+            app:helperText="Símbolos admitidos ''a-z 0-9 * .''"
             app:startIconDrawable="@drawable/ic_baseline_key_24"
             app:endIconMode="password_toggle"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -73,6 +75,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_edit_text"
                 android:layout_width="match_parent"
+                android:digits="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ*."
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
 
@@ -83,6 +86,7 @@
             android:layout_width="193dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:text="@string/btn_registrarTXT"
             android:onClick="addJugador"/>
     </LinearLayout>
