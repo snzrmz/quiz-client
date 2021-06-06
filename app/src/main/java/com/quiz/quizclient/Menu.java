@@ -48,7 +48,7 @@ public class Menu extends AppCompatActivity {
     //iconos flotantes
     boolean botonesAbiertos = false;
     FloatingActionButton fab, fab1, fab2;
-    TextView t1,t2;
+    TextView t1, t2;
 
 
     @Override
@@ -93,6 +93,10 @@ public class Menu extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dlg, int position) {
                                         if (position == 0) {
+                                            if (mazoContador == 0) {
+                                                Snackbar.make(recyclerView, "Para repasar primero asigne tarjetas a este mazo", Snackbar.LENGTH_LONG).show();
+                                                return;
+                                            }
                                             API api = Client.getClient().create(API.class);
                                             Call<List<TarjetasConRespuestas>> call = api.getTarjetasConRespuestas(idJugador, mazoNombre);
                                             call.enqueue(new Callback<List<TarjetasConRespuestas>>() {
@@ -112,27 +116,28 @@ public class Menu extends AppCompatActivity {
 
                                         }
                                         if (position == 1) {
-                                            if (mazoContador > 0) {
-                                                API api = Client.getClient().create(API.class);
-                                                Call<List<Tarjeta>> call = api.getFromMazo(idJugador, mazoNombre);
-                                                call.enqueue(new Callback<List<Tarjeta>>() {
-                                                    @Override
-                                                    public void onResponse(Call<List<Tarjeta>> call, Response<List<Tarjeta>> response) {
-                                                        if (response.isSuccessful()) {
-                                                            List<Tarjeta> tarjetas = response.body();
-
-                                                            iniciarActividad(VerTarjetas.class, mazoNombre, mazoContador, tarjetas);
-                                                        }
-                                                    }
-
-                                                    @Override
-                                                    public void onFailure(Call<List<Tarjeta>> call, Throwable t) {
-                                                        Toast.makeText(getBaseContext(), "Error al recuperar tarjetas", Toast.LENGTH_LONG).show();
-                                                    }
-                                                });
-                                            } else {
+                                            if (mazoContador == 0) {
                                                 Snackbar.make(recyclerView, "No hay tarjetas", Snackbar.LENGTH_LONG).show();
+                                                return;
                                             }
+                                            API api = Client.getClient().create(API.class);
+                                            Call<List<Tarjeta>> call = api.getFromMazo(idJugador, mazoNombre);
+                                            call.enqueue(new Callback<List<Tarjeta>>() {
+                                                @Override
+                                                public void onResponse(Call<List<Tarjeta>> call, Response<List<Tarjeta>> response) {
+                                                    if (response.isSuccessful()) {
+                                                        List<Tarjeta> tarjetas = response.body();
+
+                                                        iniciarActividad(VerTarjetas.class, mazoNombre, mazoContador, tarjetas);
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<List<Tarjeta>> call, Throwable t) {
+                                                    Toast.makeText(getBaseContext(), "Error al recuperar tarjetas", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+
 
                                         }
                                         if (position == 2) {
@@ -174,7 +179,7 @@ public class Menu extends AppCompatActivity {
                         Dialog borrar = new AlertDialog.Builder(recyclerView.getContext(), AlertDialog.BUTTON_POSITIVE)
                                 .setTitle(mazoNombre.toUpperCase())
                                 .setNegativeButton("Cancelar", null)
-                                .setItems(new String[]{"➦ Borrar","➦ Editar"}, new DialogInterface.OnClickListener() {
+                                .setItems(new String[]{"➦ Borrar", "➦ Editar"}, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dlg, int position) {
                                         if (position == 0) {
@@ -203,7 +208,7 @@ public class Menu extends AppCompatActivity {
                                             TextInputEditText txtNuevoMazo = view.findViewById(R.id.txtNuevoMazo);
 
                                             AlertDialog dialog = new AlertDialog.Builder(Menu.this)
-                                                    .setTitle("Actualizar "+ mazoNombre)
+                                                    .setTitle("Actualizar " + mazoNombre)
                                                     .setView(view)
                                                     .setPositiveButton("Guardar Cambios", new DialogInterface.OnClickListener() {
                                                         @Override
@@ -214,7 +219,7 @@ public class Menu extends AppCompatActivity {
                                                                 Mazo mazo = new Mazo();
                                                                 mazo.setNombre(txtNuevoMazo.getText().toString());
                                                                 mazo.setIdJugador(idJugador);
-                                                                Call<Void> call = api.updateMazo(idJugador,mazoNombre,mazo);
+                                                                Call<Void> call = api.updateMazo(idJugador, mazoNombre, mazo);
                                                                 call.enqueue(new Callback<Void>() {
                                                                     @Override
                                                                     public void onResponse(Call<Void> call, Response<Void> response) {
@@ -235,7 +240,7 @@ public class Menu extends AppCompatActivity {
                                                                         Log.println(Log.DEBUG, "LOG", t.getMessage());
                                                                     }
                                                                 });
-                                                            }else{
+                                                            } else {
                                                                 Snackbar.make(view, "¡No se puede crear un mazo sin nombre!", Snackbar.LENGTH_SHORT).show();
                                                             }
                                                         }
@@ -250,8 +255,6 @@ public class Menu extends AppCompatActivity {
                                                 }
                                             });
                                             dialog.show();
-
-
 
 
                                         }
@@ -373,7 +376,7 @@ public class Menu extends AppCompatActivity {
                                     Log.println(Log.DEBUG, "LOG", t.getMessage());
                                 }
                             });
-                        }else{
+                        } else {
                             Snackbar.make(v, "¡No se puede crear un mazo sin nombre!", Snackbar.LENGTH_SHORT).show();
                         }
                     }

@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,11 +32,20 @@ import com.quiz.quizclient.modelo.Tarjeta_Respuesta_Unica;
 import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,12 +53,14 @@ import retrofit2.Response;
 
 public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+
     int idJugador, idTar;
     String mazo_selecionado;
     Spinner Spin;
     TextInputEditText pregunta, resp1, resp2, resp3, resp4, respuesta;
     CheckBox cbx1, cbx2, cbx3, cbx4;
     ImageView iV;
+    Uri uri;
 
 
     boolean TipoMulti = false;
@@ -58,8 +71,9 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         void respuesta(int idTarjeta);
     }
 
-    public interface OnTarjetaRespuestaMultiple {
-        void respuesta(int idTarjeta);
+
+    public interface OnImagenPersistida {
+        void respuesta(String recursoRuta);
     }
 
     @Override
@@ -68,7 +82,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         if (requestCode == 2
                 && resultCode == Activity.RESULT_OK) {
             // resultData contiene la uri del documento seleccionado
-            Uri uri = null;
+            uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
                 iV.setImageURI(uri);
@@ -190,10 +204,6 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
             return;
         }
         Tarjeta tarjeta = new Tarjeta();
-        tarjeta.setPregunta(pregunta.getText().toString());
-        tarjeta.setNombreMazo(mazo_selecionado);
-        tarjeta.setIdJugador(idJugador);
-        tarjeta.setRecursoRuta(null);//null de momento
         if (TipoMulti) {
             tarjeta.setTipoRespuesta("MULTIPLE");
 
@@ -212,12 +222,14 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
                 return;
             }
         }
-
+        tarjeta.setPregunta(pregunta.getText().toString());
+        tarjeta.setNombreMazo(mazo_selecionado);
+        tarjeta.setIdJugador(idJugador);
         OnTarjetaPersistida onTarjetaPersistida = new OnTarjetaPersistida() {
             @Override
             public void respuesta(int idTarjeta) {
                 if (TipoMulti) {
-                    OnTarjetaRespuestaMultiple onTarjetaRespuestaMultiple = new OnTarjetaRespuestaMultiple() {
+                    OnTarjetaPersistida onTarjetaRespuestaMultiple = new OnTarjetaPersistida() {
                         @Override
                         public void respuesta(int idTarjeta) {
                             //persistir tabla Respuesta (respuestas multiples, si es correcta, etc)
@@ -260,9 +272,112 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
                 }
             }
         };
+        OnImagenPersistida onImagenPersistida = new OnImagenPersistida() {
 
-        persistirTarjeta(tarjeta, onTarjetaPersistida);
+            @Override
+            public void respuesta(String recursoRuta) {
+                if (recursoRuta.equals("")) {
+                    tarjeta.setRecursoRuta(null);
+                    return;
+                }
+                Log.d("LOG", "recurso ruta establecido " + recursoRuta);
+                tarjeta.setRecursoRuta(recursoRuta);
+                persistirTarjeta(tarjeta, onTarjetaPersistida);
+            }
+        };
 
+        if (uri != null) {
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                subirImagen(bitmap, onImagenPersistida);
+            } catch (IOException e) {
+            }
+        } else {
+            //Si es null el usuario o no ha establecido imagen o no era válida
+            //pero se ha de guardar la tajeta
+            Log.d("LOG", "Uri null");
+            persistirTarjeta(tarjeta, onTarjetaPersistida);
+        }
+
+    }
+
+    private void subirImagen(Bitmap bitmap, OnImagenPersistida callback) {
+        Log.d("LOG", "subiendo imagen...");
+        String filename = generateRandomString() + ".jpg";
+        //https://stackoverflow.com/a/45832835
+        //create a file to write bitmap data
+        File f = new File(getApplicationContext().getCacheDir(), filename);
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("LOG", e.getMessage());
+        }
+        //Convert bitmap to byte array
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+        //write the bytes in file
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(f);
+        } catch (FileNotFoundException e) {
+            Log.d("LOG", e.getMessage());
+        }
+        try {
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("LOG", e.getMessage());
+        }
+        RequestBody requestbody = RequestBody.create(okhttp3.MediaType.parse("multipart/form-data"), f);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", f.getName(), requestbody);
+        API api = Client.getClient().create(API.class);
+        Call<ResponseBody> call = api.uploadImage(body);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    ResponseBody responseBody = response.body();
+                    Log.d("LOG", "foto subida: " + filename);
+                    callback.respuesta(filename);
+                } else {
+                    Log.d("LOG", String.valueOf(response.raw()));
+                    callback.respuesta("");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("LOG", "Error al subir imagen " + t.getMessage());
+            }
+        });
+    }
+
+    private void metodoimportante() {
+        //Guardando tarjeta
+
+
+    }
+
+    private String generateRandomString() {
+        //baeldung.com/java-random-string
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+
+        return generatedString;
     }
 
     //Tabla Respuesta
@@ -289,7 +404,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-    private void persistirTarjetaRespuestaMulitple(int idTarjeta, OnTarjetaRespuestaMultiple callback) {
+    private void persistirTarjetaRespuestaMulitple(int idTarjeta, OnTarjetaPersistida callback) {
         Tarjeta_Respuesta_Multiple trm = new Tarjeta_Respuesta_Multiple();
         trm.setIdTarjeta(idTarjeta);
         Log.d("LOG", String.valueOf(trm.getIdTarjeta()));
@@ -344,6 +459,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         iV.setMaxHeight(300);
         iV.setImageURI(null);
         iV.setImageResource(R.drawable.ic_baseline_add_a_photo_24);
+        uri = null;
     }
 
     private void persistirTarjeta(Tarjeta tarjeta, OnTarjetaPersistida callback) {
