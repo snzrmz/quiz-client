@@ -317,7 +317,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         //Convert bitmap to byte array
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 10 /*ignored for PNG*/, bos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80 /*ignored for PNG*/, bos);
         byte[] bitmapdata = bos.toByteArray();
         //write the bytes in file
         FileOutputStream fos = null;
