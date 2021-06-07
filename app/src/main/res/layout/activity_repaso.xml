@@ -47,6 +47,7 @@
                 android:id="@+id/iVRecurso"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
+                android:onClick="onImageViewClick"
                 android:scaleType="centerCrop"
                 android:src="@drawable/imageprueba" />
 

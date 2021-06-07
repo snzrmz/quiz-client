@@ -1,8 +1,11 @@
 package com.quiz.quizclient;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,6 +46,7 @@ public class Repasar extends AppCompatActivity {
     LinearLayout lLRespuestas;
     ImageView iVRecurso;
     ConstraintLayout cL;
+    boolean isImageFitToScreen;
 
     int idJugador, indiceTarjetaActual, numTarjetas, contadorCorrectas;
     EditText etRespuesta;
@@ -65,7 +69,7 @@ public class Repasar extends AppCompatActivity {
         lLRespuestas = findViewById(R.id.lLRespuestas);
         txtNumTarjeta = findViewById(R.id.txtNumTarjeta);
         etRespuesta = findViewById(R.id.etRespuesta);
-
+        isImageFitToScreen = false;
         iVRecurso = findViewById(R.id.iVRecurso);
         cL = findViewById(R.id.cLayout);
 
@@ -278,5 +282,26 @@ public class Repasar extends AppCompatActivity {
             }
         });
     }
+
+    public void onImageViewClick(View v) {
+        Resources r = getResources();
+        int px = Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 140, r.getDisplayMetrics()));
+        /*
+         *android:layout_height="wrap_content"
+         * android:adjustViewBounds="true"
+         * */
+        if (!isImageFitToScreen) {
+            isImageFitToScreen = true;
+            iVRecurso.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            iVRecurso.setAdjustViewBounds(true);
+        } else {
+            isImageFitToScreen = false;
+            iVRecurso.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, px));
+            iVRecurso.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            iVRecurso.setAdjustViewBounds(false);
+        }
+    }
+
 }
 

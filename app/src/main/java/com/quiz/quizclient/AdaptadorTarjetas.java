@@ -1,8 +1,10 @@
 package com.quiz.quizclient;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ public class AdaptadorTarjetas extends RecyclerView.Adapter<AdaptadorTarjetas.Vi
     List<Tarjeta> tarjetas;
     Context context;
     boolean mostrarCorrectas;
+    boolean isImageFitToScreen;
 
     public AdaptadorTarjetas(Context context, List<Tarjeta> tarjetas, boolean mostrarCorrectas) {
         this.context = context;
@@ -56,7 +59,28 @@ public class AdaptadorTarjetas extends RecyclerView.Adapter<AdaptadorTarjetas.Vi
             holder.imagen.setVisibility(View.GONE);
         }
         Log.println(Log.DEBUG, "LOG_ADAPTER", String.valueOf(tarjetas.get(position).getRecursoRuta() != null));
-        holder.itemView.setLongClickable(true);
+        holder.imagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Resources r = holder.itemView.getContext().getResources();
+                int px = Math.round(TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, 140, r.getDisplayMetrics()));
+                /*
+                 *android:layout_height="wrap_content"
+                 * android:adjustViewBounds="true"
+                 * */
+                if (!isImageFitToScreen) {
+                    isImageFitToScreen = true;
+                    holder.imagen.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    holder.imagen.setAdjustViewBounds(true);
+                } else {
+                    isImageFitToScreen = false;
+                    holder.imagen.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, px));
+                    holder.imagen.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    holder.imagen.setAdjustViewBounds(false);
+                }
+            }
+        });
 
         if (mostrarCorrectas) {
             holder.correcta.setVisibility(View.VISIBLE);
