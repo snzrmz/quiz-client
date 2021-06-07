@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiz.quizclient.modelo.Tarjeta;
+import com.quiz.quizclient.restclient.Client;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -47,7 +49,12 @@ public class AdaptadorTarjetas extends RecyclerView.Adapter<AdaptadorTarjetas.Vi
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
         holder.pregunta.setText(tarjetas.get(position).getPregunta());
         //holder.respuesta.setText(String.valueOf(tarjetas.get(position).getRespuesta()));
-        holder.imagen.setVisibility(tarjetas.get(position).getRecursoRuta() != null ? View.VISIBLE : View.GONE);
+        if (tarjetas.get(position).getRecursoRuta() != null) {
+            holder.imagen.setVisibility(View.VISIBLE);
+            establecerImagenTarjeta(tarjetas.get(position).getRecursoRuta(), holder.imagen);
+        } else {
+            holder.imagen.setVisibility(View.GONE);
+        }
         Log.println(Log.DEBUG, "LOG_ADAPTER", String.valueOf(tarjetas.get(position).getRecursoRuta() != null));
         holder.itemView.setLongClickable(true);
 
@@ -87,5 +94,10 @@ public class AdaptadorTarjetas extends RecyclerView.Adapter<AdaptadorTarjetas.Vi
 
             //respuesta = (TextView) itemView.findViewById(R.id.txtRespuesta);
         }
+    }
+
+    private void establecerImagenTarjeta(String recursoRuta, ImageView imagen) {
+        Log.d("LOG", "cargando imagen: " + Client.BASEURL + "jugadores/perfil/" + recursoRuta);
+        Picasso.get().load(Client.BASEURL + "jugadores/perfil/" + recursoRuta).into(imagen);
     }
 }

@@ -22,6 +22,7 @@ import com.quiz.quizclient.modelo.TarjetasConRespuestas;
 import com.quiz.quizclient.modelo.traID;
 import com.quiz.quizclient.restclient.API;
 import com.quiz.quizclient.restclient.Client;
+import com.squareup.picasso.Picasso;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -85,7 +86,6 @@ public class Repasar extends AppCompatActivity {
                 return new ArrayList<>();
             }).add(tcr);
         }
-
         //Guardamos las claves
         claves = new ArrayList<>(mapTarjetasRespuestas.keySet());
         //Establecemos valores
@@ -105,7 +105,12 @@ public class Repasar extends AppCompatActivity {
 
     void establecerTarjetaSimple(TarjetasConRespuestas tjr) {
         lLRespuestas.removeAllViews();
-        iVRecurso.setVisibility(tjr.getRecursoRuta() != null ? View.VISIBLE : View.GONE);
+        if (tjr.getRecursoRuta() != null) {
+            iVRecurso.setVisibility(View.VISIBLE);
+            establecerImagenTarjeta(tjr.getRecursoRuta());
+        } else {
+            iVRecurso.setVisibility(View.GONE);
+        }
         esMultiple = false;
         txtPregunta.setText(tjr.getPregunta());
         lLRespuestas.setOrientation(LinearLayout.HORIZONTAL);
@@ -117,8 +122,19 @@ public class Repasar extends AppCompatActivity {
         }
     }
 
+    private void establecerImagenTarjeta(String recursoRuta) {
+        Log.d("LOG", "cargando imagen: " + Client.BASEURL + "jugadores/perfil/" + recursoRuta);
+        Picasso.get().setLoggingEnabled(true);
+        Picasso.get().load(Client.BASEURL + "jugadores/perfil/" + recursoRuta).into(iVRecurso);
+    }
+
     void establecerTarjetaMultiple(List<TarjetasConRespuestas> ltjr) {
-        iVRecurso.setVisibility(ltjr.get(0).getRecursoRuta() != null ? View.VISIBLE : View.GONE);
+        if (ltjr.get(0).getRecursoRuta() != null) {
+            iVRecurso.setVisibility(View.VISIBLE);
+            establecerImagenTarjeta(ltjr.get(0).getRecursoRuta());
+        } else {
+            iVRecurso.setVisibility(View.GONE);
+        }
         esMultiple = true;
         txtPregunta.setText(ltjr.get(0).getPregunta());
         lLRespuestas.removeAllViews();

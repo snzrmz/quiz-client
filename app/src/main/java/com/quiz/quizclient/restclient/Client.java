@@ -7,7 +7,7 @@ public class Client {
 
     private static final String ip = "192.168.1.42";
     private static final String port = "8080";
-    private static final String BASEURL = "http://" + ip + ":" + port + "/quiz-server/api/";
+    public static final String BASEURL = "http://" + ip + ":" + port + "/quiz-server/api/";
 
     public static Retrofit getClient() {
 
@@ -16,4 +16,6 @@ public class Client {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
+
+
 }
