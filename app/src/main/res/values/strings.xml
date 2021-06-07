@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QuizClient</string>
+    <string name="app_name">QuizLand</string>
     <string name="e_mail">E-mail</string>
     <string name="user">Username</string>
     <string name="pwd">Password</string>
