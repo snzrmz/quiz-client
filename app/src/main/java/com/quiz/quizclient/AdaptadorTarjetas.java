@@ -50,7 +50,11 @@ public class AdaptadorTarjetas extends RecyclerView.Adapter<AdaptadorTarjetas.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
-        holder.pregunta.setText(tarjetas.get(position).getPregunta());
+        String pregunta = tarjetas.get(position).getPregunta();
+        if (pregunta.length() > 38) {
+            pregunta = pregunta.substring(0, 38).concat("...");
+        }
+        holder.pregunta.setText(pregunta);
         //holder.respuesta.setText(String.valueOf(tarjetas.get(position).getRespuesta()));
         if (tarjetas.get(position).getRecursoRuta() != null) {
             holder.imagen.setVisibility(View.VISIBLE);

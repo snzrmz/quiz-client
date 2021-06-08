@@ -39,10 +39,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Registro"
+            android:windowSoftInputMode="adjustResize" />
             android:parentActivityName=".Login"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Login"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.QuizClient" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

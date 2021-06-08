@@ -6,21 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".Login">
 
+    <ImageView
+        android:id="@+id/imageViewLOGO"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:rotationX="0"
+        android:rotationY="0"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="341dp"
         android:layout_height="322dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="209dp"
-        android:layout_marginEnd="58dp"
-        android:layout_marginBottom="41dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.561"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintEnd_toEndOf="@+id/imageViewLOGO"
+        app:layout_constraintStart_toStartOf="@+id/imageViewLOGO">
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -105,19 +110,5 @@
 
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageViewLOGO"
-        android:layout_width="344dp"
-        android:layout_height="259dp"
-        android:rotationX="0"
-        android:rotationY="0"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35"
-        app:srcCompat="@drawable/logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
