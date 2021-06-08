@@ -108,15 +108,16 @@
 
     <ImageView
         android:id="@+id/imageViewLOGO"
-        android:layout_width="346dp"
-        android:layout_height="276dp"
+        android:layout_width="344dp"
+        android:layout_height="259dp"
         android:rotationX="0"
         android:rotationY="0"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/icono" />
+        app:layout_constraintVertical_bias="0.35"
+        app:srcCompat="@drawable/logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
