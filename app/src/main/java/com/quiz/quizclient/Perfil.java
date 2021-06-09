@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.quiz.quizclient.modelo.Jugador;
@@ -49,6 +50,7 @@ public class Perfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
         getSupportActionBar().setTitle("Mi Perfil");
+        getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.orange1));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         idJugador = getIntent().getIntExtra(STATE_IDJUGADOR, -1);

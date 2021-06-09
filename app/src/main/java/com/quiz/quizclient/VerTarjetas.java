@@ -3,6 +3,7 @@ package com.quiz.quizclient;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,7 @@ public class VerTarjetas extends AppCompatActivity {
         verResultados = getIntent().getBooleanExtra("verResultados", false);
 
         getSupportActionBar().setTitle("Tarjetas de " + nombreMazo);
+        getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.orange1));
         //establecemos el recycler y su adaptador
         recyclerView = findViewById(R.id.rv);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,6 +66,7 @@ public class Repasar extends AppCompatActivity {
         idJugador = getIntent().getIntExtra("idJugador", -1);
         nombreMazo = getIntent().getStringExtra("nombreMazo");
         getSupportActionBar().setTitle("Repasando " + nombreMazo);
+        getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.orange1));
         txtPregunta = findViewById(R.id.txtRespuesta);
         lLRespuestas = findViewById(R.id.lLRespuestas);
         txtNumTarjeta = findViewById(R.id.txtNumTarjeta);

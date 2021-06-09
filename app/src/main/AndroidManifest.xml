@@ -35,9 +35,6 @@
             android:parentActivityName=".Menu"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Juego"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Registro"
             android:windowSoftInputMode="adjustResize" />
             android:parentActivityName=".Login"

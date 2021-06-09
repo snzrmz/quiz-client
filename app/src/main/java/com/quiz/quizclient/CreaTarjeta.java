@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -124,6 +125,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_crea_tarjeta);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Nueva Tarjeta");
+        getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.orange1));
         idJugador = getIntent().getIntExtra("idJugador", -1);
         Spin = findViewById(R.id.spinnerMazos);
         iV = findViewById(R.id.imageView);
