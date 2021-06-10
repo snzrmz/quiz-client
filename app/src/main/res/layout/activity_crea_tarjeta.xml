@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="addRespuestasMulti"
-                android:text="Multirespuesta" />
+                android:text="Multi-respuesta" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_tj_unica"
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="addRespuestasMono"
-                android:text="Monorespuesta" />
+                android:text="Mono-respuesta" />
 
 
         </LinearLayout>
