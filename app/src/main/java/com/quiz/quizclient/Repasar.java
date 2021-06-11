@@ -31,9 +31,9 @@ import com.squareup.picasso.Picasso;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -79,19 +79,23 @@ public class Repasar extends AppCompatActivity {
         List<String> respuestasUsuario = new ArrayList<>();
         List<TarjetasConRespuestas> tarjetasConRespuestas = (List<TarjetasConRespuestas>) getIntent().getSerializableExtra("tarjetasConRespuestas");
         tarjetas = new ArrayList<>();
-        //HashMap para deshacernos de repetidos
-        mapTarjetasRespuestas = new HashMap<>();
+        //TreeMap para deshacernos de repetidos, debemos utilizar TreeMap en vez de HashMap para garantizar el orden
+        /*Some map implementations, like the TreeMap class, make specific guarantees as to their order;
+        others, like the HashMap class, do not. (api/java/util/Map.html)*/
+        mapTarjetasRespuestas = new TreeMap<>();
         /*Shortcut for adding to List in a HashMap: https://stackoverflow.com/a/3019388*/
         //recorremos las tarjetas con respuestas, si aún no ha sido añadido se ejecutará computeIfAbsent
         //que creará por cada clave del hashmap un arraylist y si no lo añdirá a este.
         //además si aún no ha sido añadido también lo agregamos a un objeto de tipo tarjeta que se utilizará
         //para visualizar como ha sido el repaso.
+        Log.d("LOG", tarjetasConRespuestas.toString());
         for (TarjetasConRespuestas tcr : tarjetasConRespuestas) {
             mapTarjetasRespuestas.computeIfAbsent(tcr.getIdTarjeta(), k -> {
                 tarjetas.add(new Tarjeta(tcr.getIdTarjeta(), "", -1, "", tcr.getPregunta(), tcr.getRecursoRuta()));
                 return new ArrayList<>();
             }).add(tcr);
         }
+        Log.d("LOG", "tarjetas: " + tarjetas);
         //Guardamos las claves
         claves = new ArrayList<>(mapTarjetasRespuestas.keySet());
         //Establecemos valores
@@ -201,6 +205,8 @@ public class Repasar extends AppCompatActivity {
                 //establecemos la propiedad que mostrará los resultados al final y añadimos al contador
                 tarjetas.get(indiceTarjetaActual).setCorrecta(true);
                 contadorCorrectas++;
+            } else {
+                Log.d("LOG", "respuesta incorrecta");
             }
         }
         indiceTarjetaActual++;
