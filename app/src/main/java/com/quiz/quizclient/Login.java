@@ -1,10 +1,14 @@
 package com.quiz.quizclient;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -12,6 +16,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -189,5 +194,48 @@ public class Login extends AppCompatActivity {
         int LAUNCH_SECOND_ACTIVITY = 1;
         Intent intent = new Intent(this, Registro.class);
         startActivityForResult(intent, LAUNCH_SECOND_ACTIVITY);
+    }
+    //MENU BAR
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater MI = getMenuInflater();
+        MI.inflate(R.menu.tb_login, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.app_bar_settings:
+
+                //ALERT DIALOG PARA GESTIONAR IP
+                View view = Login.this.getLayoutInflater().inflate(R.layout.layout_opciones_ip, null);
+                TextInputEditText nueva_IP = view.findViewById(R.id.input_IP);
+                TextInputEditText nuevo_Puerto = view.findViewById(R.id.input_puerto);
+
+
+                AlertDialog dialog = new AlertDialog.Builder(Login.this)
+                        .setTitle("RED")
+                        .setView(view)
+                        .setPositiveButton("Guardar cambios", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                            }
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .create();
+
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface arg0) {
+                        dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#00B300"));
+                    }
+                });
+                dialog.show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
