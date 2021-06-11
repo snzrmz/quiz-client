@@ -31,9 +31,9 @@ import com.squareup.picasso.Picasso;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -82,10 +82,7 @@ public class Repasar extends AppCompatActivity {
         List<String> respuestasUsuario = new ArrayList<>();
         List<TarjetasConRespuestas> tarjetasConRespuestas = (List<TarjetasConRespuestas>) getIntent().getSerializableExtra("tarjetasConRespuestas");
         tarjetas = new ArrayList<>();
-        //TreeMap para deshacernos de repetidos, debemos utilizar TreeMap en vez de HashMap para garantizar el orden
-        /*Some map implementations, like the TreeMap class, make specific guarantees as to their order;
-        others, like the HashMap class, do not. (api/java/util/Map.html)*/
-        mapTarjetasRespuestas = new TreeMap<>();
+        mapTarjetasRespuestas = new HashMap<>();
         /*Shortcut for adding to List in a HashMap: https://stackoverflow.com/a/3019388*/
         //recorremos las tarjetas con respuestas, si aún no ha sido añadido se ejecutará computeIfAbsent
         //que creará por cada clave del hashmap un arraylist y si no lo añdirá a este.
@@ -98,7 +95,8 @@ public class Repasar extends AppCompatActivity {
                 return new ArrayList<>();
             }).add(tcr);
         }
-        Log.d("LOG", "tarjetas: " + tarjetas);
+        //Debemos ordenar las tarjetas
+        tarjetas.sort((x, y) -> Integer.compare(x.getIdTarjeta(), y.getIdTarjeta()));
         //Guardamos las claves
         claves = new ArrayList<>(mapTarjetasRespuestas.keySet());
         //Establecemos valores
@@ -182,7 +180,7 @@ public class Repasar extends AppCompatActivity {
         Tarjeta_Repaso_Fallado trf;
         if (esMultiple) {
 
-            //recorremos la tarjeta con respuesta multiple, si
+            //recorremos la tarjeta con respuesta multiple
             List<String> respuestas = new ArrayList<>();
             //recorremos las respuestas correctas de las tarjetas y las agregamos a un array temporal
             for (TarjetasConRespuestas tarjetasConRespuestas : mapTarjetasRespuestas.get(claves.get(indiceTarjetaActual))) {
@@ -194,8 +192,9 @@ public class Repasar extends AppCompatActivity {
             Collections.sort(respuestas);
             Collections.sort(respuestasMarcadas);
             if (respuestas.equals(respuestasMarcadas)) {
-                Log.println(Log.DEBUG, "LOG", "Respuesta correctas " + respuestas);
+                Log.println(Log.DEBUG, "LOG", "Respuestas correctas " + respuestas);
                 //establecemos la propiedad que mostrará los resultados al final y añadimos al contador
+                Log.d("BUG", "estableciendo tarjeta correcta a: " + tarjetas.get(indiceTarjetaActual));
                 tarjetas.get(indiceTarjetaActual).setCorrecta(true);
                 contadorCorrectas++;
 
@@ -226,7 +225,6 @@ public class Repasar extends AppCompatActivity {
                 establecerTarjetaMultiple(keySiguientePregunta);
             }
         } else { //persistir repaso y mostrar resultados
-
             mostrarResultados(tarjetas);
             persistirRepaso(tarjetas);
         }
@@ -236,7 +234,6 @@ public class Repasar extends AppCompatActivity {
 
     private void mostrarResultados(List<Tarjeta> tarjetas) {
         cL.removeView(findViewById(R.id.cvTarjeta));
-
         RecyclerView rv = new RecyclerView(this);
         rv.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -257,16 +254,19 @@ public class Repasar extends AppCompatActivity {
         //quiza necesitemos persistir un repaso para obtener el id
 
         List<Tarjeta> acertadas = tarjetas.stream().filter(Tarjeta::isCorrecta).collect(Collectors.toList());
+
         List<Tarjeta> falladas = tarjetas.stream().filter(tarjeta -> !tarjeta.isCorrecta()).collect(Collectors.toList());
+        Log.d("LOG", "acertadas: " + acertadas);
+        Log.d("LOG", "falladas: " + falladas);
         List<Tarjeta_Repaso_Acertado> tras = new ArrayList<>();
         List<Tarjeta_Repaso_Fallado> trfs = new ArrayList<>();
         for (Tarjeta acertada : acertadas) {
+            Log.d("LOG", "acertada: " + acertada.getIdTarjeta());
             Tarjeta_Repaso_Acertado tra = new Tarjeta_Repaso_Acertado();
             traID traid = new traID();
             traid.setTarjeta_idTarjeta(acertada.getIdTarjeta());
             tra.setTraID(traid);
             tras.add(tra);
-            Log.d("LOG", "TARJETA ACERTADA " + acertada.getIdTarjeta());
         }
         for (Tarjeta fallada : falladas) {
             Tarjeta_Repaso_Fallado trf = new Tarjeta_Repaso_Fallado();
@@ -275,6 +275,7 @@ public class Repasar extends AppCompatActivity {
             trf.setTraID(traid);
             trfs.add(trf);
         }
+
         repaso.setTarjetaRepasoAcertado(tras);
         repaso.setTarjetaRepasoFallado(trfs);
         API api = Client.getClient(ip, puerto).create(API.class);
@@ -299,10 +300,7 @@ public class Repasar extends AppCompatActivity {
         Resources r = getResources();
         int px = Math.round(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 140, r.getDisplayMetrics()));
-        /*
-         *android:layout_height="wrap_content"
-         * android:adjustViewBounds="true"
-         * */
+
         if (!isImageFitToScreen) {
             isImageFitToScreen = true;
             iVRecurso.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

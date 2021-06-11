@@ -97,6 +97,7 @@ public class Tarjeta implements Serializable {
                 ", nombreMazo='" + nombreMazo + '\'' +
                 ", pregunta='" + pregunta + '\'' +
                 ", recursoRuta='" + recursoRuta + '\'' +
+                ", correcta=" + correcta +
                 '}';
     }
 
