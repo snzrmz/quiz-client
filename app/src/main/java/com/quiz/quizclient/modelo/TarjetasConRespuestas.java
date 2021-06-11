@@ -48,4 +48,17 @@ public class TarjetasConRespuestas implements Serializable {
     public String getRecursoRuta() {
         return recursoRuta;
     }
+
+    @Override
+    public String toString() {
+        return "TarjetasConRespuestas{" +
+                "idTarjeta=" + idTarjeta +
+                ", tipoRespuesta='" + tipoRespuesta + '\'' +
+                ", idJugador=" + idJugador +
+                ", pregunta='" + pregunta + '\'' +
+                ", valor='" + valor + '\'' +
+                ", correcta=" + correcta +
+                ", recursoRuta='" + recursoRuta + '\'' +
+                '}';
+    }
 }

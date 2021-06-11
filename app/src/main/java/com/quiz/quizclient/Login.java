@@ -81,6 +81,10 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Client.ip = "82.168.1.1";
+        Client.port = "9090";
+        Log.d("LOG", Client.ip + " " + Client.port);
         //reconstruyendo actividad
         if (savedInstanceState != null) {
             esLoginCorrecto = savedInstanceState.getBoolean(STATE_LOGINSTATUS, false);

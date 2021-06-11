@@ -52,7 +52,7 @@ public class AdaptadorTarjetas extends RecyclerView.Adapter<AdaptadorTarjetas.Vi
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
         String pregunta = tarjetas.get(position).getPregunta();
         if (pregunta.length() > 38) {
-            pregunta = pregunta.substring(0, 38).concat("...");
+            pregunta = pregunta.substring(0, 36).concat("...");
         }
         holder.pregunta.setText(pregunta);
         //holder.respuesta.setText(String.valueOf(tarjetas.get(position).getRespuesta()));
