@@ -44,7 +44,7 @@ public class Menu extends AppCompatActivity {
     AdaptadorMazos adaptadorMazos;
     List<Mazo> mazos;
     SwipeRefreshLayout swipeRefreshLayout;
-
+    String ip, puerto;
 
     //iconos flotantes
     boolean botonesAbiertos = false;
@@ -76,6 +76,8 @@ public class Menu extends AppCompatActivity {
 
         //recibiendo valores del login idJugador
         idJugador = getIntent().getIntExtra("idJugador", -1);
+        ip = getIntent().getStringExtra("ip");
+        puerto = getIntent().getStringExtra("puerto");
         recyclerView = findViewById(R.id.rv);
         recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false));
         adaptadorMazos = new AdaptadorMazos(getApplicationContext(), mazos);
@@ -99,7 +101,7 @@ public class Menu extends AppCompatActivity {
                                                 Snackbar.make(recyclerView, "Para repasar primero asigne tarjetas a este mazo", Snackbar.LENGTH_LONG).show();
                                                 return;
                                             }
-                                            API api = Client.getClient().create(API.class);
+                                            API api = Client.getClient(ip, puerto).create(API.class);
                                             Call<List<TarjetasConRespuestas>> call = api.getTarjetasConRespuestas(idJugador, mazoNombre);
                                             call.enqueue(new Callback<List<TarjetasConRespuestas>>() {
                                                 @Override
@@ -122,7 +124,7 @@ public class Menu extends AppCompatActivity {
                                                 Snackbar.make(recyclerView, "No hay tarjetas", Snackbar.LENGTH_LONG).show();
                                                 return;
                                             }
-                                            API api = Client.getClient().create(API.class);
+                                            API api = Client.getClient(ip, puerto).create(API.class);
                                             Call<List<Tarjeta>> call = api.getFromMazo(idJugador, mazoNombre);
                                             call.enqueue(new Callback<List<Tarjeta>>() {
                                                 @Override
@@ -143,7 +145,7 @@ public class Menu extends AppCompatActivity {
 
                                         }
                                         if (position == 2) {
-                                            API api = Client.getClient().create(API.class);
+                                            API api = Client.getClient(ip, puerto).create(API.class);
                                             Call<List<Repaso>> call = api.getRepasosFrom(idJugador, mazoNombre);
                                             call.enqueue(new Callback<List<Repaso>>() {
                                                 @Override
@@ -185,7 +187,7 @@ public class Menu extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dlg, int position) {
                                         if (position == 0) {
-                                            API api = Client.getClient().create(API.class);
+                                            API api = Client.getClient(ip, puerto).create(API.class);
                                             Call<Void> call = api.deleteMazo(idJugador, mazoNombre);
                                             call.enqueue(new Callback<Void>() {
                                                 @Override
@@ -216,7 +218,7 @@ public class Menu extends AppCompatActivity {
                                                         @Override
                                                         public void onClick(DialogInterface dialogInterface, int i) {
                                                             if (!txtNuevoMazo.getText().toString().isEmpty()) {
-                                                                API api = Client.getClient().create(API.class);
+                                                                API api = Client.getClient(ip, puerto).create(API.class);
 
                                                                 Mazo mazo = new Mazo();
                                                                 mazo.setNombre(txtNuevoMazo.getText().toString());
@@ -271,7 +273,7 @@ public class Menu extends AppCompatActivity {
     }
 
     private void cargarMazos() {
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         api.getMazosFrom(idJugador).enqueue(new Callback<List<Mazo>>() {
             @Override
             public void onResponse(Call<List<Mazo>> call, Response<List<Mazo>> response) {
@@ -305,6 +307,8 @@ public class Menu extends AppCompatActivity {
             case R.id.app_bar_profile:
                 Intent i = new Intent(this, Perfil.class);
                 i.putExtra("idJugador", idJugador);
+                i.putExtra("ip", ip);
+                i.putExtra("puerto", puerto);
                 startActivity(i);
         }
 
@@ -317,6 +321,8 @@ public class Menu extends AppCompatActivity {
             //iniciando actividad
             intent.putExtra("idJugador", idJugador);
             intent.putExtra("nombreMazo", nombreMazo);
+            intent.putExtra("ip", ip);
+            intent.putExtra("puerto", puerto);
             //dependiendo si son Tarjetas o TarjetasConRespuestas se guarda para la siguiente actividad
 
             if (lista.get(0) instanceof Tarjeta) {
@@ -353,7 +359,7 @@ public class Menu extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (!txtNuevoMazo.getText().toString().isEmpty()) {
-                            API api = Client.getClient().create(API.class);
+                            API api = Client.getClient(ip, puerto).create(API.class);
 
                             Mazo mazo = new Mazo();
                             mazo.setNombre(txtNuevoMazo.getText().toString());
@@ -400,6 +406,8 @@ public class Menu extends AppCompatActivity {
     public void nuevaTarjeta(View v) {
         Intent intent = new Intent(this, CreaTarjeta.class);
         intent.putExtra("idJugador", idJugador);
+        intent.putExtra("ip", ip);
+        intent.putExtra("puerto", puerto);
         startActivity(intent);
     }
 

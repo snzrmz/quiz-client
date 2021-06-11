@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class VerRepasos extends AppCompatActivity {
 
     int idJugador;
-    String nombreMazo;
+    String nombreMazo, ip, puerto;
     List<Repaso> repasos;
     RecyclerView recyclerView;
     AdaptadorRepasos adaptadorRepasos;
@@ -38,6 +38,9 @@ public class VerRepasos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_repasos);
         idJugador = getIntent().getIntExtra("idJugador", -1);
+        ip = getIntent().getStringExtra("ip");
+        puerto = getIntent().getStringExtra("puerto");
+
         nombreMazo = getIntent().getStringExtra("nombreMazo");
         getSupportActionBar().setTitle("Repasos de " + nombreMazo);
         getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.orange1));
@@ -53,7 +56,7 @@ public class VerRepasos extends AppCompatActivity {
 
                     @Override
                     public void onItemClick(View view, int position) {
-                        API api = Client.getClient().create(API.class);
+                        API api = Client.getClient(ip, puerto).create(API.class);
                         Call<List<Tarjeta>> call = api.getFromMazo(idJugador, nombreMazo);
                         call.enqueue(new Callback<List<Tarjeta>>() {
                             @Override
@@ -72,14 +75,13 @@ public class VerRepasos extends AppCompatActivity {
                                         }
                                     }
 
-                                 /*   AdaptadorTarjetas adaptadorTarjetas = new AdaptadorTarjetas(getApplicationContext(), tarjetas, true);
-                                    recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));
-                                    recyclerView.setAdapter(adaptadorTarjetas);*/
                                     Intent intent = new Intent(getBaseContext(), VerTarjetas.class);
                                     intent.putExtra("tarjetas", (Serializable) tarjetas);
                                     intent.putExtra("idJugador", idJugador);
                                     intent.putExtra("nombreMazo", nombreMazo);
                                     intent.putExtra("verResultados", true);
+                                    intent.putExtra("ip", ip);
+                                    intent.putExtra("puerto", puerto);
                                     startActivity(intent);
                                 }
                             }

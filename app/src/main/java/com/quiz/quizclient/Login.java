@@ -43,15 +43,17 @@ public class Login extends AppCompatActivity {
     private static final String STATE_email = "email";
     private static final String STATE_contrasena = "contrasena";
     private static final String STATE_idjugador = "idJugador";
+    private static final String STATE_ip = "ip";
+    private static final String STATE_puerto = "puerto";
 
     public static boolean esLoginCorrecto;
     private int idJugador;
     private SharedPreferences preferencias;
 
     TextInputEditText etEmail, etContrasena;
-    TextInputLayout TIpass,TIemail;
+    TextInputLayout TIpass, TIemail;
 
-    String email, contrasena;
+    String email, contrasena, ip, puerto;
     Button botonLogin;
     boolean nuevoUsuario;
 
@@ -87,9 +89,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Client.ip = "82.168.1.1";
-        Client.port = "9090";
-        Log.d("LOG", Client.ip + " " + Client.port);
+
         //reconstruyendo actividad
         if (savedInstanceState != null) {
             esLoginCorrecto = savedInstanceState.getBoolean(STATE_LOGINSTATUS, false);
@@ -117,6 +117,8 @@ public class Login extends AppCompatActivity {
         preferencias = getSharedPreferences("IDvalue", 0);
         esLoginCorrecto = preferencias.getBoolean(STATE_LOGINSTATUS, false);
         idJugador = preferencias.getInt(STATE_idjugador, -1);
+        ip = preferencias.getString(STATE_ip, "localhost");
+        puerto = preferencias.getString(STATE_puerto, "8080");
     }
 
     private void guardarPreferencias() {
@@ -124,6 +126,8 @@ public class Login extends AppCompatActivity {
         SharedPreferences.Editor editor = preferencias.edit();
         editor.putBoolean(STATE_LOGINSTATUS, esLoginCorrecto);
         editor.putInt(STATE_idjugador, idJugador);
+        editor.putString(STATE_ip, ip);
+        editor.putString(STATE_puerto, puerto);
         editor.apply();
     }
 
@@ -132,15 +136,10 @@ public class Login extends AppCompatActivity {
         TIpass.setError(null);
     }
 
-
-
-
-
-
     private boolean loginCorrecto(OnLoginResponse callback) {
         esLoginCorrecto = false;
 
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         Call<Jugador> call = api.getJugadorByEmail(email);
         //si email y contrasena es igual a los proporcionados return true
         call.enqueue(new Callback<Jugador>() {
@@ -191,6 +190,8 @@ public class Login extends AppCompatActivity {
         Intent intent = new Intent(this, Menu.class);
         //iniciando actividad
         intent.putExtra(STATE_idjugador, idJugador);
+        intent.putExtra(STATE_ip, ip);
+        intent.putExtra(STATE_puerto, puerto);
         startActivity(intent);
     }
 
@@ -216,16 +217,16 @@ public class Login extends AppCompatActivity {
                 View view = Login.this.getLayoutInflater().inflate(R.layout.layout_opciones_ip, null);
                 TextInputEditText nueva_IP = view.findViewById(R.id.input_IP);
                 TextInputEditText nuevo_Puerto = view.findViewById(R.id.input_puerto);
-
-
+                nueva_IP.setText(ip);
+                nuevo_Puerto.setText(puerto);
                 AlertDialog dialog = new AlertDialog.Builder(Login.this)
                         .setTitle("RED")
                         .setView(view)
                         .setPositiveButton("Guardar cambios", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
-
+                                ip = nueva_IP.getText().toString();
+                                puerto = nuevo_Puerto.getText().toString();
                             }
                         })
                         .setNegativeButton("Cancelar", null)

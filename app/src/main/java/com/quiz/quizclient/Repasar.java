@@ -42,7 +42,7 @@ import retrofit2.Response;
 
 public class Repasar extends AppCompatActivity {
 
-    String nombreMazo;
+    String nombreMazo, ip, puerto;
     TextView txtPregunta, txtRespuesta, txtNumTarjeta;
     LinearLayout lLRespuestas;
     ImageView iVRecurso;
@@ -65,6 +65,9 @@ public class Repasar extends AppCompatActivity {
         //recibiendo valores de mazos
         idJugador = getIntent().getIntExtra("idJugador", -1);
         nombreMazo = getIntent().getStringExtra("nombreMazo");
+        ip = getIntent().getStringExtra("ip");
+        puerto = getIntent().getStringExtra("puerto");
+
         getSupportActionBar().setTitle("Repasando " + nombreMazo);
         getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.orange1));
         txtPregunta = findViewById(R.id.txtRespuesta);
@@ -133,9 +136,10 @@ public class Repasar extends AppCompatActivity {
     }
 
     private void establecerImagenTarjeta(String recursoRuta) {
-        Log.d("LOG", "cargando imagen: " + Client.BASEURL + "jugadores/perfil/" + recursoRuta);
+        String baseUrl = "http://" + ip + ":" + puerto + "/quiz-server/api/";
+        Log.d("LOG", "cargando imagen: " + baseUrl + "jugadores/perfil/" + recursoRuta);
         Picasso.get().setLoggingEnabled(true);
-        Picasso.get().load(Client.BASEURL + "jugadores/perfil/" + recursoRuta).into(iVRecurso);
+        Picasso.get().load(baseUrl + "jugadores/perfil/" + recursoRuta).into(iVRecurso);
     }
 
     void establecerTarjetaMultiple(List<TarjetasConRespuestas> ltjr) {
@@ -240,7 +244,7 @@ public class Repasar extends AppCompatActivity {
 
         cL.addView(rv);
         rv.setLayoutManager(new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.VERTICAL, false));
-        AdaptadorTarjetas adaptadorTarjetas = new AdaptadorTarjetas(getApplicationContext(), tarjetas, true);
+        AdaptadorTarjetas adaptadorTarjetas = new AdaptadorTarjetas(getApplicationContext(), tarjetas, true, ip, puerto);
         rv.setAdapter(adaptadorTarjetas);
     }
 
@@ -273,7 +277,7 @@ public class Repasar extends AppCompatActivity {
         }
         repaso.setTarjetaRepasoAcertado(tras);
         repaso.setTarjetaRepasoFallado(trfs);
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         Call<Void> call = api.createRepaso(repaso);
         Log.d("LOG", String.valueOf(repaso));
         call.enqueue(new Callback<Void>() {

@@ -44,6 +44,7 @@ public class Perfil extends AppCompatActivity {
     API api;
     OnJugadorConseguido onJugadorConseguido;
     Jugador jugador;
+    String ip, puerto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,9 @@ public class Perfil extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         idJugador = getIntent().getIntExtra(STATE_IDJUGADOR, -1);
+        ip = getIntent().getStringExtra("ip");
+        puerto = getIntent().getStringExtra("puerto");
+        Log.d("LOG", "ip: " + ip + " puerto: " + puerto);
         jugador_usuario = findViewById(R.id.txtUsuario);
         jugador_fechaCreacion = findViewById(R.id.txtFechaCreacion);
         jugador_email = findViewById(R.id.txtEmail);
@@ -78,7 +82,7 @@ public class Perfil extends AppCompatActivity {
     }
 
     private void getJugador(int idJugador, OnJugadorConseguido callback) {
-        api = Client.getClient().create(API.class);
+        api = Client.getClient(ip, puerto).create(API.class);
         Call<Jugador> call = api.getJugadorById(idJugador);
         call.enqueue(new Callback<Jugador>() {
             @Override
@@ -134,7 +138,7 @@ public class Perfil extends AppCompatActivity {
                         .setPositiveButton("Guardar cambios", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                api = Client.getClient().create(API.class);
+                                api = Client.getClient(ip, puerto).create(API.class);
                                 jugador.setUsuario(newuser.getText().toString());
                                 jugador.setEmail(newemail.getText().toString());
                                 Call<Void> call = api.updateJugador(jugador);

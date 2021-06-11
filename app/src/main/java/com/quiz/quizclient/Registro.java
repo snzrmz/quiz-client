@@ -27,6 +27,7 @@ public class Registro extends AppCompatActivity {
 
     TextInputEditText email, name, pass;
     int idJugador;
+    String ip, puerto;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -50,11 +51,13 @@ public class Registro extends AppCompatActivity {
         name = findViewById(R.id.user_input);
         pass = findViewById(R.id.password_edit_text);
         idJugador = -1;
+        ip = getIntent().getStringExtra("ip");
+        puerto = getIntent().getStringExtra("puerto");
     }
 
 
     public void addJugador(View v) {
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         LocalDate localDate = LocalDate.now();
         String fechaFormateada = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         Jugador jugador = new Jugador();

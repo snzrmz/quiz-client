@@ -5,14 +5,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Client {
 
-    private static final String ip = "192.168.1.42";
-    private static final String port = "8080";
-    public static final String BASEURL = "http://" + ip + ":" + port + "/quiz-server/api/";
 
-    public static Retrofit getClient() {
+    public static Retrofit getClient(String ip, String puerto) {
 
         return new Retrofit.Builder()
-                .baseUrl(BASEURL)
+                .baseUrl("http://" + ip + ":" + puerto + "/quiz-server/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

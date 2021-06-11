@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.quiz.quizclient.modelo.Tarjeta;
-import com.quiz.quizclient.restclient.Client;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -25,13 +24,15 @@ public class AdaptadorTarjetas extends RecyclerView.Adapter<AdaptadorTarjetas.Vi
 
     List<Tarjeta> tarjetas;
     Context context;
-    boolean mostrarCorrectas;
-    boolean isImageFitToScreen;
+    boolean mostrarCorrectas, isImageFitToScreen;
+    String ip, puerto;
 
-    public AdaptadorTarjetas(Context context, List<Tarjeta> tarjetas, boolean mostrarCorrectas) {
+    public AdaptadorTarjetas(Context context, List<Tarjeta> tarjetas, boolean mostrarCorrectas, String ip, String puerto) {
         this.context = context;
         this.tarjetas = tarjetas;
         this.mostrarCorrectas = mostrarCorrectas;
+        this.ip = ip;
+        this.puerto = puerto;
     }
 
     public void setTarjetaList(List<Tarjeta> tarjetas) {
@@ -125,7 +126,8 @@ public class AdaptadorTarjetas extends RecyclerView.Adapter<AdaptadorTarjetas.Vi
     }
 
     private void establecerImagenTarjeta(String recursoRuta, ImageView imagen) {
-        Log.d("LOG", "cargando imagen: " + Client.BASEURL + "jugadores/perfil/" + recursoRuta);
-        Picasso.get().load(Client.BASEURL + "jugadores/perfil/" + recursoRuta).into(imagen);
+        String baseUrl = "http://" + ip + ":" + puerto + "/quiz-server/api/";
+        Log.d("LOG", "cargando imagen: " + baseUrl + "jugadores/perfil/" + recursoRuta);
+        Picasso.get().load(baseUrl + "jugadores/perfil/" + recursoRuta).into(imagen);
     }
 }

@@ -62,6 +62,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     CheckBox cbx1, cbx2, cbx3, cbx4;
     ImageView iV;
     Uri uri;
+    String ip, puerto;
 
 
     boolean TipoMulti = false;
@@ -127,6 +128,8 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         getSupportActionBar().setTitle("Nueva Tarjeta");
         getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.color.orange1));
         idJugador = getIntent().getIntExtra("idJugador", -1);
+        ip = getIntent().getStringExtra("ip");
+        puerto = getIntent().getStringExtra("puerto");
         Spin = findViewById(R.id.spinnerMazos);
         iV = findViewById(R.id.imageView);
         pregunta = findViewById(R.id.pregunta_input);
@@ -338,7 +341,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         }
         RequestBody requestbody = RequestBody.create(okhttp3.MediaType.parse("multipart/form-data"), f);
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", f.getName(), requestbody);
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         Call<ResponseBody> call = api.uploadImage(body);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -385,7 +388,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     //Tabla Respuesta
     private void persistirRespuestas(List<Respuesta> respuestas) {
         Log.d("LOG", "persistiendo respuestas: " + respuestas);
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         Call<Void> call = api.createRespuesta(respuestas);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -410,7 +413,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         Tarjeta_Respuesta_Multiple trm = new Tarjeta_Respuesta_Multiple();
         trm.setIdTarjeta(idTarjeta);
         Log.d("LOG", String.valueOf(trm.getIdTarjeta()));
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         Call<Void> call = api.createRespuestaTarjetaMultiple(trm);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -432,7 +435,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
         tru.setIdTarjeta(idTarjeta);
         tru.setValor(Objects.requireNonNull(respuesta.getText()).toString());
         Log.d("LOG", tru.getValor() + " " + tru.getIdTarjeta());
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         Call<Void> call = api.createRespuestaOfTarjetaUnica(tru);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -465,7 +468,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     }
 
     private void persistirTarjeta(Tarjeta tarjeta, OnTarjetaPersistida callback) {
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         Call<Void> call = api.createTarjeta(tarjeta);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -497,7 +500,7 @@ public class CreaTarjeta extends AppCompatActivity implements AdapterView.OnItem
     }
 
     private void llenarSpinner() {
-        API api = Client.getClient().create(API.class);
+        API api = Client.getClient(ip, puerto).create(API.class);
         api.getMazosFrom(idJugador).enqueue(new Callback<List<Mazo>>() {
             @Override
             public void onResponse(Call<List<Mazo>> call, Response<List<Mazo>> response) {
