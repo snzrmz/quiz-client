@@ -31,9 +31,9 @@ import com.squareup.picasso.Picasso;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -82,7 +82,11 @@ public class Repasar extends AppCompatActivity {
         List<String> respuestasUsuario = new ArrayList<>();
         List<TarjetasConRespuestas> tarjetasConRespuestas = (List<TarjetasConRespuestas>) getIntent().getSerializableExtra("tarjetasConRespuestas");
         tarjetas = new ArrayList<>();
-        mapTarjetasRespuestas = new HashMap<>();
+        /*Se usa TreeMap sobre HashMap:
+         * This class makes no guarantees as to the order of the map; in particular,
+         * it does not guarantee that the order will remain constant over time.
+         * */
+        mapTarjetasRespuestas = new TreeMap<>();
         /*Shortcut for adding to List in a HashMap: https://stackoverflow.com/a/3019388*/
         //recorremos las tarjetas con respuestas, si aún no ha sido añadido se ejecutará computeIfAbsent
         //que creará por cada clave del hashmap un arraylist y si no lo añdirá a este.
